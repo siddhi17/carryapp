@@ -8,8 +8,9 @@
 
     <ImageView
         android:id="@+id/imageViewLogo"
+        android:padding="30dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        android:src="@drawable/logo" />
+        android:src="@drawable/login_logo_1" />
 </LinearLayout>

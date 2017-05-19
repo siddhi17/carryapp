@@ -25,72 +25,115 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                app:srcCompat="@drawable/login_logo" />
+                app:srcCompat="@drawable/login_logo_1" />
 
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/linearLayout5"
+                android:layout_alignLeft="@+id/linearLayout5"
+                android:layout_alignRight="@+id/linearLayout5"
+                android:layout_alignStart="@+id/linearLayout5"
+                android:layout_below="@+id/imageView"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/editTextEmail"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="50dp"
-                    android:hint="@string/email_id"
-                    android:layout_centerHorizontal="true"
-                    android:inputType="textEmailAddress"
-                    app:backgroundTint="@android:color/black"
-                    android:layout_below="@+id/imageView"
-                    android:layout_alignLeft="@+id/login"
-                    android:layout_alignStart="@+id/login"
-                    android:layout_alignRight="@+id/login"
-                    android:layout_alignEnd="@+id/login" />
+                    android:layout_gravity="center_horizontal">
 
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignEnd="@+id/editTextEmail"
+                        android:layout_alignLeft="@+id/editTextEmail"
+                        android:layout_alignRight="@+id/editTextEmail"
+                        android:layout_alignStart="@+id/editTextEmail"
+                        android:layout_below="@+id/editTextEmail"
+                        android:layout_marginTop="05dp"
+                        android:background="@drawable/line"></View>
 
-                <EditText
-                    android:id="@+id/editText2Pass"
-                    android:layout_width="match_parent"
+                    <EditText
+                        android:id="@+id/editTextEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:background="@color/colorPrimary"
+                        android:hint="@string/email_id"
+                        android:inputType="textEmailAddress" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:layout_marginTop="10dp"
-                    android:hint="@string/pass"
-                    android:layout_centerHorizontal="true"
-                    android:inputType="textPassword"
-                    app:backgroundTint="@android:color/black"
-                    android:layout_below="@+id/editTextEmail"
-                    android:layout_alignLeft="@+id/editTextEmail"
-                    android:layout_alignStart="@+id/editTextEmail"
-                    android:layout_alignRight="@+id/editTextEmail"
-                    android:layout_alignEnd="@+id/editTextEmail" />
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp">
 
-            <Button
-                android:id="@+id/login"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="250dp"
-                android:layout_height="35dp"
-                android:layout_below="@+id/editText2Pass"
+                    <View
+                        android:id="@+id/view3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_alignEnd="@+id/editText2Pass"
+                        android:layout_alignLeft="@+id/editText2Pass"
+                        android:layout_alignRight="@+id/editText2Pass"
+                        android:layout_alignStart="@+id/editText2Pass"
+                        android:layout_below="@+id/editText2Pass"
+                        android:layout_marginTop="05dp"
+                        android:background="@drawable/line"></View>
+
+                    <EditText
+                        android:id="@+id/editText2Pass"
+                        android:layout_width="match_parent"
+                        android:layout_height="25dp"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorPrimary"
+                        android:ems="10"
+                        android:hint="@string/pass"
+                        android:inputType="textPassword" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayout4"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
-                android:background="@drawable/rounded_button"
-                android:text="@string/login"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimary"
-                android:textSize="12sp"
-                android:layout_marginLeft="19dp"
-                android:layout_marginStart="19dp" />
+                android:orientation="vertical">
 
-            <Button
-                android:id="@+id/signUp"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="250dp"
-                android:layout_height="35dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignLeft="@+id/login"
-                android:layout_alignStart="@+id/login"
-                android:layout_below="@+id/login"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/border_button"
-                android:text="@string/sign_up"
-                android:textAllCaps="false"
-                android:textColor="@color/colorButton"
-                android:textSize="12sp" />
+                <Button
+                    android:id="@+id/login"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="250dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/editText2Pass"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/rounded_button"
+                    android:text="@string/login"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp" />
+
+                <Button
+                    android:id="@+id/signUp"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="250dp"
+                    android:layout_height="30dp"
+                    android:layout_alignLeft="@+id/login"
+                    android:layout_alignStart="@+id/login"
+                    android:layout_below="@+id/login"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/border_button"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorButton"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </RelativeLayout>
     </ScrollView>
 

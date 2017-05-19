@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.easyandroidanimations.library.FadeOutAnimation;
 
 public class SplashScreen extends Activity {
 
