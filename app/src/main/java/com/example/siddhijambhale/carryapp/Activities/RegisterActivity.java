@@ -1,19 +1,21 @@
-package com.example.siddhijambhale.carryapp;
+package com.example.siddhijambhale.carryapp.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.siddhijambhale.carryapp.R;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextView mSignUpText;
+    private TextView mLoginText;
+    private Button mButton_register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +38,10 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-        mSignUpText = (TextView) findViewById(R.id.textViewLogin);
+        mLoginText = (TextView) findViewById(R.id.textViewLogin);
+        mButton_register = (Button) findViewById(R.id.btn_SignUp);
 
-        mSignUpText.setOnClickListener(new View.OnClickListener() {
+        mLoginText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -46,6 +49,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+
+        mButton_register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(RegisterActivity.this,LoginActivity.class));
+            }
+        });
     }
 
 

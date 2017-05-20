@@ -1,25 +1,28 @@
-package com.example.siddhijambhale.carryapp;
+package com.example.siddhijambhale.carryapp.Activities;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Collections;
+import com.example.siddhijambhale.carryapp.Fragments.AccountFragment;
+import com.example.siddhijambhale.carryapp.Fragments.MainFragment;
+import com.example.siddhijambhale.carryapp.Fragments.PostShippingFragment;
+import com.example.siddhijambhale.carryapp.R;
+import com.example.siddhijambhale.carryapp.Fragments.TransportFragment;
 
-public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener,CarPickerFragment.OnFragmentInteractionListener{
 
-    private Toolbar toolbar;
-    private ImageView mLogo;
+    public static Toolbar toolbar;
+    public static ImageView mLogo;
+    private TextView mTxtTitle;
     private boolean mBackPressCancelled = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,9 +31,12 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mLogo = (ImageView)findViewById(R.id.imageViewLogo);
+        mLogo = (ImageView)findViewById(R.id.imgLogo);
+        mTxtTitle = (TextView)findViewById(R.id.textTitle);
 
-        FragmentManager fragmentManager = HomeActivity.this.getSupportFragmentManager();
+
+
+        FragmentManager fragmentManager = HomeActivity.this.getFragmentManager();
         MainFragment fragment = new MainFragment();
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment).commitAllowingStateLoss();
@@ -41,7 +47,6 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
 
-        //     menu.clear();
         getMenuInflater().inflate(R.menu.menu, menu);
 
         return true;
@@ -55,9 +60,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
             case R.id.menu_account:
 
-                toolbar.setTitle(R.string.menu_account);
-
-                FragmentManager fragmentManager = HomeActivity.this.getSupportFragmentManager();
+                FragmentManager fragmentManager = HomeActivity.this.getFragmentManager();
                 AccountFragment fragment1 = new AccountFragment();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1).addToBackStack("A").commit();
@@ -75,24 +78,11 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
             // Pop fragment if the back stack is not empty.
 
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            if (getFragmentManager().getBackStackEntryCount() > 0) {
+                mTxtTitle.setVisibility(View.GONE);
+                mLogo.setVisibility(View.VISIBLE);
                 super.onBackPressed();
-
-                //       goToOrderFrag();
-            } /*else {
-                if (snackbar != null) {
-                    snackbar.dismiss();
-                }
-                long currentTimestamp = System.currentTimeMillis();
-
-                if (currentTimestamp < mBackPressTimestamp + BACK_PRESS_DELAY) {
-                    super.onBackPressed();
-                } else {
-                    mBackPressTimestamp = currentTimestamp;
-
-                    showAlert(getString(R.string.msg_backpress));
-                }
-            }*/
+            }
         }
     }
 

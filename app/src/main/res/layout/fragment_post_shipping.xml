@@ -1,0 +1,339 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.siddhijambhale.carryapp.Fragments.PostShippingFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/productQue"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editTextProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView11"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:hint="@string/productName"
+                    android:inputType="textPersonName"
+                    android:textSize="12sp" />
+
+                <View
+                    android:id="@+id/view5"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextProduct"
+                    android:layout_alignLeft="@+id/editTextProduct"
+                    android:layout_alignRight="@+id/editTextProduct"
+                    android:layout_alignStart="@+id/editTextProduct"
+                    android:layout_below="@+id/editTextProduct"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/line"></View>
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/productDetails"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editTextProductDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView12"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:hint="@string/detailsHint"
+                    android:inputType="textMultiLine"
+                    android:textSize="12sp" />
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextProductDetails"
+                    android:layout_alignLeft="@+id/editTextProductDetails"
+                    android:layout_alignRight="@+id/editTextProductDetails"
+                    android:layout_alignStart="@+id/editTextProductDetails"
+                    android:layout_below="@+id/editTextProductDetails"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/line"></View>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/from"
+                    android:textColor="@android:color/black" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextFrom"
+                    android:layout_alignLeft="@+id/editTextFrom"
+                    android:layout_alignRight="@+id/editTextFrom"
+                    android:layout_alignStart="@+id/editTextFrom"
+                    android:layout_below="@+id/editTextFrom"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/line"></View>
+
+                <EditText
+                    android:id="@+id/editTextFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="false"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/textView7"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:hint="@string/start"
+                    android:inputType="textMultiLine"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp">
+
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextTo"
+                    android:layout_alignLeft="@+id/editTextTo"
+                    android:layout_alignRight="@+id/editTextTo"
+                    android:layout_alignStart="@+id/editTextTo"
+                    android:layout_below="@+id/editTextTo"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/line"></View>
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/to"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editTextTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/textView9"
+                    android:cursorVisible="false"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignStart="@+id/textView9"
+                    android:layout_below="@+id/textView9"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:hint="@string/arrival"
+                    android:inputType="textMultiLine"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextDateTime"
+                    android:layout_alignLeft="@+id/editTextDateTime"
+                    android:layout_alignRight="@+id/editTextDateTime"
+                    android:layout_alignStart="@+id/editTextDateTime"
+                    android:layout_below="@+id/editTextDateTime"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/line"></View>
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dateTime"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editTextDateTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView10"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:cursorVisible="false"
+                    android:hint="@string/leavingTime"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="15dp">
+
+                <View
+                    android:id="@+id/view8"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextPrice"
+                    android:layout_alignLeft="@+id/editTextPrice"
+                    android:layout_alignRight="@+id/editTextPrice"
+                    android:layout_alignStart="@+id/editTextPrice"
+                    android:layout_below="@+id/editTextPrice"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
+                    android:background="@drawable/line"></View>
+
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/price"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editTextPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView15"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:hint="@string/priceHint"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginStart="30dp">
+
+
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/addPhoto" />
+
+                <ImageView
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_alignParentLeft="true"
+
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/textView13"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/product" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/post"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="250dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/rounded_button"
+                android:text="@string/post"
+                android:textAllCaps="false"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"/>
+
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

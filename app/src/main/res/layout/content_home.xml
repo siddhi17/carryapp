@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.siddhijambhale.carryapp.HomeActivity"
+    tools:context="com.example.siddhijambhale.carryapp.Activities.HomeActivity"
     tools:showIn="@layout/activity_home">
 
     <include layout="@layout/main_content_dashboard" />

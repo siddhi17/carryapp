@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.siddhijambhale.carryapp.TransportFragment">
+    tools:context="com.example.siddhijambhale.carryapp.Fragments.TransportFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -30,7 +30,8 @@
             android:layout_marginLeft="30dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="50dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
 
             <RelativeLayout
@@ -53,26 +54,33 @@
                     android:layout_alignRight="@+id/editTextFrom"
                     android:layout_alignStart="@+id/editTextFrom"
                     android:layout_below="@+id/editTextFrom"
-                    android:layout_marginTop="05dp"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
                     android:background="@drawable/line"></View>
 
                 <EditText
                     android:id="@+id/editTextFrom"
-                    android:layout_width="250dp"
-                    android:layout_height="25dp"
+                    android:layout_width="match_parent"
+                    android:cursorVisible="false"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/textView7"
                     android:layout_marginTop="10dp"
+                    android:focusable="false"
                     android:background="@color/colorPrimary"
                     android:ems="10"
                     android:hint="@string/start"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
                     android:textSize="12sp" />
             </RelativeLayout>
 
+
+
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <View
                     android:id="@+id/view1"
@@ -83,7 +91,8 @@
                     android:layout_alignRight="@+id/editTextTo"
                     android:layout_alignStart="@+id/editTextTo"
                     android:layout_below="@+id/editTextTo"
-                    android:layout_marginTop="05dp"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
                     android:background="@drawable/line"></View>
 
                 <TextView
@@ -95,8 +104,12 @@
 
                 <EditText
                     android:id="@+id/editTextTo"
-                    android:layout_width="250dp"
-                    android:layout_height="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:cursorVisible="false"
                     android:layout_alignLeft="@+id/textView9"
                     android:layout_alignStart="@+id/textView9"
                     android:layout_below="@+id/textView9"
@@ -104,14 +117,14 @@
                     android:background="@color/colorPrimary"
                     android:ems="10"
                     android:hint="@string/arrival"
-                    android:inputType="text"
+                    android:inputType="textMultiLine"
                     android:textSize="12sp" />
             </RelativeLayout>
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <View
                     android:id="@+id/view3"
@@ -122,7 +135,8 @@
                     android:layout_alignRight="@+id/editTextDateTime"
                     android:layout_alignStart="@+id/editTextDateTime"
                     android:layout_below="@+id/editTextDateTime"
-                    android:layout_marginTop="05dp"
+                    android:layout_marginTop="20dp"
+                    android:alpha="0.3"
                     android:background="@drawable/line"></View>
 
                 <TextView
@@ -134,14 +148,18 @@
 
                 <EditText
                     android:id="@+id/editTextDateTime"
-                    android:layout_width="250dp"
-                    android:layout_height="25dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginRight="30dp"
+                    android:cursorVisible="false"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/textView10"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorPrimary"
                     android:ems="10"
+                    android:focusable="false"
                     android:hint="@string/leavingTime"
                     android:textSize="12sp" />
             </RelativeLayout>

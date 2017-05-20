@@ -1,31 +1,30 @@
-package com.example.siddhijambhale.carryapp;
+package com.example.siddhijambhale.carryapp.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.example.siddhijambhale.carryapp.Activities.HomeActivity;
+import com.example.siddhijambhale.carryapp.R;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TransportFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TransportFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TransportFragment extends Fragment {
+public class AccountFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
 
 
     private OnFragmentInteractionListener mListener;
 
-    public TransportFragment() {
+    public AccountFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,20 @@ public class TransportFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transport, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
+        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ImageView mLogo = (ImageView)getActivity().findViewById(R.id.imgLogo);
+        mLogo.setVisibility(View.GONE);
+
+        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
+        title.setVisibility(View.VISIBLE);
+        title.setText(R.string.account);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.siddhijambhale.carryapp.LoginActivity">
+    tools:context="com.example.siddhijambhale.carryapp.Activities.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -53,7 +53,8 @@
                         android:layout_alignRight="@+id/editTextEmail"
                         android:layout_alignStart="@+id/editTextEmail"
                         android:layout_below="@+id/editTextEmail"
-                        android:layout_marginTop="05dp"
+                        android:layout_marginTop="10dp"
+                        android:alpha="0.3"
                         android:background="@drawable/line"></View>
 
                     <EditText
@@ -61,8 +62,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
                         android:background="@color/colorPrimary"
+                        android:fontFamily="sans-serif"
                         android:hint="@string/email_id"
-                        android:inputType="textEmailAddress" />
+                        android:inputType="textEmailAddress"
+                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -80,19 +83,20 @@
                         android:layout_alignRight="@+id/editText2Pass"
                         android:layout_alignStart="@+id/editText2Pass"
                         android:layout_below="@+id/editText2Pass"
-                        android:layout_marginTop="05dp"
+                        android:layout_marginTop="10dp"
+                        android:alpha="0.3"
                         android:background="@drawable/line"></View>
 
                     <EditText
                         android:id="@+id/editText2Pass"
                         android:layout_width="match_parent"
                         android:layout_height="25dp"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="10dp"
                         android:background="@color/colorPrimary"
                         android:ems="10"
+                        android:fontFamily="sans-serif"
                         android:hint="@string/pass"
-                        android:inputType="textPassword" />
+                        android:inputType="textPassword"
+                        android:textSize="12sp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -119,7 +123,7 @@
                     android:textSize="12sp" />
 
                 <Button
-                    android:id="@+id/signUp"
+                    android:id="@+id/btn_signUp"
                     style="?android:attr/borderlessButtonStyle"
                     android:layout_width="250dp"
                     android:layout_height="30dp"
