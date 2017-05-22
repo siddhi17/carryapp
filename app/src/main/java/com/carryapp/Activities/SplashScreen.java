@@ -1,15 +1,20 @@
 package com.carryapp.Activities;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.carryapp.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class SplashScreen extends Activity {
