@@ -1,4 +1,4 @@
-package com.example.siddhijambhale.carryapp.Activities;
+package com.carryapp.Activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.example.siddhijambhale.carryapp.R;
+import com.carryapp.R;
 
 
 public class SplashScreen extends Activity {

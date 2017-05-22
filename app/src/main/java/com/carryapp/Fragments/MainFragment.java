@@ -1,30 +1,31 @@
-package com.example.siddhijambhale.carryapp.Fragments;
+package com.carryapp.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.support.v7.widget.Toolbar;
+import android.app.FragmentManager;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.siddhijambhale.carryapp.Activities.HomeActivity;
-import com.example.siddhijambhale.carryapp.R;
+import com.carryapp.R;
 
 
-public class AccountFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-
+public class MainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private LinearLayout mLinearPostDelivery,mLinearTransport;
 
-    public AccountFragment() {
+    private TextView mTextViewPostDelivery,mTextViewTransport;
+
+    public MainFragment() {
         // Required empty public constructor
     }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,17 +38,33 @@ public class AccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
-        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ImageView mLogo = (ImageView)getActivity().findViewById(R.id.imgLogo);
-        mLogo.setVisibility(View.GONE);
+        mLinearPostDelivery = (LinearLayout)view.findViewById(R.id.linearDelivery);
+        mLinearTransport = (LinearLayout)view.findViewById(R.id.linearTransport);
 
-        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
-        title.setVisibility(View.VISIBLE);
-        title.setText(R.string.account);
+        mLinearTransport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                TransportFragment fragment = new TransportFragment();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment).addToBackStack("C").commit();
+            }
+        });
+
+        mLinearPostDelivery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                PostShippingFragment fragment = new PostShippingFragment();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment).addToBackStack("D").commit();
+            }
+        });
 
         return view;
     }
@@ -69,7 +86,6 @@ public class AccountFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.siddhijambhale.carryapp.Fragments.PostShippingFragment">
+    tools:context="com.example.siddhijambhale.carryapp.com.carryapp.Fragments.PostShippingFragment">
 
     <ScrollView
         android:layout_width="match_parent"

@@ -1,7 +1,6 @@
-package com.example.siddhijambhale.carryapp.Fragments;
+package com.carryapp.Fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -20,9 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.siddhijambhale.carryapp.Activities.CarPickerFragment;
-import com.example.siddhijambhale.carryapp.Activities.HomeActivity;
-import com.example.siddhijambhale.carryapp.R;
+import com.carryapp.Activities.HomeActivity;
+import com.carryapp.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;

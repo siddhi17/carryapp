@@ -1,4 +1,4 @@
-package com.example.siddhijambhale.carryapp.Fragments;
+package com.carryapp.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,22 +7,20 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.example.siddhijambhale.carryapp.Activities.HomeActivity;
-import com.example.siddhijambhale.carryapp.R;
+import com.carryapp.Activities.HomeActivity;
+import com.carryapp.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -41,6 +39,8 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
     private EditText mEditTxt_From,mEditTxt_To,mEditTxt_DateTime;
     int PLACE_PICKER_REQUEST = 1;
     private GoogleApiClient mGoogleApiClient;
+
+    private Button mBtnSearch;
 
     private static final String TAG = "PlacePickerSample";
 
@@ -85,6 +85,7 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
         mEditTxt_From = (EditText) view.findViewById(R.id.editTextFrom);
         mEditTxt_To = (EditText) view.findViewById(R.id.editTextTo);
         mEditTxt_DateTime = (EditText) view.findViewById(R.id.editTextDateTime);
+        mBtnSearch = (Button) view.findViewById(R.id.btnSearch);
 
 
         mEditTxt_DateTime = (EditText) view.findViewById(R.id.editTextDateTime);
@@ -148,6 +149,19 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
                             Toast.LENGTH_LONG)
                             .show();
                 }
+            }
+        });
+
+        mBtnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                android.app.FragmentManager fragmentManager = getFragmentManager();
+                TransportListFragment fragment1 = new TransportListFragment();
+                fragmentManager.popBackStack(null, android.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1).addToBackStack("E").commit();
+
             }
         });
 

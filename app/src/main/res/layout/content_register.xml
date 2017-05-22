@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.siddhijambhale.carryapp.Activities.RegisterActivity"
+    tools:context="com.carryapp.Activities.RegisterActivity"
     tools:showIn="@layout/activity_register">
 
     <ScrollView
@@ -58,7 +58,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginStart="30dp"
-                    android:inputType="textPersonName"
+                    android:inputType="textMultiLine|textPersonName"
                     android:textSize="12sp" />
 
 
@@ -93,7 +93,7 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginStart="30dp"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textEmailAddress|textMultiLine"
                     android:textSize="12sp" />
             </RelativeLayout>
             <RelativeLayout

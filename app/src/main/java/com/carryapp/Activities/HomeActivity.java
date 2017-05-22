@@ -1,8 +1,7 @@
-package com.example.siddhijambhale.carryapp.Activities;
+package com.carryapp.Activities;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,11 +11,12 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.siddhijambhale.carryapp.Fragments.AccountFragment;
-import com.example.siddhijambhale.carryapp.Fragments.MainFragment;
-import com.example.siddhijambhale.carryapp.Fragments.PostShippingFragment;
-import com.example.siddhijambhale.carryapp.R;
-import com.example.siddhijambhale.carryapp.Fragments.TransportFragment;
+import com.carryapp.Fragments.AccountFragment;
+import com.carryapp.Fragments.CarPickerFragment;
+import com.carryapp.Fragments.MainFragment;
+import com.carryapp.Fragments.TransfersFragment;
+import com.carryapp.R;
+import com.carryapp.Fragments.TransportFragment;
 
 public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener,CarPickerFragment.OnFragmentInteractionListener{
 
@@ -64,7 +64,19 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 AccountFragment fragment1 = new AccountFragment();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1).addToBackStack("A").commit();
-                return true;
+
+
+                break;
+
+            case R.id.menu_transfers:
+
+                fragmentManager = HomeActivity.this.getFragmentManager();
+                TransfersFragment fragment2 = new TransfersFragment();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment2).addToBackStack("F").commit();
+
+
+                break;
 
         }
 
