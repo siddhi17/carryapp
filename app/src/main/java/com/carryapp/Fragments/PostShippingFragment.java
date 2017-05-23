@@ -5,8 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,11 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.R;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -128,7 +131,38 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-                Calendar now = Calendar.getInstance();
+
+                final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+                        .title(R.string.datetime)
+                        .customView(R.layout.date_time_picker_dialog,true)
+                        .show();
+
+                final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.date_picker);
+                final TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.time_picker);
+                timePicker.setIs24HourView(true);
+                Button submit = (Button) dialog.findViewById(R.id.date_time_set);
+
+                submit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                            /*    datePicker.getMonth();
+                                datePicker.getDayOfMonth();
+                                timePicker.getCurrentHour();
+                                timePicker.getCurrentMinute();*/
+
+                        String hourString = timePicker.getCurrentHour() < 10 ? "0"+timePicker.getCurrentHour() : ""+timePicker.getCurrentHour() ;
+                        String minuteString = timePicker.getCurrentMinute() < 10 ? "0"+timePicker.getCurrentMinute() : ""+timePicker.getCurrentMinute();
+
+                        mDate = datePicker.getDayOfMonth()+"/"+datePicker.getMonth()+"/"+datePicker.getYear() +"   "+ hourString + ":" + minuteString;
+
+                        mEditTxt_DateTime.setText(mDate);
+
+                        dialog.dismiss();
+                    }
+                });
+
+           /*     Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         PostShippingFragment.this,
                         now.get(Calendar.YEAR),
@@ -140,7 +174,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
                 dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
 
-                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");*/
             }
         });
 
@@ -189,10 +223,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();;
                 CarPickerFragment fragment = new CarPickerFragment();
-                fragmentManager.popBackStack(null, fragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment).addToBackStack("E").commit();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
             }
         });
 
@@ -320,7 +353,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 Log.d("TimePicker", "Dialog was cancelled");
             }
         });
-        tpd.show(getFragmentManager(), "Timepickerdialog");
+     /*   tpd.show(getFragmentManager(), "Timepickerdialog");*/
     }
 
     @Override

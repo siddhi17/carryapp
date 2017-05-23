@@ -3,8 +3,8 @@ package com.carryapp.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.app.FragmentManager;;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,10 +48,9 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();;
                 TransportFragment fragment = new TransportFragment();
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment).addToBackStack("C").commit();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"TRANSPORT_FRAGMENT").addToBackStack("C").commit();
             }
         });
 
@@ -59,10 +58,9 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();;
                 PostShippingFragment fragment = new PostShippingFragment();
-                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment).addToBackStack("D").commit();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"SHIPPING_FRAGMENT").addToBackStack("D").commit();
             }
         });
 

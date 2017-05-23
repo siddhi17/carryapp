@@ -4,44 +4,105 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
-    tools:context="com.example.siddhijambhale.carryapp.com.carryapp.Fragments.TransfersFragment">
+    tools:context="com.carryapp.Fragments.TransfersFragment">
 
-
-    <Button
-        android:id="@+id/buttonBalance"
-        android:text="@string/availableBalance"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:textAllCaps="false"
-        android:layout_marginTop="50dp"
-        android:background="@color/colorButton"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12sp"/>
-
-    <Button
-        android:id="@+id/buttonCollection"
-        android:text="@string/methodOfCollection"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="50dp"
-        android:layout_marginStart="30dp"
-        android:textAllCaps="false"
-        android:background="@color/colorButton"
-        android:textColor="@color/colorPrimary"
-        android:textSize="12sp"/>
+        android:layout_marginStart="30dp">
 
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:text="@string/availableBalance" />
+
+        <TextView
+        android:id="@+id/textView22"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black"
+        android:text="20€" />
+    </LinearLayout>
+    <View
+        android:id="@+id/view3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.3"
+        android:background="@drawable/line"></View>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:id="@+id/textView29"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/methodOfCollection"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/textView27"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cash"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            android:textColor="@android:color/black"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView29"
+            android:layout_toEndOf="@+id/textView29" />
+
+        <Button
+            android:id="@+id/buttonCollection"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|right"
+            android:text="@string/change"
+            android:textAllCaps="false"
+            android:textColor="@color/colorButton"
+            android:textSize="12sp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+    <View
+        android:id="@+id/view5"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:alpha="0.3"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/line"></View>
     <Button
         android:id="@+id/buttonRecord"
         android:text="@string/record"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="150dp"
         android:layout_height="30dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="15dp"
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
         android:textAllCaps="false"
@@ -49,16 +110,22 @@
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"/>
     <View
-        android:id="@+id/view"
+        android:id="@+id/view4"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="50dp"
-        android:layout_centerInParent="true"
-        android:background="@android:color/black"></View>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:alpha="0.3"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/line"></View>
     <Button
         android:id="@+id/buttonInvite"
         android:text="@string/invite"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="15dp"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="150dp"
         android:layout_marginLeft="30dp"
@@ -68,4 +135,17 @@
         android:background="@color/colorButton"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"/>
+    <View
+        android:id="@+id/view8"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="15dp"
+        android:alpha="0.3"
+        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/line"></View>
 </LinearLayout>

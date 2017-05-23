@@ -53,7 +53,7 @@
                 android:layout_height="120dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/circle"
-                android:paddingBottom="20dp"
+                android:paddingBottom="25dp"
                 app:srcCompat="@drawable/car_2" />
 
             <TextView

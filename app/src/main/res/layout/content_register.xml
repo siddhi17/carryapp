@@ -38,28 +38,44 @@
                     android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_below="@+id/editTextName"
-                    android:background="@drawable/line"
-                    android:layout_marginTop="10dp"
-                    android:alpha="0.5"
-                    android:layout_alignLeft="@+id/editTextName"
-                    android:layout_alignStart="@+id/editTextName"
+                    android:layout_alignEnd="@+id/editTextName"
                     android:layout_alignRight="@+id/editTextName"
-                    android:layout_alignEnd="@+id/editTextName"></View>
+                    android:layout_below="@+id/editTextName"
+                    android:layout_marginTop="15dp"
+                    android:alpha="0.5"
+                    android:background="@drawable/line"
+                    android:layout_alignLeft="@+id/imageView9"
+                    android:layout_alignStart="@+id/imageView9"></View>
 
                 <EditText
                     android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="05dp"
+                    android:layout_toEndOf="@+id/imageView9"
+                    android:layout_toRightOf="@+id/imageView9"
                     android:background="@color/colorPrimary"
                     android:ems="10"
                     android:hint="@string/name"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginStart="30dp"
                     android:inputType="textMultiLine|textPersonName"
                     android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    app:srcCompat="@mipmap/ic_person_black_48dp" />
 
 
             </RelativeLayout>
@@ -67,100 +83,142 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/imageView11"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    app:srcCompat="@mipmap/ic_mail_black_48dp" />
 
                 <View
                     android:id="@+id/view1"
-                    android:layout_alignLeft="@+id/editTextEmailId"
-                    android:layout_alignStart="@+id/editTextEmailId"
-                    android:layout_below="@+id/editTextEmailId"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:alpha="0.5"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/line"
+                    android:layout_alignEnd="@+id/editTextEmailId"
                     android:layout_alignRight="@+id/editTextEmailId"
-                    android:layout_alignEnd="@+id/editTextEmailId"></View>
+                    android:layout_below="@+id/editTextEmailId"
+                    android:layout_marginTop="15dp"
+                    android:alpha="0.5"
+                    android:background="@drawable/line"
+                    android:layout_alignLeft="@+id/imageView11"
+                    android:layout_alignStart="@+id/imageView11"></View>
 
                 <EditText
                     android:id="@+id/editTextEmailId"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="05dp"
+                    android:layout_toEndOf="@+id/imageView11"
+                    android:layout_toRightOf="@+id/imageView11"
                     android:background="@color/colorPrimary"
                     android:ems="10"
                     android:hint="@string/email_id"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginStart="30dp"
                     android:inputType="textEmailAddress|textMultiLine"
                     android:textSize="12sp" />
+
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
 
-            <View
-                android:id="@+id/view2"
-                android:alpha="0.5"
-                android:layout_alignLeft="@+id/editTextNumber"
-                android:layout_alignStart="@+id/editTextNumber"
-                android:layout_below="@+id/editTextNumber"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/line"
-                android:layout_alignRight="@+id/editTextNumber"
-                android:layout_alignEnd="@+id/editTextNumber"></View>
-            <EditText
-                android:id="@+id/editTextNumber"
-                android:layout_width="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_height="25dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/colorPrimary"
-                android:ems="10"
-                android:layout_marginEnd="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginStart="30dp"
-                android:fontFamily="sans-serif"
-                android:hint="@string/mobile"
-                android:inputType="number"
-                android:textSize="12sp" />
-</RelativeLayout>
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignEnd="@+id/editTextNumber"
+                    android:layout_alignRight="@+id/editTextNumber"
+                    android:layout_below="@+id/editTextNumber"
+                    android:layout_marginTop="15dp"
+                    android:alpha="0.5"
+                    android:background="@drawable/line"
+                    android:layout_alignLeft="@+id/imageView10"
+                    android:layout_alignStart="@+id/imageView10"></View>
+
+                <EditText
+                    android:id="@+id/editTextNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="05dp"
+                    android:layout_toEndOf="@+id/imageView10"
+                    android:layout_toRightOf="@+id/imageView10"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/mobile"
+                    android:inputType="number"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    app:srcCompat="@mipmap/ic_call_black_48dp" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp">
+
+                <ImageView
+                    android:id="@+id/imageView13"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    app:srcCompat="@mipmap/ic_vpn_key_black_48dp" />
 
                 <View
                     android:id="@+id/view3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignLeft="@+id/editTextPass"
-                    android:layout_alignStart="@+id/editTextPass"
                     android:layout_below="@+id/editTextPass"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     android:alpha="0.5"
                     android:background="@drawable/line"
                     android:layout_alignRight="@+id/editTextPass"
-                    android:layout_alignEnd="@+id/editTextPass"></View>
+                    android:layout_alignEnd="@+id/editTextPass"
+                    android:layout_alignLeft="@+id/imageView13"
+                    android:layout_alignStart="@+id/imageView13"></View>
 
                 <EditText
                     android:id="@+id/editTextPass"
                     android:layout_width="match_parent"
                     android:layout_height="25dp"
-                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="05dp"
+                    android:layout_toEndOf="@+id/imageView13"
+                    android:layout_toRightOf="@+id/imageView13"
                     android:background="@color/colorPrimary"
                     android:ems="10"
                     android:fontFamily="sans-serif"
                     android:hint="@string/pass"
-                    android:layout_marginEnd="30dp"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginStart="30dp"
                     android:inputType="textPassword"
                     android:textSize="12sp" />
             </RelativeLayout>
@@ -168,7 +226,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="15dp">
 
             <View
                 android:id="@+id/view4"
@@ -176,28 +234,41 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/editTextConfirmPass"
                 android:background="@drawable/line"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:alpha="0.5"
-                android:layout_alignLeft="@+id/editTextConfirmPass"
-                android:layout_alignStart="@+id/editTextConfirmPass"
                 android:layout_alignRight="@+id/editTextConfirmPass"
-                android:layout_alignEnd="@+id/editTextConfirmPass"></View>
-            <EditText
-                android:id="@+id/editTextConfirmPass"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_centerInParent="true"
-                android:background="@color/colorPrimary"
-                android:ems="10"
-                android:fontFamily="sans-serif"
-                android:layout_marginEnd="30dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginStart="30dp"
-                android:hint="@string/confirmPass"
-                android:inputType="textPassword"
-                android:textSize="12sp" />
-</RelativeLayout>
+                android:layout_alignEnd="@+id/editTextConfirmPass"
+                android:layout_alignLeft="@+id/imageView14"
+                android:layout_alignStart="@+id/imageView14"></View>
+
+                <EditText
+                    android:id="@+id/editTextConfirmPass"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginStart="05dp"
+                    android:layout_toEndOf="@+id/imageView14"
+                    android:layout_toRightOf="@+id/imageView14"
+                    android:background="@color/colorPrimary"
+                    android:ems="10"
+                    android:fontFamily="sans-serif"
+                    android:hint="@string/confirmPass"
+                    android:inputType="textPassword"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:id="@+id/imageView14"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
+                    app:srcCompat="@mipmap/ic_vpn_key_black_48dp" />
+            </RelativeLayout>
 
             <Button
                 android:id="@+id/btn_SignUp"
