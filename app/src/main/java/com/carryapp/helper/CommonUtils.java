@@ -153,16 +153,16 @@ public class CommonUtils {
         if (coarseLocation != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         }
-       /* if (callPermission != PackageManager.PERMISSION_GRANTED) {
+ /*       if (callPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
-        }
+        }*/
         if (storagePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
         }
-*/
+
 
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(activity, listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_ID_MULTIPLE_PERMISSIONS);
@@ -186,8 +186,8 @@ public class CommonUtils {
 
     //show alert dialog
 
-/*
-    public static void showAlert(Context context, String content, String title) {
+
+   /* public static void showAlert(Context context, String content, String title) {
 
         final Dialog dialog = new Dialog(context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -208,7 +208,7 @@ public class CommonUtils {
 
         dialog.show();
 
-    }
-*/
+    }*/
+
 
 }

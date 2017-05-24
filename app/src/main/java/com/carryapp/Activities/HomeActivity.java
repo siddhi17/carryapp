@@ -17,11 +17,12 @@ import android.widget.Toast;
 import com.carryapp.Fragments.AccountFragment;
 import com.carryapp.Fragments.CarPickerFragment;
 import com.carryapp.Fragments.MainFragment;
+import com.carryapp.Fragments.Notices;
 import com.carryapp.Fragments.TransfersFragment;
 import com.carryapp.R;
 import com.carryapp.Fragments.TransportFragment;
 
-public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener,CarPickerFragment.OnFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener{
 
     public static Toolbar toolbar;
     public static ImageView mLogo;
@@ -71,7 +72,6 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 AccountFragment fragment1 = new AccountFragment();
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1,"ACCOUNT_FRAGMENT").addToBackStack("A").commit();
 
-
                 break;
 
             case R.id.menu_transfers:
@@ -80,6 +80,13 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 TransfersFragment fragment2 = new TransfersFragment();
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment2,"TRANSFERS_FRAGMENT").addToBackStack("F").commit();
 
+                break;
+
+            case R.id.menu_notifications:
+
+                fragmentManager = getSupportFragmentManager();
+                Notices fragment3 = new Notices();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment3,"NOTICES_FRAGMENT").addToBackStack("H").commit();
 
                 break;
 

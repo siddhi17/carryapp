@@ -106,7 +106,7 @@
         android:layout_marginLeft="30dp"
         android:layout_marginStart="30dp"
         android:textAllCaps="false"
-        android:background="@color/colorButton"
+        android:background="@drawable/rounded_button"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"/>
     <View
@@ -132,7 +132,7 @@
         android:layout_marginStart="30dp"
         android:layout_height="30dp"
         android:textAllCaps="false"
-        android:background="@color/colorButton"
+        android:background="@drawable/rounded_button"
         android:textColor="@color/colorPrimary"
         android:textSize="12sp"/>
     <View

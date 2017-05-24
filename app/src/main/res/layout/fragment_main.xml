@@ -51,10 +51,9 @@
                 android:id="@+id/imageView"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:layout_marginBottom="20dp"
                 android:background="@drawable/circle"
-                android:paddingBottom="25dp"
-                app:srcCompat="@drawable/car_2" />
+                android:padding="20dp"
+                app:srcCompat="@drawable/car_shipping" />
 
             <TextView
                 android:id="@+id/textViewTransport"

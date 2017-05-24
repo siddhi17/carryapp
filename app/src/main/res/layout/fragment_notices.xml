@@ -1,56 +1,128 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="com.example.siddhijambhale.carryapp.com.carryapp.Fragments.Notices">
-
+    android:orientation="vertical"
+    tools:context="com.carryapp.Fragments.Notices">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginStart="30dp"
-        android:orientation="horizontal">
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/border"
+        android:layout_gravity="center_horizontal">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="150dp"
             android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_margin="05dp"
             android:background="@color/colorPrimary"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:id="@+id/linearLayout9">
+            android:id="@+id/linearLayout8">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/black"
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
-                android:text="@string/messages"></TextView>
+                android:text="@string/messages"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorButton"/>
+        </RelativeLayout>
 
-        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorButton"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/linearLayout8"
+            android:layout_toEndOf="@+id/linearLayout8">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/noti"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorPrimary"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp">
+
+        <ImageView
+            android:id="@+id/imageView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            app:srcCompat="@mipmap/ic_euro_symbol_black_48dp" />
+
         <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/colorButton"
-            android:id="@+id/linearLayout8"
-            android:layout_toLeftOf="@+id/linearLayout9"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/textView18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/noti"
-                android:textColor="@color/colorPrimary"></TextView>
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:text="@string/balance" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:text="20€" />
         </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp">
 
+        <ImageView
+            android:id="@+id/imageView23"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginStart="30dp"
+            app:srcCompat="@drawable/b" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:text="@string/comment" />
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
