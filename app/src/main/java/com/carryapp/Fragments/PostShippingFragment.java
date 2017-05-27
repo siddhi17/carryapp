@@ -17,8 +17,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
@@ -58,7 +58,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
     private Button mBtnContinue;
     private TransportFragment.OnFragmentInteractionListener mListener;
-    private EditText mEditTxt_From,mEditTxt_To,mEditTxt_DateTime;
+    private EditText mEditTxt_From,mEditTxt_To,mEditTxt_Date,mEditTxt_Time;
     private GoogleApiClient mGoogleApiClient;
 
     private static final String TAG = "PlacePickerSample";
@@ -69,7 +69,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     private static final int REQUEST_PLACE_PICKER_FROM = 1;
     private static final int REQUEST_PLACE_PICKER_TO = 2;
     public final static int REQUEST_CAMERA = 3, SELECT_FILE = 4;
-    private String mDate,mCurrentPhotoPath,mImage = "",userChoosenTask;
+    private String mDate,mTime,mCurrentPhotoPath,mImage = "",userChoosenTask;
     private ImageView mImgViewProduct;
     File productImage = null;
 
@@ -96,8 +96,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
         mBtnContinue = (Button) view.findViewById(R.id.post);
 
-        mEditTxt_DateTime = (EditText) view.findViewById(R.id.editTextDateTime);
-
+        mEditTxt_Date = (EditText) view.findViewById(R.id.editTextDate);
+        mEditTxt_Time = (EditText) view.findViewById(R.id.editTextTime);
         mImgViewProduct = (ImageView) view.findViewById(R.id.imageViewProduct);
 
 
@@ -111,12 +111,12 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         });
 
 
-        mEditTxt_DateTime.setOnClickListener(new View.OnClickListener() {
+        mEditTxt_Date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-                final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
+         /*       final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
                         .title(R.string.datetime)
                         .customView(R.layout.date_time_picker_dialog,true)
                         .show();
@@ -130,10 +130,10 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     @Override
                     public void onClick(View v) {
 
-                            /*    datePicker.getMonth();
+                            *//*    datePicker.getMonth();
                                 datePicker.getDayOfMonth();
                                 timePicker.getCurrentHour();
-                                timePicker.getCurrentMinute();*/
+                                timePicker.getCurrentMinute();*//*
 
                         String hourString = timePicker.getCurrentHour() < 10 ? "0"+timePicker.getCurrentHour() : ""+timePicker.getCurrentHour() ;
                         String minuteString = timePicker.getCurrentMinute() < 10 ? "0"+timePicker.getCurrentMinute() : ""+timePicker.getCurrentMinute();
@@ -144,9 +144,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
                         dialog.dismiss();
                     }
-                });
+                });*/
 
-           /*     Calendar now = Calendar.getInstance();
+                Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         PostShippingFragment.this,
                         now.get(Calendar.YEAR),
@@ -158,9 +158,39 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
                 dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
 
-                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");*/
+                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
             }
         });
+
+        mEditTxt_Time.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar now = Calendar.getInstance();
+
+                TimePickerDialog tpd = TimePickerDialog.newInstance(
+                        PostShippingFragment.this,
+                        now.get(Calendar.HOUR_OF_DAY),
+                        now.get(Calendar.MINUTE),
+                        true
+                );
+                
+                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+
+                tpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+
+                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        Log.d("TimePicker", "Dialog was cancelled");
+                    }
+                });
+
+
+                tpd.show(getFragmentManager(), "Timepickerdialog");
+            }
+        });
+
 
 
         mEditTxt_From.setOnClickListener(new View.OnClickListener() {
@@ -207,9 +237,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();;
-                Payments fragment = new Payments();
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"PAYMENTS_FRAGMENT").addToBackStack("E").commit();
+                FragmentManager fragmentManager = getActivity().getFragmentManager();;
+                CarPickerFragment fragment = new CarPickerFragment();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
             }
         });
 
@@ -678,29 +708,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
         mDate = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
-
-        Calendar now = Calendar.getInstance();
-
-        TimePickerDialog tpd = TimePickerDialog.newInstance(
-                PostShippingFragment.this,
-                now.get(Calendar.HOUR_OF_DAY),
-                now.get(Calendar.MINUTE),
-                false
-        );
-
-
-        tpd.setVersion(TimePickerDialog.Version.VERSION_2);
-
-        tpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
-
-        tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialogInterface) {
-                Log.d("TimePicker", "Dialog was cancelled");
-            }
-        });
-     /*   tpd.show(getFragmentManager(), "Timepickerdialog");*/
+        mEditTxt_Date.setText(mDate);
     }
 
     @Override
@@ -711,7 +721,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
         String time;
 
-        if(hourOfDay > 12)
+    /*    if(hourOfDay > 12)
         {
             time = (hourOfDay - 12)  + ":" + minuteString + " PM";
         }
@@ -719,7 +729,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
             time = hourOfDay + ":" + minuteString + " AM";
         }
-
-        mEditTxt_DateTime.setText(mDate + "  " + time );
+*/
+        mTime = hourString + ":"+minuteString;
+        mEditTxt_Time.setText(mTime);
     }
 }

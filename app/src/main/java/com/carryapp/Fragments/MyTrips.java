@@ -3,21 +3,25 @@ package com.carryapp.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
+import android.support.design.widget.TabLayout;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.app.FragmentManager;
+import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.carryapp.Adapters.TabsPagerAdapter;
 import com.carryapp.R;
+import com.carryapp.helper.SlidingTabLayout;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyTrips.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyTrips#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class MyTrips extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -27,9 +31,12 @@ public class MyTrips extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
+    private ViewPager viewPager;
+    private TabsPagerAdapter mAdapter;
+    private CharSequence Titles[]={"Scheduled Travel","Travel History"};
+    private int Numboftabs =2;
+    private SlidingTabLayout tabs;
+    private TabLayout tabLayout;
     public MyTrips() {
         // Required empty public constructor
     }
@@ -65,45 +72,69 @@ public class MyTrips extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_trips, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_my_trips, container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+
+        mAdapter =  new TabsPagerAdapter(getActivity().getFragmentManager(),Titles,Numboftabs);
+        viewPager = (ViewPager)view.findViewById(R.id.pager);
+      //  viewPager.setAdapter(mAdapter);
+
+        setupViewPager(viewPager);
+
+//        tabs = (SlidingTabLayout)view.findViewById(R.id.tabs);
+     /*   tabs.setDistributeEvenly(true);
+        tabs.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
+            @Override
+            public int getIndicatorColor(int position) {
+                return (ContextCompat.getColor(getActivity(),R.color.tab_scroll_color));
+            }
+        });*/
+   /*     tabs.setViewPager(viewPager);*/
+        tabLayout = (TabLayout)view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        return view;
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+    public void onResume()
+    {
+        super.onResume();
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
+        adapter.addFragment(new ScheduledTravelFragment(), "Scheduled Travel");
+        adapter.addFragment(new TravelHistoryFragment(), "Travel History");
+        viewPager.setAdapter(adapter);
+    }
+    class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

@@ -2,8 +2,8 @@ package com.carryapp.Activities;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;;
+import android.app.Fragment;
+import android.app.FragmentManager;;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.carryapp.Fragments.AccountFragment;
 import com.carryapp.Fragments.CarPickerFragment;
 import com.carryapp.Fragments.MainFragment;
+import com.carryapp.Fragments.MyTrips;
 import com.carryapp.Fragments.Notices;
 import com.carryapp.Fragments.TransfersFragment;
 import com.carryapp.R;
@@ -43,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
         mTxtTitle = (TextView)findViewById(R.id.textTitle);
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
         MainFragment fragment = new MainFragment();
         fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"MAIN_FRAGMENT").commitAllowingStateLoss();
@@ -68,7 +69,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
             case R.id.menu_account:
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentManager fragmentManager = getFragmentManager();
                 AccountFragment fragment1 = new AccountFragment();
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1,"ACCOUNT_FRAGMENT").addToBackStack("A").commit();
 
@@ -76,7 +77,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
             case R.id.menu_transfers:
 
-                fragmentManager = getSupportFragmentManager();
+                fragmentManager = getFragmentManager();
                 TransfersFragment fragment2 = new TransfersFragment();
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment2,"TRANSFERS_FRAGMENT").addToBackStack("F").commit();
 
@@ -84,9 +85,17 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
             case R.id.menu_notifications:
 
-                fragmentManager = getSupportFragmentManager();
+                fragmentManager = getFragmentManager();
                 Notices fragment3 = new Notices();
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment3,"NOTICES_FRAGMENT").addToBackStack("H").commit();
+
+                break;
+
+            case R.id.menu_myTrips:
+
+                fragmentManager = getFragmentManager();
+                MyTrips fragment4 = new MyTrips();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment4,"MY_TRIPS_FRAGMENT").addToBackStack("H").commit();
 
                 break;
 

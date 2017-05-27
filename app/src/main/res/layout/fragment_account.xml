@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    tools:context="com.example.siddhijambhale.carryapp.com.carryapp.Fragments.AccountFragment">
+    tools:context="com.carryapp.Fragments.AccountFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -57,57 +57,62 @@
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
-                            android:src="@drawable/bird_empty" />
+                            android:src="@drawable/empty_bird" />
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird_empty" />
+                            android:src="@drawable/empty_bird" />
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird_empty" />
+                            android:src="@drawable/empty_bird" />
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird_empty" />
+                            android:src="@drawable/empty_bird" />
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird_empty" />
+                            android:src="@drawable/empty_bird" />
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
+                            android:visibility="gone"
                             android:src="@drawable/bird" />
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
-                            android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird" />
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:visibility="gone"
                             android:layout_marginLeft="02dp"
                             android:src="@drawable/bird" />
 
                         <ImageView
                             android:layout_width="18dp"
                             android:layout_height="18dp"
+                            android:visibility="gone"
+                            android:layout_marginLeft="02dp"
+                            android:src="@drawable/bird" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:visibility="gone"
+                            android:layout_marginLeft="02dp"
+                            android:src="@drawable/bird" />
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:visibility="gone"
                             android:layout_marginLeft="02dp"
                             android:src="@drawable/bird" />
                     </LinearLayout>
@@ -116,7 +121,7 @@
                         android:id="@+id/textView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="15dp"
                         android:textColor="@android:color/black"
                         android:text="@string/username" />
 
@@ -203,7 +208,7 @@
                 android:layout_height="96dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                app:srcCompat="@drawable/login_logo_1" />
+                app:srcCompat="@drawable/card" />
 
             <Button
                 android:id="@+id/buttonVehicle"
@@ -211,7 +216,7 @@
                 android:layout_height="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="20dp"
                 android:background="@color/colorButton"
                 android:text="@string/vehicle"
                 android:textColor="@color/colorPrimary" />

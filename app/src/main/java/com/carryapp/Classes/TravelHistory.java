@@ -1,14 +1,13 @@
 package com.carryapp.Classes;
 
 /**
- * Created by siddhi jambhale on 5/22/2017.
+ * Created by siddhi jambhale on 5/27/2017.
  */
 
-public class Trips {
-
+public class TravelHistory {
     String mFrom,mTo,mDate,mImage;
 
-    public Trips(String from, String to,String date,String image)
+    public TravelHistory(String from, String to,String date,String image)
     {
         this.mFrom = from;
         this.mTo = to;

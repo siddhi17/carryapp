@@ -9,22 +9,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.carryapp.Classes.Transport;
-import com.carryapp.R;
+import com.carryapp.Adapters.ScheduledTravelAdapter;
 import com.carryapp.Adapters.TransportListAdapter;
+import com.carryapp.Classes.Transport;
+import com.carryapp.Classes.Trips;
+import com.carryapp.R;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TransportListFragment extends Fragment {
+public class ScheduledTravelFragment extends Fragment {
 
     private RecyclerView mRecyclerView_list;
-    private ArrayList<Transport> mTransportList;
-    private TransportListAdapter mTransportAdapter;
+    private ArrayList<Trips> mTripsList;
+    private ScheduledTravelAdapter mTripsAdapter;
 
-    public TransportListFragment() {
+
+    public ScheduledTravelFragment() {
         // Required empty public constructor
     }
 
@@ -32,40 +35,38 @@ public class TransportListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_scheduled_travel, container, false);
 
-
-        View view = inflater.inflate(R.layout.fragment_transport_list, container, false);
-
-        mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_transportList);
-        mTransportList = new ArrayList<Transport>();
-        mTransportAdapter = new TransportListAdapter(getActivity(),mTransportList, TransportListFragment.this);
+        mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_tripList);
+        mTripsList = new ArrayList<Trips>();
+        mTripsAdapter = new ScheduledTravelAdapter(getActivity(),mTripsList, ScheduledTravelFragment.this);
         mRecyclerView_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView_list.setAdapter(mTransportAdapter);
+        mRecyclerView_list.setAdapter(mTripsAdapter);
         mRecyclerView_list.setHasFixedSize(true);
         mRecyclerView_list.setItemViewCacheSize(50);
         mRecyclerView_list.setDrawingCacheEnabled(true);
         mRecyclerView_list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-
 
         demoData();
 
         return view;
     }
 
+
     public void demoData()
     {
-        Transport transport = new Transport("17/05/2017","","Laptop","siddhi","");
+        Trips trips = new Trips("Mumbai","Pune","12 March,2017","");
 
-        mTransportList.add(transport);
+        mTripsList.add(trips);
 
-        transport = new Transport("27/05/2017","","Mobile","sid","");
+        trips = new Trips("Pune","Mumbai","15 March,2017","");
 
-        mTransportList.add(transport);
+        mTripsList.add(trips);
 
-        transport = new Transport("25/05/2017","","Bag","Shital","");
+        trips = new Trips("Nasik","pune","17 March,2017","");
 
-        mTransportList.add(transport);
+        mTripsList.add(trips);
 
     }
-
 }

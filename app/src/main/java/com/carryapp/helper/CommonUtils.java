@@ -156,12 +156,12 @@ public class CommonUtils {
  /*       if (callPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CALL_PHONE);
         }*/
-        if (storagePermission != PackageManager.PERMISSION_GRANTED) {
+   /*     if (storagePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.CAMERA);
-        }
+        }*/
 
 
         if (!listPermissionsNeeded.isEmpty()) {

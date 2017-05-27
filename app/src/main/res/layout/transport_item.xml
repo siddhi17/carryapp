@@ -62,35 +62,68 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
                 android:orientation="horizontal">
-
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@drawable/bird_new" />
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="02dp"
-                    android:src="@drawable/bird_new" />
+                    android:src="@drawable/empty_bird" />
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginLeft="02dp"
-                    android:src="@drawable/bird_new" />
+                    android:src="@drawable/empty_bird" />
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginLeft="02dp"
-                    android:src="@drawable/bird_new" />
+                    android:src="@drawable/empty_bird" />
 
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginLeft="02dp"
-                    android:src="@drawable/bird_new" />
+                    android:src="@drawable/empty_bird" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="02dp"
+                    android:src="@drawable/empty_bird" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:visibility="gone"
+                    android:src="@drawable/bird" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:visibility="gone"
+                    android:layout_marginLeft="02dp"
+                    android:src="@drawable/bird" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:visibility="gone"
+                    android:layout_marginLeft="02dp"
+                    android:src="@drawable/bird" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:visibility="gone"
+                    android:layout_marginLeft="02dp"
+                    android:src="@drawable/bird" />
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:visibility="gone"
+                    android:layout_marginLeft="02dp"
+                    android:src="@drawable/bird" />
             </LinearLayout>
 
             <TextView

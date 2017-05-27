@@ -152,11 +152,11 @@
                     android:id="@+id/view3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_alignEnd="@+id/editTextDateTime"
+                    android:layout_alignEnd="@+id/editTextTime"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_alignRight="@+id/editTextDateTime"
-                    android:layout_below="@+id/editTextDateTime"
+                    android:layout_alignRight="@+id/editTextTime"
+                    android:layout_below="@+id/editTextDate"
                     android:layout_marginTop="15dp"
                     android:alpha="0.3"
                     android:background="@drawable/line"></View>
@@ -169,21 +169,18 @@
                     android:textColor="@android:color/black" />
 
                 <EditText
-                    android:id="@+id/editTextDateTime"
-                    android:layout_width="match_parent"
+                    android:id="@+id/editTextDate"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/imageView15"
-                    android:layout_marginEnd="30dp"
                     android:layout_marginLeft="05dp"
-                    android:layout_marginRight="30dp"
                     android:layout_marginStart="05dp"
-                    android:layout_toEndOf="@+id/imageView15"
                     android:layout_toRightOf="@+id/imageView15"
                     android:background="@color/colorPrimary"
                     android:cursorVisible="false"
                     android:ems="10"
                     android:focusable="false"
-                    android:hint="@string/leavingTime"
+                    android:hint="@string/leavingDate"
                     android:minHeight="25dp"
                     android:textSize="12sp" />
 
@@ -193,6 +190,41 @@
                     android:layout_height="24dp"
                     android:layout_marginTop="30dp"
                     app:srcCompat="@mipmap/ic_today_black_48dp" />
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dateTime"
+                    android:textColor="@android:color/black" />
+
+                <EditText
+                    android:id="@+id/editTextTime"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:cursorVisible="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:hint="@string/leavingTime"
+                    android:minHeight="25dp"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginStart="05dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_alignBottom="@+id/imageView15"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+
+                <ImageView
+                    android:id="@+id/imageView16"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    app:srcCompat="@mipmap/ic_query_builder_black_48dp"
+                    android:layout_alignBottom="@+id/editTextTime"
+                    android:layout_toLeftOf="@+id/editTextTime"
+                    android:layout_toStartOf="@+id/editTextTime" />
+
             </RelativeLayout>
         </LinearLayout>
 
