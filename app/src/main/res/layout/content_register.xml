@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
+    android:id="@+id/parentPanel"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.carryapp.Activities.RegisterActivity"
     tools:showIn="@layout/activity_register">

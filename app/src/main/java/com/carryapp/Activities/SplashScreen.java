@@ -5,14 +5,20 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.carryapp.R;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +42,23 @@ public class SplashScreen extends Activity {
         mLinearLayout = (LinearLayout) findViewById(R.id.linearLayout);
 
         fadeSplashOut();
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.carryapp",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
 
+            Log.e("Manager",e.toString());
+
+        } catch (NoSuchAlgorithmException e) {
+
+            Log.e("Algo",e.toString());
+        }
       /*  mSplashThread =  new Thread(){
             @Override
             public void run(){
