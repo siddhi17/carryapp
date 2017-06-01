@@ -1,6 +1,5 @@
 package com.carryapp.AsyncTasks;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,17 +8,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
-import android.view.View;
-import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Activities.LoginActivity;
+import com.carryapp.Activities.MainActivity;
 import com.carryapp.Activities.RegisterActivity;
 import com.carryapp.R;
-import com.carryapp.helper.CommonUtils;
 import com.carryapp.helper.Excpetion2JSON;
 import com.carryapp.helper.ServerRequest;
 import com.carryapp.helper.SessionData;
@@ -30,26 +26,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 /**
- * Created by siddhi jambhale on 5/31/2017.
+ * Created by siddhi jambhale on 6/1/2017.
  */
 
-public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
+public class FacebookLoginAsyncTask  extends AsyncTask<String, Void, JSONObject> {
+
     String api;
     JSONObject jsonParams;
     Context mContext;
-    RegisterCallBack registerCallBack;
     private ProgressDialog loadingDialog;
     private Snackbar snackbar;
-    private LinearLayout parentLayout;
+    private RelativeLayout parentLayout;
 
-    public RegisterAsyncTask(Context context, LinearLayout linearLayout) {
+    public FacebookLoginAsyncTask(Context context, RelativeLayout linearLayout) {
 
         this.mContext = context;
-        this.registerCallBack = registerCallBack;
-        this.parentLayout = linearLayout;
+          this.parentLayout = linearLayout;
 
     }
 
@@ -64,7 +57,7 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
         if (!isOnline()) {
             //   showAlert(getString(R.string.check_network));
          /*   CommonUtils.showAlert(RegisterCustomerActivity.this, getResources().getString(R.string.check_network), "Check Network");*/
-            snackbar = Snackbar.make(parentLayout,R.string.check_network, Snackbar.LENGTH_LONG);
+            snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
             loadingDialog = ProgressDialog.show(mContext, null,mContext.getString(R.string.wait));
@@ -75,13 +68,13 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(String... params) {
         try {
-            api = mContext.getResources().getString(R.string.url) + "signup";
+            api = mContext.getResources().getString(R.string.url) + "fcsignup";
 
             jsonParams = new JSONObject();
             jsonParams.put("username", params[0]);
             jsonParams.put("email", params[1]);
-            jsonParams.put("mobile", params[2]);
-            jsonParams.put("password", params[3]);
+            jsonParams.put("gender", params[2]);
+            jsonParams.put("bday", params[3]);
             jsonParams.put("latitude", params[4]);
             jsonParams.put("longitude", params[5]);
             jsonParams.put("deviceid", params[6]);
@@ -94,6 +87,7 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
         } catch (JSONException je) {
             return Excpetion2JSON.getJSON(je);
         } catch (Exception ue) {
+            ue.printStackTrace();
             return Excpetion2JSON.getJSON(ue);
         }
     }  //end of doInBackground
@@ -118,21 +112,9 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         {
                             snackbar = Snackbar.make(parentLayout, R.string.mailExists, Snackbar.LENGTH_LONG);
 
-                        snackbar.show();
-                    }
-                        else if(message.equals("This Email ID is not valid !"))
-                        {
-
-                            snackbar = Snackbar.make(parentLayout,R.string.emailAlert, Snackbar.LENGTH_LONG);
                             snackbar.show();
-
-                        } else if (message.equals("Required field Password is missing or empty !")) {
-
-                            snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
-                            snackbar.show();
-
                         }
-                    else {
+                        else {
                             snackbar = Snackbar.make(parentLayout,R.string.registered, Snackbar.LENGTH_LONG);
 
                             snackbar.show();
@@ -149,7 +131,7 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         session.add("ur_mob_no", jsonObject.getString("ur_mob_no"));
                         session.add("ur_device_id", jsonObject.getString("ur_device_id"));
                         session.add("ur_photo", jsonObject.getString("ur_photo"));
-                        session.add("api_key", jsonObject.getString("api_key"));
+
 
 
                        /* final Dialog dialog = new Dialog(mContext);
@@ -169,9 +151,9 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                                 try {*/
 
 
-                        ((RegisterActivity)mContext).finish();
-                                    Intent intent = new Intent(mContext, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    mContext.startActivity(intent);
+                        ((MainActivity)mContext).finish();
+                        Intent intent = new Intent(mContext, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        mContext.startActivity(intent);
 
 
                               /*  } catch (JSONException e) {
@@ -180,7 +162,7 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                             }
                         });
 */
-                      //  dialog.show();
+                        //  dialog.show();
 
                         //   Snackbar snackbar = Snackbar.make(parentLayout,R.string.registered, Snackbar.LENGTH_LONG);
 

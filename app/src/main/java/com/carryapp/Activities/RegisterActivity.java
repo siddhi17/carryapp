@@ -43,6 +43,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,7 +53,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RegisterActivity extends AppCompatActivity implements RegisterAsyncTask.RegisterCallBack,GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
+public class RegisterActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
 
     private TextView mLoginText;
     private Button mButton_register;
@@ -83,11 +84,9 @@ public class RegisterActivity extends AppCompatActivity implements RegisterAsync
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-
         setUpUI();
 
         listeners();
-
 
         buildGoogleApiClient();
         mGoogleApiClient.connect();
@@ -112,7 +111,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterAsync
         mEdtConfirmPass = (EditText) findViewById(R.id.editTextConfirmPass);
         parentLayout = (LinearLayout) findViewById(R.id.parentPanel);
         mImgViewProfile = (ImageView) findViewById(R.id.profile_image);
-
 
 
         Log.e("Location",String.valueOf(mLatLang));
@@ -157,6 +155,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterAsync
             @Override
             public void onClick(View v) {
 
+                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                Log.d(TAG, "Refreshed token: " + refreshedToken);
 
                 View view1 = getCurrentFocus();
                 if (view1 != null) {
@@ -218,8 +218,8 @@ public class RegisterActivity extends AppCompatActivity implements RegisterAsync
 
                     } else {
                         //Registration AsyncTask
-                        RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,RegisterActivity.this,parentLayout);
-                        task.execute(mName,mEmail,mNumber,mPass,String.valueOf(mLatLang.latitude),String.valueOf(mLatLang.longitude),"",mImage);
+                        RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
+                        task.execute(mName,mEmail,mNumber,mPass,String.valueOf(mLatLang.latitude),String.valueOf(mLatLang.longitude),refreshedToken,mImage);
 
 
                         mLocationManager.removeUpdates(mLocationListeners[0]);
@@ -652,12 +652,7 @@ public class RegisterActivity extends AppCompatActivity implements RegisterAsync
         return ret;
     }
 
-    @Override
-    public void doPostExecute(ArrayList<String> itemsArrayList) {
 
-
-
-    }
     protected synchronized void buildGoogleApiClient() {
 
         mGoogleApiClient = new GoogleApiClient.Builder(RegisterActivity.this)
@@ -779,7 +774,6 @@ public class RegisterActivity extends AppCompatActivity implements RegisterAsync
     }
 
     //get location when permissions are allowed
-
 
 
     @Override

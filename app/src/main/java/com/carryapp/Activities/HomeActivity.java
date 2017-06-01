@@ -1,5 +1,7 @@
 package com.carryapp.Activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -22,6 +24,8 @@ import com.carryapp.Fragments.Notices;
 import com.carryapp.Fragments.TransfersFragment;
 import com.carryapp.R;
 import com.carryapp.Fragments.TransportFragment;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 
 public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener{
 
@@ -32,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
     Snackbar snackbar;
     private static final long BACK_PRESS_DELAY = 10000;
     private long mBackPressTimestamp;
+    private Intent mIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +103,20 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment4,"MY_TRIPS_FRAGMENT").addToBackStack("H").commit();
 
                 break;
+            case R.id.menu_sign_off:
 
+                LoginManager.getInstance().logOut();
+
+                SharedPreferences pref = getSharedPreferences("appdata", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.commit();
+                finish();
+                mIntent = new Intent(HomeActivity.this, MainActivity.class);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(mIntent);
+                break;
         }
 
         return true;
