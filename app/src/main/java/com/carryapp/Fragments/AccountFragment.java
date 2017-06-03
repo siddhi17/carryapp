@@ -27,36 +27,51 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.carryapp.Activities.HomeActivity;
+import com.carryapp.AsyncTasks.UpdateProfileAsyncTask;
+import com.carryapp.AsyncTasks.UploadFileAsyncTask;
 import com.carryapp.R;
+import com.carryapp.helper.SessionData;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends Fragment implements UploadFileAsyncTask.UploadFileCallBack{
     // TODO: Rename parameter arguments, choose names that match
 
-    private Button mBtn_Vehicle;
+    private Button mBtn_Vehicle,mBtn_Edit;
 
     private ImageView mImgViewProfile,mImgViewCar,mImgViewDNI;
     File profileImage = null,carImage = null,dniImage;
     private String userChoosenTask;
     private boolean result;
-    String mCurrentPhotoPath,mCurrentPhotoPath1,mCurrentPhotoPath2;
+    String mCurrentPhotoPath,mCarModel,mCarType;
     public final static int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private OnFragmentInteractionListener mListener;
     private String mImage = "", mSavedImage="",mCarImage="",mDNIImage="";
 
+    private TextView mTxtEmail,mTxtCarModel,mTxtCarType;
+    private EditText mEdtUserName,mEdtAge,mEdtNumber;
     private boolean mProfile,mDNI,mCar;
+
+    private FrameLayout parentLayout;
+    private SessionData sessionData;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -75,6 +90,20 @@ public class AccountFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
+
+        setUpUI(view);
+
+        listeners();
+
+
+        return view;
+    }
+
+
+    public void setUpUI(View view)
+    {
+        sessionData = new SessionData(getActivity());
+
         final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
         ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -86,12 +115,104 @@ public class AccountFragment extends Fragment {
         title.setText(R.string.account);
 
         mBtn_Vehicle = (Button) view.findViewById(R.id.buttonVehicle);
-
+        mBtn_Edit = (Button) view.findViewById(R.id.btnEdit);
         mImgViewProfile = (ImageView) view.findViewById(R.id.profile_image);
-
         mImgViewCar = (ImageView) view.findViewById(R.id.imageViewCar);
-
         mImgViewDNI = (ImageView) view.findViewById(R.id.imageViewDNI);
+
+        mEdtAge = (EditText) view.findViewById(R.id.textViewAge);
+        mTxtEmail = (TextView) view.findViewById(R.id.textViewEmail);
+        mTxtCarModel = (TextView) view.findViewById(R.id.textViewModel);
+        mTxtCarType = (TextView) view.findViewById(R.id.textViewType);
+        mEdtUserName = (EditText) view.findViewById(R.id.textViewUsername);
+        mEdtNumber = (EditText) view.findViewById(R.id.textViewMobile);
+
+        parentLayout = (FrameLayout) view.findViewById(R.id.parentPanel);
+
+        Picasso.with(getActivity()).setLoggingEnabled(true);
+        String ur_photo_url = sessionData.getString("ur_photo", "");
+
+        Picasso.with(getActivity())
+                .load(ur_photo_url)
+                .placeholder(R.drawable.profile_add)
+                .error(R.drawable.profile_add)
+                .into(mImgViewProfile);
+
+        String dni_photo_url = getString(R.string.photo_url) + sessionData.getString("ur_dni_photo", "");
+
+        Picasso.with(getActivity())
+                .load(dni_photo_url)
+                .placeholder(R.drawable.card)
+                .error(R.drawable.card)
+                .into(mImgViewDNI);
+
+        String car_photo_url = getString(R.string.photo_url) + sessionData.getString("ur_car_photo", "");
+
+        Picasso.with(getActivity())
+                .load(car_photo_url)
+                .placeholder(R.drawable.car_new)
+                .error(R.drawable.car_new)
+                .into(mImgViewCar);
+
+        mEdtUserName.setText(sessionData.getString("ur_name","Name"));
+
+        if(!sessionData.getString("ur_mob_no","").equals("null")) {
+            mEdtNumber.setText(sessionData.getString("ur_mob_no", "Number"));
+        }
+        else {
+            mEdtNumber.setText(getString(R.string.number));
+        }
+        if(!sessionData.getString("ur_car_type","").equals("null")) {
+            mTxtCarType.setText(sessionData.getString("ur_car_type","Car type"));
+        }
+        else {
+            mTxtCarType.setText(getString(R.string.cartype));
+        }
+
+        if(!sessionData.getString("ur_car_model","").equals("null")) {
+            mTxtCarModel.setText(sessionData.getString("ur_car_model","Model number"));
+        }
+        else {
+            mTxtCarModel.setText(getString(R.string.modelno));
+        }
+
+        mTxtEmail.setText(sessionData.getString("ur_email","Email-Id"));
+
+        if(!sessionData.getString("ur_birth_date","").equals("null")) {
+
+        Calendar currentDate = Calendar.getInstance();
+
+        SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
+
+        Date birthdate = null;
+
+        try {
+            birthdate = myFormat.parse(sessionData.getString("ur_birth_date",""));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(birthdate != null) {
+            Long time = currentDate.getTime().getTime() / 1000 - birthdate.getTime() / 1000;
+
+            int years = Math.round(time) / 31536000;
+            int months = Math.round(time - years * 31536000) / 2628000;
+
+            mEdtAge.setText(String.valueOf(years +  " " +getString(R.string.years)));
+        }
+        else {
+            mEdtAge.setText(sessionData.getString("ur_birth_date","")+ " " + getString(R.string.years));
+        }
+        }
+        else {
+            mEdtAge.setText(R.string.age);
+        }
+
+    }
+
+    public void listeners()
+    {
+
 
         mBtn_Vehicle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,11 +224,17 @@ public class AccountFragment extends Fragment {
                         .show();
 
                 Button submit = (Button) dialog.findViewById(R.id.buttonSubmit);
+                final EditText carModel = (EditText) dialog.findViewById(R.id.editTextModel);
+                final EditText carType = (EditText) dialog.findViewById(R.id.editTextType);
+
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        mCarModel = carModel.getText().toString();
+                        mCarType = carType.getText().toString();
+                        mTxtCarModel.setText(mCarModel);
+                        mTxtCarType.setText(mCarType);
                         dialog.dismiss();
                     }
                 });
@@ -144,8 +271,23 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        return view;
+
+        mBtn_Edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                UpdateProfileAsyncTask task = new UpdateProfileAsyncTask(getActivity(),parentLayout);
+                task.execute(mEdtUserName.getText().toString(),mEdtAge.getText().toString(),mEdtNumber.getText().toString(),
+                        sessionData.getString("ur_email",""),sessionData.getString("ur_dni_photo", ""),sessionData.getString("ur_car_photo", ""),sessionData.getString("ur_photo", ""),mCarModel,
+                        mCarType,sessionData.getString("api_key",""));
+
+
+            }
+        });
+
+
     }
+
 
     private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Library",
@@ -433,16 +575,13 @@ public class AccountFragment extends Fragment {
 
                 if(mProfile) {
                     mImgViewProfile.setImageBitmap(scaledBitmap);
-                    mProfile = false;
                 }else if(mDNI)
                 {
                     mImgViewDNI.setImageBitmap(scaledBitmap);
-                    mDNI = false;
                 }
                 else if(mCar)
                 {
                     mImgViewCar.setImageBitmap(scaledBitmap);
-                    mCar = false;
                 }
 
             } catch (IOException e) {
@@ -457,6 +596,9 @@ public class AccountFragment extends Fragment {
 
 //          write the compressed bitmap at the destination specified by filename.
                 scaledBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+
+                UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(getActivity(),AccountFragment.this);
+                uploadFileAsyncTask.execute(sessionData.getString("api_key",""),filename);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -493,6 +635,7 @@ public class AccountFragment extends Fragment {
             profileImage = new File(uriSting.toString());
 
             mImage = profileImage.getAbsolutePath();
+
         }
         else if(mDNI)
         {
@@ -542,6 +685,30 @@ public class AccountFragment extends Fragment {
         return inSampleSize;
     }
 
+
+    @Override
+    public void doPostExecute(String file)
+    {
+        Log.e("UploadedFile",file);
+     //   Toast.makeText(getActivity(),file,Toast.LENGTH_SHORT).show();
+
+        if(mProfile)
+        {
+            sessionData.add("ur_photo", file);
+            mProfile = false;
+        }
+        else if(mDNI)
+        {
+            sessionData.add("ur_dni_photo", file);
+            mDNI = false;
+        }
+        else if(mCar)
+        {
+            sessionData.add("ur_car_photo", file);
+            mCar = false;
+        }
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,

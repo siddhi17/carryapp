@@ -61,13 +61,14 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPreExecute() {
         super.onPreExecute();
 
+        loadingDialog = new ProgressDialog(mContext);
+
         if (!isOnline()) {
-            //   showAlert(getString(R.string.check_network));
-         /*   CommonUtils.showAlert(RegisterCustomerActivity.this, getResources().getString(R.string.check_network), "Check Network");*/
+
             snackbar = Snackbar.make(parentLayout,R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            loadingDialog = ProgressDialog.show(mContext, null,mContext.getString(R.string.wait));
+            loadingDialog.show(mContext, null,mContext.getString(R.string.wait));
         }
 
     }
@@ -150,7 +151,11 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         session.add("ur_device_id", jsonObject.getString("ur_device_id"));
                         session.add("ur_photo", jsonObject.getString("ur_photo"));
                         session.add("api_key", jsonObject.getString("api_key"));
-
+                        session.add("ur_car_model", jsonObject.getString("ur_car_model"));
+                        session.add("ur_car_type", jsonObject.getString("ur_car_type"));
+                        session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
+                        session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
+                        session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
 
                        /* final Dialog dialog = new Dialog(mContext);
                         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

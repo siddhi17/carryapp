@@ -3,6 +3,19 @@ package com.carryapp.helper;
 import android.content.Context;
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.ClientPNames;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.cookie.CookieOrigin;
+import org.apache.http.cookie.CookieSpec;
+import org.apache.http.cookie.CookieSpecFactory;
+import org.apache.http.cookie.MalformedCookieException;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.cookie.BrowserCompatSpec;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -201,5 +214,55 @@ public class ServerRequest {
         }
     }
 
+    public String sendFileRequest1(String access_token, MultipartEntityBuilder multipartEntityBuilder){
 
+        try{
+            DefaultHttpClient httpClient = new DefaultHttpClient();
+            HttpPost httpPost = new HttpPost(api);
+
+            httpPost.setHeader("Authorization", access_token);
+
+            Log.e("jsonParams", access_token);
+            Log.e("jsonParams",api);
+
+            // Create a local instance of cookie store
+            org.apache.http.client.CookieStore cookieStore = new BasicCookieStore();
+            // Bind custom cookie store to the local context
+            httpClient.setCookieStore(cookieStore);
+            CookieSpecFactory csf = new CookieSpecFactory() {
+                public CookieSpec newInstance(HttpParams params) {
+                    return new BrowserCompatSpec() {
+                        @Override
+                        public void validate(Cookie cookie, CookieOrigin origin)
+                                throws MalformedCookieException {
+                            // Oh, I am easy.
+                            // Allow all cookies
+                            // log.debug("custom validate");
+                        }
+                    };
+                }
+            };
+            httpClient.getCookieSpecs().register("easy", csf);
+            httpClient.getParams().setParameter(
+                    ClientPNames.COOKIE_POLICY, "easy");
+
+            httpPost.setEntity(multipartEntityBuilder.build());
+
+            HttpResponse httpResponse = httpClient.execute(httpPost);
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            httpResponse.getEntity().getContent(), "UTF-8"));
+
+            String sResponse = reader.readLine();
+
+            Log.e("ServerResponse", sResponse);
+
+            return  new String(sResponse);
+
+        }catch (Exception e){
+
+        }
+
+        return null;
+    }
 }

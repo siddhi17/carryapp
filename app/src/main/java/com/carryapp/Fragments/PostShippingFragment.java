@@ -43,6 +43,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.maps.model.LatLng;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -58,8 +59,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
     private Button mBtnContinue;
     private TransportFragment.OnFragmentInteractionListener mListener;
-    private EditText mEditTxt_From,mEditTxt_To,mEditTxt_Date,mEditTxt_Time;
+    private EditText mEditTxt_From,mEditTxt_To,mEditTxt_Date,mEditTxt_Time,mEditTxtProductName,mEditTxtProductDetails;
     private GoogleApiClient mGoogleApiClient;
+    private LatLng mFromLatLang,mToLatLang;
 
     private static final String TAG = "PlacePickerSample";
 
@@ -80,26 +82,18 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
         View view = inflater.inflate(R.layout.fragment_post_shipping, container, false);
 
-        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
-        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ImageView mLogo = (ImageView)getActivity().findViewById(R.id.imgLogo);
-        mLogo.setVisibility(View.GONE);
+        setUpUI(view);
 
-        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
-        title.setVisibility(View.VISIBLE);
-        title.setText(R.string.shipping);
+        listeners();
 
 
-        mEditTxt_From = (EditText) view.findViewById(R.id.editTextFrom);
-        mEditTxt_To = (EditText) view.findViewById(R.id.editTextTo);
 
-        mBtnContinue = (Button) view.findViewById(R.id.post);
+        return view;
+    }
 
-        mEditTxt_Date = (EditText) view.findViewById(R.id.editTextDate);
-        mEditTxt_Time = (EditText) view.findViewById(R.id.editTextTime);
-        mImgViewProduct = (ImageView) view.findViewById(R.id.imageViewProduct);
-
+    public void listeners()
+    {
 
         mImgViewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,36 +109,6 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-
-         /*       final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                        .title(R.string.datetime)
-                        .customView(R.layout.date_time_picker_dialog,true)
-                        .show();
-
-                final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.date_picker);
-                final TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.time_picker);
-                timePicker.setIs24HourView(true);
-                Button submit = (Button) dialog.findViewById(R.id.date_time_set);
-
-                submit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                            *//*    datePicker.getMonth();
-                                datePicker.getDayOfMonth();
-                                timePicker.getCurrentHour();
-                                timePicker.getCurrentMinute();*//*
-
-                        String hourString = timePicker.getCurrentHour() < 10 ? "0"+timePicker.getCurrentHour() : ""+timePicker.getCurrentHour() ;
-                        String minuteString = timePicker.getCurrentMinute() < 10 ? "0"+timePicker.getCurrentMinute() : ""+timePicker.getCurrentMinute();
-
-                        mDate = datePicker.getDayOfMonth()+"/"+datePicker.getMonth()+"/"+datePicker.getYear() +"   "+ hourString + ":" + minuteString;
-
-                        mEditTxt_DateTime.setText(mDate);
-
-                        dialog.dismiss();
-                    }
-                });*/
 
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
@@ -174,7 +138,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                         now.get(Calendar.MINUTE),
                         true
                 );
-                
+
                 tpd.setVersion(TimePickerDialog.Version.VERSION_2);
 
                 tpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
@@ -239,20 +203,50 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
                 FragmentManager fragmentManager = getActivity().getFragmentManager();;
                 CarPickerFragment fragment = new CarPickerFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("Pt_name", mEditTxtProductName.getText().toString());
+                bundle.putString("pt_detail", mEditTxtProductDetails.getText().toString());
+                bundle.putString("pt_photo", mImage);
+                bundle.putParcelable("pt_from_latlang", mFromLatLang);
+                bundle.putParcelable("pt_to_latlang", mToLatLang);
+                bundle.putString("pt_from_address", mEditTxt_From.getText().toString());
+                bundle.putString("pt_to_address", mEditTxt_To.getText().toString());
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
             }
         });
 
 
-        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void setUpUI(View view)
+    {
+
+        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
+        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ImageView mLogo = (ImageView)getActivity().findViewById(R.id.imgLogo);
+        mLogo.setVisibility(View.GONE);
+
+        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
+        title.setVisibility(View.VISIBLE);
+        title.setText(R.string.shipping);
+
+
+        mEditTxt_From = (EditText) view.findViewById(R.id.editTextFrom);
+        mEditTxt_To = (EditText) view.findViewById(R.id.editTextTo);
+        mEditTxtProductName = (EditText) view.findViewById(R.id.editTextProduct);
+        mEditTxtProductDetails = (EditText) view.findViewById(R.id.editTextProductDetails);
+
+        mBtnContinue = (Button) view.findViewById(R.id.post);
+
+        mEditTxt_Date = (EditText) view.findViewById(R.id.editTextDate);
+        mEditTxt_Time = (EditText) view.findViewById(R.id.editTextTime);
+        mImgViewProduct = (ImageView) view.findViewById(R.id.imageViewProduct);
+
+
+
     }
+
     private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Library",
                 "Cancel"};
@@ -646,6 +640,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 /* A Place object contains details about that place, such as its name, address
                 and phone number. Extract the name, address, phone number, place ID and place types.
                  */
+
+                mFromLatLang = place.getLatLng();
+
                 final CharSequence name = place.getName();
                 final CharSequence address = place.getAddress();
                 final CharSequence phone = place.getPhoneNumber();
@@ -655,7 +652,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     attribution = "";
                 }
 
-                mEditTxt_From.setText(name.toString());
+                mEditTxt_From.setText(address.toString());
 
                 // Print data to debug log
                 Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");
@@ -675,6 +672,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 /* A Place object contains details about that place, such as its name, address
                 and phone number. Extract the name, address, phone number, place ID and place types.
                  */
+
+                mToLatLang = place.getLatLng();
+
                 final CharSequence name = place.getName();
                 final CharSequence address = place.getAddress();
                 final CharSequence phone = place.getPhoneNumber();
@@ -684,7 +684,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     attribution = "";
                 }
 
-                mEditTxt_To.setText(name.toString());
+                mEditTxt_To.setText(address.toString());
 
                 // Print data to debug log
                 Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");

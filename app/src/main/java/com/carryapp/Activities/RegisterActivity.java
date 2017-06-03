@@ -219,8 +219,10 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     } else {
                         //Registration AsyncTask
                         RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
-                        task.execute(mName,mEmail,mNumber,mPass,String.valueOf(mLatLang.latitude),String.valueOf(mLatLang.longitude),refreshedToken,mImage);
 
+                        if (mLatLang !=  null) {
+                            task.execute(mName, mEmail, mNumber, mPass, String.valueOf(mLatLang.latitude), String.valueOf(mLatLang.longitude), refreshedToken, mImage);
+                        }
 
                         mLocationManager.removeUpdates(mLocationListeners[0]);
                         mLocationManager.removeUpdates(mLocationListeners[1]);

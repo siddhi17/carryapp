@@ -50,15 +50,16 @@ public class LoginAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPreExecute() {
         super.onPreExecute();
 
+        loadingDialog = new ProgressDialog(mContext);
+
         if (!isOnline()) {
-           // showAlert(getString(R.string.check_network));
 
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
 
         } else {
 
-            loadingDialog = ProgressDialog.show(mContext, null, mContext.getString(R.string.wait));
+            loadingDialog.show(mContext, null, mContext.getString(R.string.wait));
             loadingDialog.setCancelable(false);
         }
     }
@@ -135,73 +136,15 @@ public class LoginAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         session.add("ur_device_id", jsonObject.getString("ur_device_id"));
                         session.add("ur_photo", jsonObject.getString("ur_photo"));
                         session.add("api_key", jsonObject.getString("api_key"));
+                        session.add("ur_car_model", jsonObject.getString("ur_car_model"));
+                        session.add("ur_car_type", jsonObject.getString("ur_car_type"));
+                        session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
+                        session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
+                        session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
 
 
-                        //if user is active, go to home activity
-
-                            //  Snackbar snackbar = Snackbar.make(parentLayout,getString(R.string.welcome), Snackbar.LENGTH_LONG);
-
-
-                         /*   final Dialog dialog = new Dialog(LoginActivity.this);
-                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                            dialog.setContentView(R.layout.layout_dialogue_alert);
-                            dialog.setCancelable(true);
-                            dialog.show();
-                            Button btn_ok = (Button) dialog.findViewById(R.id.btn_ok);
-                            TextView tv_title = (TextView) dialog.findViewById(R.id.tv_title);
-                            TextView tv_msg = (TextView) dialog.findViewById(R.id.tv_msg);
-                            tv_title.setText("Welcome");
-                            tv_msg.setText(getResources().getString(R.string.welcome));
-                            btn_ok.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-
-                                    finish();*/
-
-                                    Intent intent = new Intent(mContext, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    mContext.startActivity(intent);
-
-
-                                //    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-                   /*             }
-                            });
-
-                            dialog.show();*/
-
-
-                              /*  snackbar.setCallback(new Snackbar.Callback() {
-                                    @Override
-                                    public void onDismissed(Snackbar snackbar, int event) {
-                                        super.onDismissed(snackbar, event);
-
-                                        finish();
-                                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                     //   intent.putExtra("phone_no", jsonObject.getString("phone_no"));
-                                       // intent.putExtra("email_id", jsonObject.getString("email_id"));
-                                        startActivity(intent);
-
-                                    }
-
-                                    @Override
-                                    public void onShown(Snackbar snackbar) {
-                                        super.onShown(snackbar);
-                                    }
-                                });
-
-                                snackbar.show();*/
-
-
-
-                            //if user is  not active, generate OTP
-
-                           /* Intent intent = new Intent(LoginActivity.this, OtpConfirmation.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            intent.putExtra("email_id", jsonObject.getString("email_id"));
-                            intent.putExtra("phone_no", jsonObject.getString("phone_no"));
-                            finish();
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);*/
+                        Intent intent = new Intent(mContext, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        mContext.startActivity(intent);
 
                     }
                 }
@@ -210,7 +153,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, JSONObject> {
         } catch (JSONException je) {
 
             je.printStackTrace();
-            //  showAlert("Please Enter correct Email Id and Password.");
+
 
         }
     } //end of onPostExecute

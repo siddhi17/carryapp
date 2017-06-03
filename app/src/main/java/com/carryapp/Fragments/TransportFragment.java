@@ -101,38 +101,6 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
             public void onClick(View v) {
 
 
-
-            /*    final MaterialDialog dialog = new MaterialDialog.Builder(getActivity())
-                        .title(R.string.datetime)
-                        .customView(R.layout.date_time_picker_dialog,true)
-                        .show();
-
-                final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.date_picker);
-                final TimePicker timePicker = (TimePicker) dialog.findViewById(R.id.time_picker);
-                timePicker.setIs24HourView(true);
-                Button submit = (Button) dialog.findViewById(R.id.date_time_set);
-
-                submit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                            *//*    datePicker.getMonth();
-                                datePicker.getDayOfMonth();
-                                timePicker.getCurrentHour();
-                                timePicker.getCurrentMinute();*//*
-
-                        String hourString = timePicker.getCurrentHour() < 10 ? "0"+timePicker.getCurrentHour() : ""+timePicker.getCurrentHour() ;
-                        String minuteString = timePicker.getCurrentMinute() < 10 ? "0"+timePicker.getCurrentMinute() : ""+timePicker.getCurrentMinute();
-
-                        mDate = datePicker.getDayOfMonth()+"/"+datePicker.getMonth()+"/"+datePicker.getYear() +"   "+ hourString + ":" + minuteString;
-
-                        mEditTxt_DateTime.setText(mDate);
-
-                        dialog.dismiss();
-                    }
-                });*/
-
-
                 Calendar now = Calendar.getInstance();
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         TransportFragment.this,

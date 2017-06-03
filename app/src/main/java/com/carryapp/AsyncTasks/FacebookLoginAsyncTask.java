@@ -54,13 +54,15 @@ public class FacebookLoginAsyncTask  extends AsyncTask<String, Void, JSONObject>
     protected void onPreExecute() {
         super.onPreExecute();
 
+        loadingDialog = new ProgressDialog(mContext);
+
         if (!isOnline()) {
             //   showAlert(getString(R.string.check_network));
          /*   CommonUtils.showAlert(RegisterCustomerActivity.this, getResources().getString(R.string.check_network), "Check Network");*/
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            loadingDialog = ProgressDialog.show(mContext, null,mContext.getString(R.string.wait));
+            loadingDialog.show(mContext, null,mContext.getString(R.string.wait));
         }
 
     }
@@ -131,25 +133,12 @@ public class FacebookLoginAsyncTask  extends AsyncTask<String, Void, JSONObject>
                         session.add("ur_mob_no", jsonObject.getString("ur_mob_no"));
                         session.add("ur_device_id", jsonObject.getString("ur_device_id"));
                         session.add("ur_photo", jsonObject.getString("ur_photo"));
-
-
-
-                       /* final Dialog dialog = new Dialog(mContext);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.layout_dialogue_alert);
-                        dialog.setCancelable(true);
-                        dialog.show();
-                        Button btn_ok = (Button) dialog.findViewById(R.id.btn_ok);
-                        TextView tv_title = (TextView) dialog.findViewById(R.id.tv_title);
-                        TextView tv_msg = (TextView) dialog.findViewById(R.id.tv_msg);
-                        tv_title.setText("Welcome");
-                        tv_msg.setText(getResources().getString(R.string.welcome));
-                        btn_ok.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                try {*/
-
+                        session.add("api_key", jsonObject.getString("ur_apikey"));
+                        session.add("ur_car_model", jsonObject.getString("ur_car_model"));
+                        session.add("ur_car_type", jsonObject.getString("ur_car_type"));
+                        session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
+                        session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
+                        session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
 
                         ((MainActivity)mContext).finish();
                         Intent intent = new Intent(mContext, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
