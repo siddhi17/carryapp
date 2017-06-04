@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.carryapp.Classes.PostDelivery;
 import com.carryapp.Classes.Transport;
 import com.carryapp.Fragments.TransportListFragment;
 import com.carryapp.Holders.TransportListHolder;
@@ -20,17 +21,16 @@ import java.util.ArrayList;
 
 public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        //static var
-        public final static int ORDER_RECEIVED = 1, ORDER_OUT_FOR_DELIVERY = 3, ORDER_IN_PROCESS = 2, ORDER_DELIVERED = 4, UNKNOWN_TYPE = -1;
+
         private Context context;
-        private ArrayList<Transport> list;
+        private ArrayList<PostDelivery> list;
         private TransportListFragment transportListFragment;
         //static var
         static final int TYPE_LOAD_TRANSPORT = 0, TYPE_LOAD_PROGRESS = 1;
         boolean isLoading = false, isMoreDataAvailable = true;
         OnLoadMoreListener loadMoreListener;
 
-        public TransportListAdapter(Context context, ArrayList<Transport> list,TransportListFragment transportListFragment) {
+        public TransportListAdapter(Context context, ArrayList<PostDelivery> list,TransportListFragment transportListFragment) {
             this.context = context;
             this.list = list;
             this.transportListFragment = transportListFragment;
@@ -93,18 +93,18 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             //show orders data
 
-            final Transport data = (Transport) list.get(position);
+            final PostDelivery data = (PostDelivery) list.get(position);
 
           /*  final String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM,yyyy", data.getCreated_at());
             final String time = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "hh:mm a", data.getCreated_at());
 */
-            holder.tv_product.setText(data.getmProductName());
-            holder.tv_dateTime.setText(data.getmDateTime());
+            holder.tv_product.setText(data.getmPt_name());
+            holder.tv_dateTime.setText(data.getmPtDate());
             holder.tv_username.setText(String.valueOf(data.getmUserName()));
 
             //show merchants pic
 
-            String url = "http://104.131.162.126/testslim/v1/src/images/" + data.getmProductImg();
+            String url = "http://104.131.162.126/testslim/v1/src/carryimages/" + data.getmPtPhoto();
 
             Picasso.with(context)
                     .load(url)

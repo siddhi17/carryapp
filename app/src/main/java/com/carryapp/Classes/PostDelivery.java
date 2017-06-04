@@ -1,19 +1,21 @@
 package com.carryapp.Classes;
 
+import com.carryapp.AsyncTasks.SearchPostsAsyncTask;
+
 /**
  * Created by siddhi jambhale on 6/3/2017.
  */
 
 public class PostDelivery {
 
-    public String mPt_id,mPt_name,mPtDetail,mPtStartLoc,mPtEndLoc,mPtDate,mPtPhoto,mPtSize,mPtWeight,mPtCharges,mPt_Track;
+    public String mPt_id,mPt_name,mPtDetail,mPtStartLoc,mPtEndLoc,mPtDate,mPtPhoto,mPtSize,mPtWeight,mPtCharges,mPt_Track,mUserName;
 
     public void postDelivery()
     {
 
     }
 
-    public void PostDelivery(String pt_id,String pt_name,String pt_detail,String pt_start_loc,String pt_end_loc,String pt_date,String pt_photo,String pt_size,String pt_weight,String pt_charges,String pt_track)
+    public void PostDelivery(String pt_id, String pt_name, String pt_detail, String pt_start_loc, String pt_end_loc, String pt_date, String pt_photo, String pt_size, String pt_weight, String pt_charges, String pt_track, String username)
     {
 
         this.mPt_id = pt_id;
@@ -27,6 +29,7 @@ public class PostDelivery {
         this.mPtWeight = pt_weight;
         this.mPtCharges = pt_charges;
         this.mPt_Track = pt_track;
+        this.mUserName = username;
     }
 
 
@@ -74,6 +77,10 @@ public class PostDelivery {
         this.mPtWeight = mPtWeight;
     }
 
+    public void setmUserName(String mUserName) {
+        this.mUserName = mUserName;
+    }
+
     public String getmPt_id() {
         return mPt_id;
     }
@@ -118,4 +125,7 @@ public class PostDelivery {
         return mPtWeight;
     }
 
+    public String getmUserName() {
+        return mUserName;
+    }
 }

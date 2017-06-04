@@ -8,21 +8,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
+import com.carryapp.AsyncTasks.SearchPostsAsyncTask;
+import com.carryapp.Classes.PostDelivery;
 import com.carryapp.Classes.Transport;
 import com.carryapp.R;
 import com.carryapp.Adapters.TransportListAdapter;
+import com.carryapp.helper.SessionData;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TransportListFragment extends Fragment {
+public class TransportListFragment extends Fragment implements SearchPostsAsyncTask.SearchPostsCallBack{
 
     private RecyclerView mRecyclerView_list;
-    private ArrayList<Transport> mTransportList;
+    private ArrayList<PostDelivery> mTransportList;
     private TransportListAdapter mTransportAdapter;
+    private LinearLayout parentLayout;
+    private SessionData sessionData;
 
     public TransportListFragment() {
         // Required empty public constructor
@@ -36,8 +42,24 @@ public class TransportListFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_transport_list, container, false);
 
+        sessionData = new SessionData(getActivity());
+
+        setUpUI(view);
+
+
+        SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this);
+        searchPostsAsyncTask.execute("19.878454","73.836708","20.012709","73.791389","2017-05-30 06:30",sessionData.getString("api_key",""));
+
+      //  demoData();
+
+        return view;
+    }
+
+    public void setUpUI(View view)
+    {
+
         mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_transportList);
-        mTransportList = new ArrayList<Transport>();
+        mTransportList = new ArrayList<PostDelivery>();
         mTransportAdapter = new TransportListAdapter(getActivity(),mTransportList, TransportListFragment.this);
         mRecyclerView_list.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView_list.setAdapter(mTransportAdapter);
@@ -46,13 +68,11 @@ public class TransportListFragment extends Fragment {
         mRecyclerView_list.setDrawingCacheEnabled(true);
         mRecyclerView_list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
+        parentLayout = (LinearLayout) view.findViewById(R.id.parentPanel);
 
-        demoData();
-
-        return view;
     }
 
-    public void demoData()
+ /*   public void demoData()
     {
         Transport transport = new Transport("17/05/2017","","Laptop","siddhi","");
 
@@ -65,6 +85,13 @@ public class TransportListFragment extends Fragment {
         transport = new Transport("25/05/2017","","Bag","Shital","");
 
         mTransportList.add(transport);
+
+    }*/
+
+    @Override
+    public void doPostExecute(ArrayList<PostDelivery> list)
+    {
+        mTransportList.addAll(list);
 
     }
 

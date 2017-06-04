@@ -335,6 +335,7 @@
                     android:layout_toLeftOf="@+id/editTextTime"
                     android:layout_toStartOf="@+id/editTextTime" />
             </RelativeLayout>
+<!--
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -393,6 +394,7 @@
                     android:layout_alignTop="@+id/editTextPrice"
                     app:srcCompat="@mipmap/ic_euro_symbol_black_48dp" />
             </RelativeLayout>
+-->
 
 
 

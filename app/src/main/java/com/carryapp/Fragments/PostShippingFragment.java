@@ -211,6 +211,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 bundle.putParcelable("pt_to_latlang", mToLatLang);
                 bundle.putString("pt_from_address", mEditTxt_From.getText().toString());
                 bundle.putString("pt_to_address", mEditTxt_To.getText().toString());
+                bundle.putString("pt_date",mDate + " " + mTime);
+                fragment.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
             }
         });
