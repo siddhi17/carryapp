@@ -73,6 +73,9 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     private LatLng mLatLang;
     LocationManager mLocationManager = null;
 
+    boolean gps_enabled = false;
+    boolean network_enabled = false;
+
     LocationListener[] mLocationListeners = new LocationListener[]{
             new LocationListener(LocationManager.NETWORK_PROVIDER),
             new LocationListener(LocationManager.GPS_PROVIDER)
@@ -218,14 +221,33 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
                     } else {
                         //Registration AsyncTask
-                        RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
 
-                        if (mLatLang !=  null) {
-                            task.execute(mName, mEmail, mNumber, mPass, String.valueOf(mLatLang.latitude), String.valueOf(mLatLang.longitude), refreshedToken, mImage);
+                        View view2 = getCurrentFocus();
+                        if (view2 != null) {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view2.getWindowToken(), 0);
                         }
 
-                        mLocationManager.removeUpdates(mLocationListeners[0]);
-                        mLocationManager.removeUpdates(mLocationListeners[1]);
+
+                        if(!gps_enabled && !network_enabled)
+                        {
+                            RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
+
+                            task.execute(mName, mEmail, mNumber, mPass,"0.0", "0.0", refreshedToken, mImage);
+                        }
+                        else {
+                            if (mLatLang != null) {
+
+                                RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
+
+                                task.execute(mName, mEmail, mNumber, mPass, String.valueOf(mLatLang.latitude), String.valueOf(mLatLang.longitude), refreshedToken, mImage);
+                            }
+                        }
+                        if(mLocationManager != null) {
+
+                            mLocationManager.removeUpdates(mLocationListeners[0]);
+                            mLocationManager.removeUpdates(mLocationListeners[1]);
+                        }
                     }
                 }
             }
@@ -396,7 +418,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
             if (picturePath != null) {
                 File file = new File(picturePath);
-
 
                 if (file != null) {
                     compressImage(file.getPath());
@@ -685,9 +706,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         if (mLocationManager == null) {
             mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         }
-
-        boolean gps_enabled = false;
-        boolean network_enabled = false;
 
         try {
             gps_enabled = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);

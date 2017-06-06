@@ -5,9 +5,11 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,12 +28,14 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.R;
+import com.carryapp.helper.CommonUtils;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.model.LatLng;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -44,9 +49,13 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
     private EditText mEditTxt_From,mEditTxt_To,mEditTxt_Date,mEditTxt_Time;
     int PLACE_PICKER_REQUEST = 1;
     private GoogleApiClient mGoogleApiClient;
+    private Boolean gpsEnabled;
 
     private Button mBtnSearch;
+    private Snackbar snackbar;
+    private FrameLayout parentLayout;
 
+    private LatLng mFromLatLang,mToLatLang;
     private static final String TAG = "PlacePickerSample";
 
     /**
@@ -76,6 +85,16 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
         final View view = inflater.inflate(R.layout.fragment_transport, container, false);
 
 
+        setUpUI(view);
+
+        listeners();
+
+
+        return view;
+    }
+
+    public void setUpUI(View view)
+    {
         final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
         ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
 
@@ -91,9 +110,16 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
         mEditTxt_To = (EditText) view.findViewById(R.id.editTextTo);
         mEditTxt_Date = (EditText) view.findViewById(R.id.editTextDate);
         mBtnSearch = (Button) view.findViewById(R.id.btnSearch);
+        parentLayout = (FrameLayout) view.findViewById(R.id.parentPanel);
 
 
         mEditTxt_Time = (EditText) view.findViewById(R.id.editTextTime);
+
+    }
+
+    public void listeners()
+    {
+
 
 
         mEditTxt_Date.setOnClickListener(new View.OnClickListener() {
@@ -114,6 +140,8 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
                 dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
 
                 dpd.show(getFragmentManager(), "Datepickerdialog");
+
+                dpd.setMinDate(now);
             }
         });
 
@@ -143,8 +171,9 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
                     }
                 });
 
+                tpd.show(getFragmentManager(), "Timepickerdialog");
 
-                 tpd.show(getFragmentManager(), "Timepickerdialog");
+                tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),now.get(Calendar.SECOND));
             }
         });
 
@@ -152,19 +181,23 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
         mEditTxt_From.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                Intent intent = intentBuilder.build(getActivity());
-                // Start the Intent by requesting a result, identified by a request code.
-                startActivityForResult(intent, REQUEST_PLACE_PICKER_FROM);
+                gpsEnabled = isGPSEnabled();
 
-                } catch (GooglePlayServicesRepairableException e) {
-                    GooglePlayServicesUtil
-                            .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Toast.makeText(getActivity(), "Google Play Services is not available.",
-                            Toast.LENGTH_LONG)
-                            .show();
+                if(gpsEnabled) {
+                    try {
+                        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                        Intent intent = intentBuilder.build(getActivity());
+                        // Start the Intent by requesting a result, identified by a request code.
+                        startActivityForResult(intent, REQUEST_PLACE_PICKER_FROM);
+
+                    } catch (GooglePlayServicesRepairableException e) {
+                        GooglePlayServicesUtil
+                                .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        Toast.makeText(getActivity(), "Google Play Services is not available.",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
             }
         });
@@ -172,19 +205,24 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
         mEditTxt_To.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                    Intent intent = intentBuilder.build(getActivity());
-                    // Start the Intent by requesting a result, identified by a request code.
-                    startActivityForResult(intent, REQUEST_PLACE_PICKER_TO);
 
-                } catch (GooglePlayServicesRepairableException e) {
-                    GooglePlayServicesUtil
-                            .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Toast.makeText(getActivity(), "Google Play Services is not available.",
-                            Toast.LENGTH_LONG)
-                            .show();
+                gpsEnabled = isGPSEnabled();
+
+                if(gpsEnabled) {
+                    try {
+                        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                        Intent intent = intentBuilder.build(getActivity());
+                        // Start the Intent by requesting a result, identified by a request code.
+                        startActivityForResult(intent, REQUEST_PLACE_PICKER_TO);
+
+                    } catch (GooglePlayServicesRepairableException e) {
+                        GooglePlayServicesUtil
+                                .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        Toast.makeText(getActivity(), "Google Play Services is not available.",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
             }
         });
@@ -193,14 +231,65 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getFragmentManager();
-                TransportListFragment fragment1 = new TransportListFragment();
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1).addToBackStack("G").commit();
+                String date = mDate + " " +mTime;
+                mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm:ss", date);
+                Log.e("date",mDate);
 
+                if(validation()) {
+                    FragmentManager fragmentManager = getActivity().getFragmentManager();
+                    TransportListFragment fragment1 = new TransportListFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("from", mEditTxt_From.getText().toString());
+                    bundle.putString("to", mEditTxt_To.getText().toString());
+                    bundle.putParcelable("fromLatLang", mFromLatLang);
+                    bundle.putParcelable("toLatLang", mToLatLang);
+                    bundle.putString("date", mDate);
+
+                    fragment1.setArguments(bundle);
+                    fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment1).addToBackStack("G").commit();
+                }
             }
         });
 
-        return view;
+    }
+
+    public boolean validation()
+    {
+        if(mEditTxt_From.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyFrom, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_To.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyTo, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_Date.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyDate, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_Time.getText().toString().equals("")){
+            snackbar = Snackbar.make(parentLayout,R.string.emptyTo, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mDate.equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.dateTimeSelect, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isGPSEnabled (){
+        LocationManager locationManager = (LocationManager)
+                getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -267,6 +356,8 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
                     attribution = "";
                 }
 
+                mFromLatLang = place.getLatLng();
+
                 mEditTxt_From.setText(name.toString());
 
                 // Print data to debug log
@@ -296,6 +387,8 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
                     attribution = "";
                 }
 
+                mToLatLang = place.getLatLng();
+
                 mEditTxt_To.setText(name.toString());
 
                 // Print data to debug log
@@ -312,8 +405,9 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        mDate = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        int month= monthOfYear + 1;
 
+        mDate = CommonUtils.formateDateFromstring("dd/MM/yyyy", "dd MMM, yyyy",dayOfMonth+"/"+month +"/"+year);
         mEditTxt_Date.setText(mDate);
     }
 

@@ -47,7 +47,7 @@ public class UpdateProfileAsyncTask extends AsyncTask<String, Void, JSONObject> 
         protected void onPreExecute() {
             super.onPreExecute();
 
-            loadingDialog = new ProgressDialog(mContext);
+
 
             if (!isOnline()) {
 
@@ -56,7 +56,7 @@ public class UpdateProfileAsyncTask extends AsyncTask<String, Void, JSONObject> 
 
             } else {
 
-                loadingDialog.show(mContext, null, mContext.getString(R.string.wait));
+                loadingDialog = ProgressDialog.show(mContext, null, mContext.getString(R.string.wait));
                 loadingDialog.setCancelable(false);
             }
         }
@@ -102,22 +102,16 @@ public class UpdateProfileAsyncTask extends AsyncTask<String, Void, JSONObject> 
         @Override
         protected void onPostExecute(JSONObject response) {
             super.onPostExecute(response);
-            if (loadingDialog.isShowing())
-                loadingDialog.dismiss();
-
             try {
-                JSONArray jsonArray = response.getJSONArray("array");
-                Log.d("ServerResponsejsonArray", "" + jsonArray);
-                if (jsonArray.length() > 0) {
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        final JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if (jsonObject.has("message")) {
-                            String message = jsonObject.getString("message");
-                            if (message.equals("Information updated successfully !")) {
+                if (response.has("message")) {
+                    String message = response.getString("message");
+                    if (message.equals("Information updated successfully !")) {
 
-                                snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
-                                snackbar.show();
+                        if (loadingDialog.isShowing())
+                            loadingDialog.dismiss();
 
+                        snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
+                        snackbar.show();
 
                                 SessionData session = new SessionData(mContext);
                                 session.add("ur_name", mName);
@@ -134,11 +128,8 @@ public class UpdateProfileAsyncTask extends AsyncTask<String, Void, JSONObject> 
 
                         } else {
 
-
                         }
-                    }
 
-                }
             } catch (JSONException je) {
 
                 je.printStackTrace();

@@ -11,11 +11,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -29,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -37,6 +40,7 @@ import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.R;
+import com.carryapp.helper.CommonUtils;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -51,9 +55,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class PostShippingFragment extends Fragment implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener{
 
@@ -74,6 +81,9 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     private String mDate,mTime,mCurrentPhotoPath,mImage = "",userChoosenTask;
     private ImageView mImgViewProduct;
     File productImage = null;
+    private Boolean gpsEnabled;
+    private Snackbar snackbar;
+    private FrameLayout parentLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -118,6 +128,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                         now.get(Calendar.DAY_OF_MONTH)
                 );
 
+                dpd.setMinDate(now);
+
                 dpd.setVersion(DatePickerDialog.Version.VERSION_2);
 
                 dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
@@ -138,6 +150,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                         now.get(Calendar.MINUTE),
                         true
                 );
+
+                tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),now.get(Calendar.SECOND));
 
                 tpd.setVersion(TimePickerDialog.Version.VERSION_2);
 
@@ -160,19 +174,31 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         mEditTxt_From.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                    Intent intent = intentBuilder.build(getActivity());
-                    // Start the Intent by requesting a result, identified by a request code.
-                    startActivityForResult(intent, REQUEST_PLACE_PICKER_FROM);
 
-                } catch (GooglePlayServicesRepairableException e) {
-                    GooglePlayServicesUtil
-                            .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Toast.makeText(getActivity(), "Google Play Services is not available.",
-                            Toast.LENGTH_LONG)
-                            .show();
+                gpsEnabled = isGPSEnabled();
+
+                if(gpsEnabled) {
+
+
+                    try {
+                        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                        Intent intent = intentBuilder.build(getActivity());
+                        // Start the Intent by requesting a result, identified by a request code.
+                        startActivityForResult(intent, REQUEST_PLACE_PICKER_FROM);
+
+                    } catch (GooglePlayServicesRepairableException e) {
+                        GooglePlayServicesUtil
+                                .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        Toast.makeText(getActivity(), "Google Play Services is not available.",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
+                }
+                else {
+                    snackbar = Snackbar.make(parentLayout,R.string.locationAlert, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
                 }
             }
         });
@@ -180,19 +206,26 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         mEditTxt_To.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                    Intent intent = intentBuilder.build(getActivity());
-                    // Start the Intent by requesting a result, identified by a request code.
-                    startActivityForResult(intent, REQUEST_PLACE_PICKER_TO);
 
-                } catch (GooglePlayServicesRepairableException e) {
-                    GooglePlayServicesUtil
-                            .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    Toast.makeText(getActivity(), "Google Play Services is not available.",
-                            Toast.LENGTH_LONG)
-                            .show();
+                gpsEnabled = isGPSEnabled();
+
+                if(gpsEnabled) {
+
+
+                    try {
+                        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                        Intent intent = intentBuilder.build(getActivity());
+                        // Start the Intent by requesting a result, identified by a request code.
+                        startActivityForResult(intent, REQUEST_PLACE_PICKER_TO);
+
+                    } catch (GooglePlayServicesRepairableException e) {
+                        GooglePlayServicesUtil
+                                .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        Toast.makeText(getActivity(), "Google Play Services is not available.",
+                                Toast.LENGTH_LONG)
+                                .show();
+                    }
                 }
             }
         });
@@ -201,23 +234,75 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-                FragmentManager fragmentManager = getActivity().getFragmentManager();;
-                CarPickerFragment fragment = new CarPickerFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("Pt_name", mEditTxtProductName.getText().toString());
-                bundle.putString("pt_detail", mEditTxtProductDetails.getText().toString());
-                bundle.putString("pt_photo", mImage);
-                bundle.putParcelable("pt_from_latlang", mFromLatLang);
-                bundle.putParcelable("pt_to_latlang", mToLatLang);
-                bundle.putString("pt_from_address", mEditTxt_From.getText().toString());
-                bundle.putString("pt_to_address", mEditTxt_To.getText().toString());
-                bundle.putString("pt_date",mDate + " " + mTime);
-                fragment.setArguments(bundle);
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
+                String date = mDate + " " +mTime;
+                mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm:ss", date);
+                Log.e("date",mDate);
+
+                if(validation()) {
+
+                    FragmentManager fragmentManager = getActivity().getFragmentManager();
+
+                    CarPickerFragment fragment = new CarPickerFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("pt_name", mEditTxtProductName.getText().toString());
+                    bundle.putString("pt_detail", mEditTxtProductDetails.getText().toString());
+                    bundle.putString("pt_photo", mImage);
+                    bundle.putParcelable("pt_from_latlang", mFromLatLang);
+                    bundle.putParcelable("pt_to_latlang", mToLatLang);
+                    bundle.putString("pt_from_address", mEditTxt_From.getText().toString());
+                    bundle.putString("pt_to_address", mEditTxt_To.getText().toString());
+                    bundle.putString("pt_date", mDate);
+                    fragment.setArguments(bundle);
+                    fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
+                }
+
             }
         });
 
+    }
 
+    public boolean validation()
+    {
+        if(mEditTxtProductName.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyName, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_From.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyFrom, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_To.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyTo, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_Date.getText().toString().equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.emptyDate, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxt_Time.getText().toString().equals("")){
+            snackbar = Snackbar.make(parentLayout,R.string.emptyTo, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mDate.equals(""))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.dateTimeSelect, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isGPSEnabled (){
+        LocationManager locationManager = (LocationManager)
+                getActivity().getSystemService(getActivity().LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
     public void setUpUI(View view)
@@ -245,6 +330,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         mEditTxt_Time = (EditText) view.findViewById(R.id.editTextTime);
         mImgViewProduct = (ImageView) view.findViewById(R.id.imageViewProduct);
 
+        parentLayout = (FrameLayout) view.findViewById(R.id.parentPanel);
 
 
     }
@@ -339,7 +425,6 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                         Uri photoURI = Uri.fromFile(createImageFile());
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                         startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-
                     }
                 }
             }
@@ -384,7 +469,6 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
             if (picturePath != null) {
                 File file = new File(picturePath);
-
 
                 if (file != null) {
                     compressImage(file.getPath());
@@ -600,7 +684,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
         productImage = new File(uriSting.toString());
 
-        mImage = productImage.getAbsolutePath();
+        mImage = productImage.getPath();
 
         return uriSting;
 
@@ -654,7 +738,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     attribution = "";
                 }
 
-                mEditTxt_From.setText(address.toString());
+                mEditTxt_From.setText(name.toString());
 
                 // Print data to debug log
                 Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");
@@ -686,7 +770,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     attribution = "";
                 }
 
-                mEditTxt_To.setText(address.toString());
+                mEditTxt_To.setText(name.toString());
 
                 // Print data to debug log
                 Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");
@@ -711,8 +795,12 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
-        mDate = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        int month= monthOfYear + 1;
+
+        mDate = CommonUtils.formateDateFromstring("dd/MM/yyyy", "dd MMM, yyyy",dayOfMonth+"/"+month +"/"+year);
         mEditTxt_Date.setText(mDate);
+
+
     }
 
     @Override

@@ -42,7 +42,8 @@
                 android:id="@+id/img_product"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:layout_marginTop="02dp"
+                android:layout_marginBottom="05dp"
+                android:layout_marginTop="05dp"
                 app:srcCompat="@drawable/product" />
         </LinearLayout>
 

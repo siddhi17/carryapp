@@ -1,10 +1,13 @@
 package com.carryapp.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -18,6 +21,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEdtEmail,mEdtPass;
     private CoordinatorLayout parentLayout;
     private SessionData sessionData;
+    private Snackbar snackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,26 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                LoginAsyncTask task = new LoginAsyncTask(LoginActivity.this,parentLayout);
-                task.execute(mEdtEmail.getText().toString(),mEdtPass.getText().toString(),sessionData.getString("ur_device_id",""));
+                if(mEdtEmail.getText().toString().equals(""))
+                {
+                    snackbar = Snackbar.make(parentLayout, R.string.blankEmail, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+                }
+                else if(mEdtPass.getText().toString().equals(""))
+                {
+                    snackbar = Snackbar.make(parentLayout, R.string.blankPass, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                else {
+                    View view1 = getCurrentFocus();
+                    if (view1 != null) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+                    }
+                    LoginAsyncTask task = new LoginAsyncTask(LoginActivity.this, parentLayout);
+                    task.execute(mEdtEmail.getText().toString(), mEdtPass.getText().toString(), sessionData.getString("ur_device_id", ""));
+                }
 
             }
         });

@@ -73,7 +73,7 @@ public class ServerRequest {
                 }
                 reader.close();
                 Log.d("ServerResponse", new String(sb));
-                String output = "{\"array\":" + new String(sb) + "}";
+                String output = new String(sb);
                 return new JSONObject(output);
             } else {
                 Log.e("Exception", "" + responseCode);
@@ -161,7 +161,7 @@ public class ServerRequest {
                 }
                 reader.close();
                 Log.d("ServerResponse", new String(sb));
-                String output = "{\"array\":" + new String(sb) + "}";
+                String output = new String(sb);
                 return new JSONObject(output);
             } else {
                 Log.e("Exception", "" + responseCode);

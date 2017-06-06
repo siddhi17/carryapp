@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -38,8 +39,10 @@ import com.carryapp.Activities.HomeActivity;
 import com.carryapp.AsyncTasks.UpdateProfileAsyncTask;
 import com.carryapp.AsyncTasks.UploadFileAsyncTask;
 import com.carryapp.R;
+import com.carryapp.helper.CommonUtils;
 import com.carryapp.helper.SessionData;
 import com.squareup.picasso.Picasso;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,7 +55,7 @@ import java.util.Date;
 import java.util.Locale;
 
 
-public class AccountFragment extends Fragment implements UploadFileAsyncTask.UploadFileCallBack{
+public class AccountFragment extends Fragment implements UploadFileAsyncTask.UploadFileCallBack,DatePickerDialog.OnDateSetListener{
     // TODO: Rename parameter arguments, choose names that match
 
     private Button mBtn_Vehicle,mBtn_Edit;
@@ -61,7 +64,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
     File profileImage = null,carImage = null,dniImage;
     private String userChoosenTask;
     private boolean result;
-    String mCurrentPhotoPath,mCarModel,mCarType;
+    String mCurrentPhotoPath,mCarModel,mCarType,mDate;
     public final static int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private OnFragmentInteractionListener mListener;
     private String mImage = "", mSavedImage="",mCarImage="",mDNIImage="";
@@ -100,14 +103,13 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
     }
 
 
-    public void setUpUI(View view)
-    {
+    public void setUpUI(View view) {
         sessionData = new SessionData(getActivity());
 
         final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
         ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
 
-        ImageView mLogo = (ImageView)getActivity().findViewById(R.id.imgLogo);
+        ImageView mLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
         mLogo.setVisibility(View.GONE);
 
         TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
@@ -130,13 +132,26 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
         parentLayout = (FrameLayout) view.findViewById(R.id.parentPanel);
 
         Picasso.with(getActivity()).setLoggingEnabled(true);
-        String ur_photo_url = sessionData.getString("ur_photo", "");
 
-        Picasso.with(getActivity())
-                .load(ur_photo_url)
-                .placeholder(R.drawable.profile_add)
-                .error(R.drawable.profile_add)
-                .into(mImgViewProfile);
+        String ur_fb_url = sessionData.getString("ur_photo", "");
+
+        if(ur_fb_url.contains("http://graph.facebook.com")) {
+            Picasso.with(getActivity())
+                    .load(ur_fb_url)
+                    .placeholder(R.drawable.profile_add)
+                    .error(R.drawable.profile_add)
+                    .into(mImgViewProfile);
+        }
+        else {
+
+            String ur_photo_url = getString(R.string.photo_url) + sessionData.getString("ur_photo", "");
+
+            Picasso.with(getActivity())
+                    .load(ur_photo_url)
+                    .placeholder(R.drawable.profile_add)
+                    .error(R.drawable.profile_add)
+                    .into(mImgViewProfile);
+        }
 
         String dni_photo_url = getString(R.string.photo_url) + sessionData.getString("ur_dni_photo", "");
 
@@ -154,32 +169,38 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                 .error(R.drawable.car_new)
                 .into(mImgViewCar);
 
-        mEdtUserName.setText(sessionData.getString("ur_name","Name"));
+        mEdtUserName.setText(sessionData.getString("ur_name", "Name"));
 
-        if(!sessionData.getString("ur_mob_no","").equals("null")) {
+        if (!sessionData.getString("ur_mob_no", "").equals("null") && !sessionData.getString("ur_mob_no", "").equals("")) {
             mEdtNumber.setText(sessionData.getString("ur_mob_no", "Number"));
-        }
-        else {
+        } else {
             mEdtNumber.setText(getString(R.string.number));
         }
-        if(!sessionData.getString("ur_car_type","").equals("null")) {
-            mTxtCarType.setText(sessionData.getString("ur_car_type","Car type"));
-        }
-        else {
+        if (!sessionData.getString("ur_car_type", "").equals("null") && !sessionData.getString("ur_car_type", "").equals("")) {
+            mTxtCarType.setText(sessionData.getString("ur_car_type", "Car type"));
+        } else {
             mTxtCarType.setText(getString(R.string.cartype));
         }
 
-        if(!sessionData.getString("ur_car_model","").equals("null")) {
-            mTxtCarModel.setText(sessionData.getString("ur_car_model","Model number"));
-        }
-        else {
+        if (!sessionData.getString("ur_car_model", "").equals("null") && !sessionData.getString("ur_car_model", "").equals("")) {
+            mTxtCarModel.setText(sessionData.getString("ur_car_model", "Model number"));
+        } else {
             mTxtCarModel.setText(getString(R.string.modelno));
         }
 
-        mTxtEmail.setText(sessionData.getString("ur_email","Email-Id"));
+        mTxtEmail.setText(sessionData.getString("ur_email", "Email-Id"));
 
-        if(!sessionData.getString("ur_birth_date","").equals("null")) {
+        if (!sessionData.getString("ur_birth_date", "").equals("null") && !sessionData.getString("ur_birth_date", "").equals("")) {
 
+         calculateAge(sessionData.getString("ur_birth_date", ""));
+
+        }
+    }
+
+
+    public String calculateAge(String date)
+    {
+        String age ="";
         Calendar currentDate = Calendar.getInstance();
 
         SimpleDateFormat myFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
@@ -187,31 +208,56 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
         Date birthdate = null;
 
         try {
-            birthdate = myFormat.parse(sessionData.getString("ur_birth_date",""));
+            birthdate = myFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        if(birthdate != null) {
+        if (birthdate != null) {
             Long time = currentDate.getTime().getTime() / 1000 - birthdate.getTime() / 1000;
 
             int years = Math.round(time) / 31536000;
             int months = Math.round(time - years * 31536000) / 2628000;
 
-            mEdtAge.setText(String.valueOf(years +  " " +getString(R.string.years)));
-        }
-        else {
-            mEdtAge.setText(sessionData.getString("ur_birth_date","")+ " " + getString(R.string.years));
-        }
-        }
-        else {
-            mEdtAge.setText(R.string.age);
-        }
+            age = String.valueOf(years + " " + getString(R.string.years));
 
+            mEdtAge.setText(age);
+
+        }
+        return age;
     }
+
 
     public void listeners()
     {
+
+        mEdtAge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar now = Calendar.getInstance();
+
+                now.setTime(now.getTime());
+
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        AccountFragment.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+
+                dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
+
+                dpd.show(getActivity().getFragmentManager(), "Datepickerdialog");
+
+                dpd.showYearPickerFirst(true);
+
+                dpd.setMaxDate(now);
+
+            }
+        });
 
 
         mBtn_Vehicle.setOnClickListener(new View.OnClickListener() {
@@ -235,6 +281,8 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                         mCarType = carType.getText().toString();
                         mTxtCarModel.setText(mCarModel);
                         mTxtCarType.setText(mCarType);
+                        sessionData.add("ur_car_model",mCarModel);
+                        sessionData.add("ur_car_type",mCarType);
                         dialog.dismiss();
                     }
                 });
@@ -276,10 +324,18 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
             @Override
             public void onClick(View v) {
 
+                View view1 = getActivity().getCurrentFocus();
+                if (view1 != null) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+                }
+
+
+
                 UpdateProfileAsyncTask task = new UpdateProfileAsyncTask(getActivity(),parentLayout);
-                task.execute(mEdtUserName.getText().toString(),mEdtAge.getText().toString(),mEdtNumber.getText().toString(),
-                        sessionData.getString("ur_email",""),sessionData.getString("ur_dni_photo", ""),sessionData.getString("ur_car_photo", ""),sessionData.getString("ur_photo", ""),mCarModel,
-                        mCarType,sessionData.getString("api_key",""));
+                task.execute(mEdtUserName.getText().toString(),mDate,mEdtNumber.getText().toString(),
+                        sessionData.getString("ur_email",""),sessionData.getString("ur_dni_photo", ""),sessionData.getString("ur_car_photo", ""),sessionData.getString("ur_photo", ""),sessionData.getString("ur_car_model",""),
+                        sessionData.getString("ur_car_type", ""),sessionData.getString("api_key",""));
 
 
             }
@@ -288,6 +344,14 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
     }
 
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+
+        mDate = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
+        mDate = CommonUtils.formateDateFromstring("mm/dd/yyyy", "dd MMM,yyyy", mDate);
+        calculateAge(mDate);
+    }
 
     private void selectImage() {
         final CharSequence[] items = {"Take Photo", "Choose from Library",

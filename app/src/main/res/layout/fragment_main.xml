@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    tools:context="com.example.carryapp.carryapp.com.carryapp.Fragments.MainFragment">
+    tools:context="com.carryapp.Fragments.MainFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -53,6 +53,7 @@
                 android:layout_height="120dp"
                 android:background="@drawable/circle"
                 android:padding="20dp"
+                android:layout_marginBottom="15dp"
                 app:srcCompat="@drawable/car_shipping" />
 
             <TextView

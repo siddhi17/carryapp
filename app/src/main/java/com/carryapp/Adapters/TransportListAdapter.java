@@ -11,6 +11,7 @@ import com.carryapp.Classes.Transport;
 import com.carryapp.Fragments.TransportListFragment;
 import com.carryapp.Holders.TransportListHolder;
 import com.carryapp.R;
+import com.carryapp.helper.CommonUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             if (getItemViewType(position) == TYPE_LOAD_TRANSPORT) {
                 TransportListHolder transportListHolder = (TransportListHolder) holder;
-                retriveAllOrders(transportListHolder, position);
+                retriveAllList(transportListHolder, position);
             } else {
             }
 
@@ -89,20 +90,22 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
 
 
-        public void retriveAllOrders(final TransportListHolder holder, int position) {
+        public void retriveAllList(final TransportListHolder holder, int position) {
 
-            //show orders data
+            //show transport data
 
             final PostDelivery data = (PostDelivery) list.get(position);
 
-          /*  final String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM,yyyy", data.getCreated_at());
-            final String time = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "hh:mm a", data.getCreated_at());
-*/
+            final String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM, yyyy", data.getmPtDate());
+
+        //  final String time = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "hh:mm a", data.getCreated_at());
+
+
             holder.tv_product.setText(data.getmPt_name());
-            holder.tv_dateTime.setText(data.getmPtDate());
+            holder.tv_dateTime.setText(newDate);
             holder.tv_username.setText(String.valueOf(data.getmUserName()));
 
-            //show merchants pic
+            //show product pic
 
             String url = "http://104.131.162.126/testslim/v1/src/carryimages/" + data.getmPtPhoto();
 

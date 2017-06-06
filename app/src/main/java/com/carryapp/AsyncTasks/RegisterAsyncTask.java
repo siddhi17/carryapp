@@ -44,6 +44,7 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private ProgressDialog loadingDialog;
     private Snackbar snackbar;
     private LinearLayout parentLayout;
+    private JSONArray jsonArray;
 
     public RegisterAsyncTask(Context context, LinearLayout linearLayout) {
 
@@ -61,14 +62,12 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        loadingDialog = new ProgressDialog(mContext);
-
         if (!isOnline()) {
 
             snackbar = Snackbar.make(parentLayout,R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            loadingDialog.show(mContext, null,mContext.getString(R.string.wait));
+            loadingDialog = ProgressDialog.show(mContext, null, mContext.getString(R.string.wait));
         }
 
     }
@@ -102,123 +101,71 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject response) {
         super.onPostExecute(response);
-        if (loadingDialog.isShowing())
-            loadingDialog.dismiss();
+
         try {
-            JSONArray jsonArray = response.getJSONArray("array");
-            Log.d("ServerResponsejsonArray", "" + jsonArray);
-            if (jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    final JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    if (jsonObject.has("message")) {
-                        String message = jsonObject.getString("message");
-                        //    showAlert(message);
-                    /*    CommonUtils.showAlert(RegisterCustomerActivity.this, message, "Registration");*/
+
+            if (response.has("message")) {
+                String message = response.getString("message");
 
                         if (message.equals("Sorry, this email already existed"))
                         {
+                            if (loadingDialog.isShowing())
+                                loadingDialog.dismiss();
+
                             snackbar = Snackbar.make(parentLayout, R.string.mailExists, Snackbar.LENGTH_LONG);
 
                         snackbar.show();
                     }
                         else if(message.equals("This Email ID is not valid !"))
                         {
-
+                            if (loadingDialog.isShowing())
+                                loadingDialog.dismiss();
                             snackbar = Snackbar.make(parentLayout,R.string.emailAlert, Snackbar.LENGTH_LONG);
                             snackbar.show();
 
                         } else if (message.equals("Required field Password is missing or empty !")) {
 
+                            if (loadingDialog.isShowing())
+                                loadingDialog.dismiss();
                             snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
                             snackbar.show();
 
                         }
-                    else {
+                    else if(message.equals("Success")){
+
+
+                            JSONObject jsonObject = response.getJSONObject("user");
+                            //on successful registration go to sign in
+
+                            SessionData session = new SessionData(mContext);
+                            session.add("ur_id", jsonObject.getString("ur_id"));
+                            session.add("ur_name", jsonObject.getString("ur_name"));
+                            session.add("ur_email", jsonObject.getString("ur_email"));
+                            session.add("ur_mob_no", jsonObject.getString("ur_mob_no"));
+                            session.add("ur_device_id", jsonObject.getString("ur_device_id"));
+                            session.add("ur_photo", jsonObject.getString("ur_photo"));
+                            session.add("api_key", jsonObject.getString("api_key"));
+                            session.add("ur_car_model", jsonObject.getString("ur_car_model"));
+                            session.add("ur_car_type", jsonObject.getString("ur_car_type"));
+                            session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
+                            session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
+                            session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
+
+                            if (loadingDialog.isShowing())
+                                loadingDialog.dismiss();
+
                             snackbar = Snackbar.make(parentLayout,R.string.registered, Snackbar.LENGTH_LONG);
 
                             snackbar.show();
+
+                            ((RegisterActivity)mContext).finish();
+                            Intent intent = new Intent(mContext, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            mContext.startActivity(intent);
+
                         }
 
-                    } else {
-
-                        //on successful registration go to sign in
-
-                        SessionData session = new SessionData(mContext);
-                        session.add("ur_id", jsonObject.getString("ur_id"));
-                        session.add("ur_name", jsonObject.getString("ur_name"));
-                        session.add("ur_email", jsonObject.getString("ur_email"));
-                        session.add("ur_mob_no", jsonObject.getString("ur_mob_no"));
-                        session.add("ur_device_id", jsonObject.getString("ur_device_id"));
-                        session.add("ur_photo", jsonObject.getString("ur_photo"));
-                        session.add("api_key", jsonObject.getString("api_key"));
-                        session.add("ur_car_model", jsonObject.getString("ur_car_model"));
-                        session.add("ur_car_type", jsonObject.getString("ur_car_type"));
-                        session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
-                        session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
-                        session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
-
-                       /* final Dialog dialog = new Dialog(mContext);
-                        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        dialog.setContentView(R.layout.layout_dialogue_alert);
-                        dialog.setCancelable(true);
-                        dialog.show();
-                        Button btn_ok = (Button) dialog.findViewById(R.id.btn_ok);
-                        TextView tv_title = (TextView) dialog.findViewById(R.id.tv_title);
-                        TextView tv_msg = (TextView) dialog.findViewById(R.id.tv_msg);
-                        tv_title.setText("Welcome");
-                        tv_msg.setText(getResources().getString(R.string.welcome));
-                        btn_ok.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                                try {*/
-
-
-                        ((RegisterActivity)mContext).finish();
-                                    Intent intent = new Intent(mContext, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    mContext.startActivity(intent);
-
-
-                              /*  } catch (JSONException e) {
-
-                                }
-                            }
-                        });
-*/
-                      //  dialog.show();
-
-                        //   Snackbar snackbar = Snackbar.make(parentLayout,R.string.registered, Snackbar.LENGTH_LONG);
-
-                         /*   snackbar.setCallback(new Snackbar.Callback() {
-                                @Override
-                                public void onDismissed(Snackbar snackbar, int event) {
-                                    super.onDismissed(snackbar, event);
-
-                                    try {
-
-                                        finish();
-                                        Intent intent = new Intent(RegisterCustomerActivity.this, OtpConfirmation.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                        intent.putExtra("phone_no", jsonObject.getString("phone_no"));
-                                        intent.putExtra("email_id", jsonObject.getString("email_id"));
-                                        startActivity(intent);
-                                    }
-                                    catch (JSONException e)
-                                    {
-
-                                    }
-                                }
-
-                                @Override
-                                public void onShown(Snackbar snackbar) {
-                                    super.onShown(snackbar);
-                                }
-                            });
-
-                            snackbar.show();*/
                     }
-                }
 
-            }
         } catch (JSONException je) {
             je.printStackTrace();
             //  Toast.makeText(getApplicationContext(), je.getMessage(), Toast.LENGTH_LONG).show();

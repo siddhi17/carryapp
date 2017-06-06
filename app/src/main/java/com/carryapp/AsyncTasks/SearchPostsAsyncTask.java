@@ -57,14 +57,13 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        loadingDialog = new ProgressDialog(mContext);
 
         if (!isOnline()) {
 
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            loadingDialog.show(mContext, null,mContext.getString(R.string.wait));
+            loadingDialog = ProgressDialog.show(mContext, null, mContext.getString(R.string.wait));
         }
 
     }
@@ -81,7 +80,6 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
             jsonParams.put("ed_longi", params[3]);
             jsonParams.put("pt_date", params[4]);
 
-
             ServerRequest request = new ServerRequest(api, jsonParams);
             return request.sendPostRequest(params[5]);
 
@@ -96,38 +94,30 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject response) {
         super.onPostExecute(response);
-        if (loadingDialog.isShowing())
-            loadingDialog.dismiss();
+
         try {
             list = new ArrayList<>();
 
-
                     int result = response.getInt("result");
                     String message = response.getString("message");
+
+            if(message.equals("Sorry, try again later."))
+            {
+                if (loadingDialog.isShowing()) {
+                    loadingDialog.dismiss();
+                }
+
+                snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+
                     if (result == 1) {
-                        //  Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                        //code after getting profile details goes here
 
                         listsArray = response.getJSONArray("cost");
 
                         for (int j = 0; j < listsArray.length(); j++) {
 
                             jsonObject = listsArray.getJSONObject(j);
-
-                /*        SessionData session = new SessionData(mContext);
-                        session.add("ur_id", jsonObject.getString("ur_id"));
-                        session.add("ur_name", jsonObject.getString("ur_name"));
-                        session.add("ur_email", jsonObject.getString("ur_email"));
-                        session.add("ur_mob_no", jsonObject.getString("ur_mob_no"));
-                        session.add("ur_device_id", jsonObject.getString("ur_device_id"));
-                        session.add("ur_photo", jsonObject.getString("ur_photo"));
-                        session.add("api_key", jsonObject.getString("api_key"));
-                        session.add("ur_car_model", jsonObject.getString("ur_car_model"));
-                        session.add("ur_car_type", jsonObject.getString("ur_car_type"));
-                        session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
-                        session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
-                        session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));*/
-
 
 
                     PostDelivery postDelivery = new PostDelivery();
@@ -138,6 +128,7 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                     postDelivery.setmPtStartLoc(jsonObject.getString("pt_start_loc"));
                     postDelivery.setmPtEndLoc(jsonObject.getString("pt_end_loc"));
                     postDelivery.setmPtDate(jsonObject.getString("pt_date"));
+                            postDelivery.setmUserName(jsonObject.getString("ur_name"));
 
 
                     list.add(postDelivery);
@@ -145,11 +136,10 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                     searchPostsCallBack.doPostExecute(list);
 
                 }
+                        if (loadingDialog.isShowing()) {
+                            loadingDialog.dismiss();
+                        }
             }
-
-                snackbar = Snackbar.make(parentLayout, "sorry", Snackbar.LENGTH_LONG);
-
-                snackbar.show();
 
 
     }catch (JSONException je) {

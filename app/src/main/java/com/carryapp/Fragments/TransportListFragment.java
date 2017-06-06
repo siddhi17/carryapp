@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.carryapp.AsyncTasks.SearchPostsAsyncTask;
 import com.carryapp.Classes.PostDelivery;
@@ -16,6 +17,7 @@ import com.carryapp.Classes.Transport;
 import com.carryapp.R;
 import com.carryapp.Adapters.TransportListAdapter;
 import com.carryapp.helper.SessionData;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,10 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
     private TransportListAdapter mTransportAdapter;
     private LinearLayout parentLayout;
     private SessionData sessionData;
+    private TextView textViewFrom,textViewTo,textViewDate;
+    private String mFrom,mTo,mDate;
+    private LatLng mToLatLang,mFromLocation;
+
 
     public TransportListFragment() {
         // Required empty public constructor
@@ -48,7 +54,8 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
 
 
         SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this);
-        searchPostsAsyncTask.execute("19.878454","73.836708","20.012709","73.791389","2017-05-30 06:30",sessionData.getString("api_key",""));
+        searchPostsAsyncTask.execute(String.valueOf(mFromLocation.latitude),String.valueOf(mFromLocation.longitude),
+                String.valueOf(mToLatLang.latitude),String.valueOf(mToLatLang.longitude),mDate,sessionData.getString("api_key",""));
 
       //  demoData();
 
@@ -57,6 +64,10 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
 
     public void setUpUI(View view)
     {
+
+        textViewFrom = (TextView) view.findViewById(R.id.tv_from);
+        textViewTo = (TextView) view.findViewById(R.id.tv_to);
+        textViewDate = (TextView) view.findViewById(R.id.tv_dateTime);
 
         mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_transportList);
         mTransportList = new ArrayList<PostDelivery>();
@@ -69,6 +80,23 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
         mRecyclerView_list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
         parentLayout = (LinearLayout) view.findViewById(R.id.parentPanel);
+
+        final Bundle bundle = this.getArguments();
+
+        if (bundle != null) {
+
+            mFrom = bundle.getString("from");
+            mTo = bundle.getString("to");
+            mFromLocation = bundle.getParcelable("fromLatLang");
+            mToLatLang = bundle.getParcelable("toLatLang");
+            mDate = bundle.getString("date");
+
+        }
+
+
+        textViewFrom.setText(mFrom);
+        textViewTo.setText(mTo);
+        textViewDate.setText(mDate);
 
     }
 
@@ -92,6 +120,8 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
     public void doPostExecute(ArrayList<PostDelivery> list)
     {
         mTransportList.addAll(list);
+
+        mTransportAdapter.notifyDataChanged();
 
     }
 

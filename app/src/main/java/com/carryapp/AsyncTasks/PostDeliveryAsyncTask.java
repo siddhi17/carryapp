@@ -9,12 +9,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Activities.LoginActivity;
 import com.carryapp.Activities.RegisterActivity;
 import com.carryapp.Classes.PostDelivery;
+import com.carryapp.Fragments.BlankFragment;
 import com.carryapp.Fragments.CarPickerFragment;
 import com.carryapp.Fragments.MainFragment;
 import com.carryapp.R;
@@ -40,9 +42,9 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
     RegisterAsyncTask.RegisterCallBack registerCallBack;
     private ProgressDialog loadingDialog;
     private Snackbar snackbar;
-    private LinearLayout parentLayout;
+    private FrameLayout parentLayout;
 
-    public PostDeliveryAsyncTask(Context context, LinearLayout linearLayout) {
+    public PostDeliveryAsyncTask(Context context, FrameLayout linearLayout) {
 
         this.mContext = context;
         this.registerCallBack = registerCallBack;
@@ -55,14 +57,13 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-        loadingDialog = new ProgressDialog(mContext);
 
         if (!isOnline()) {
 
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
-            loadingDialog.show(mContext, null,mContext.getString(R.string.wait));
+            loadingDialog = ProgressDialog.show(mContext, null, mContext.getString(R.string.wait));
         }
 
     }
@@ -70,7 +71,7 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(String... params) {
         try {
-            api = mContext.getResources().getString(R.string.url) + "signup";
+            api = mContext.getResources().getString(R.string.url) + "post";
 
             jsonParams = new JSONObject();
             jsonParams.put("pt_name", params[0]);
@@ -83,10 +84,13 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
             jsonParams.put("pt_weight", params[7]);
             jsonParams.put("pt_charges", params[8]);
             jsonParams.put("pt_track", params[9]);
-
+            jsonParams.put("st_lati", params[10]);
+            jsonParams.put("st_longi", params[11]);
+            jsonParams.put("ed_lati", params[12]);
+            jsonParams.put("ed_longi", params[13]);
 
             ServerRequest request = new ServerRequest(api, jsonParams);
-            return request.sendRequest();
+            return request.sendPostRequest(params[14]);
 
         } catch (JSONException je) {
             return Excpetion2JSON.getJSON(je);
@@ -98,46 +102,39 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject response) {
         super.onPostExecute(response);
-        if (loadingDialog.isShowing())
-            loadingDialog.dismiss();
+
         try {
-            JSONArray jsonArray = response.getJSONArray("array");
-            Log.d("ServerResponsejsonArray", "" + jsonArray);
-            if (jsonArray.length() > 0) {
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    final JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    if (jsonObject.has("message")) {
-                        String message = jsonObject.getString("message");
 
-                        if (message.equals("Access Denied. Invalid Api key"))
-                        {
+                   if (response.has("message")) {
+                        String message = response.getString("message");
+
+                        if (message.equals("Access Denied. Invalid Api key")) {
                             snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
-
                             snackbar.show();
+
+                        } else if (message.equals("Success")) {
+
+                            JSONObject jsonObject = response.getJSONObject("post");
+
+                            PostDelivery postDelivery = new PostDelivery();
+
+                            postDelivery.setmPt_name(jsonObject.getString("pt_name"));
+                            postDelivery.setmPtDetail(jsonObject.getString("pt_detail"));
+                            postDelivery.setmPtSize(jsonObject.getString("pt_size"));
+                            postDelivery.setmPtWeight(jsonObject.getString("pt_weight"));
+                            postDelivery.setmPtStartLoc(jsonObject.getString("pt_start_loc"));
+                            postDelivery.setmPtEndLoc(jsonObject.getString("pt_end_loc"));
+
+                            if (loadingDialog.isShowing())
+                                loadingDialog.dismiss();
+
+                            FragmentManager fragmentManager = ((HomeActivity) mContext).getFragmentManager();
+                            BlankFragment fragment = new BlankFragment();
+                            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                            fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "BLANK_FRAGMENT").addToBackStack("k").commit();
                         }
-
-                    } else {
-
-                        PostDelivery postDelivery = new PostDelivery();
-
-                        postDelivery.setmPt_name(jsonObject.getString("pt_name"));
-                        postDelivery.setmPtDetail(jsonObject.getString("pt_detail"));
-                        postDelivery.setmPtSize(jsonObject.getString("pt_size"));
-                        postDelivery.setmPtWeight(jsonObject.getString("pt_weight"));
-                        postDelivery.setmPtStartLoc(jsonObject.getString("pt_start_loc"));
-                        postDelivery.setmPtEndLoc(jsonObject.getString("pt_end_loc"));
-
-
-                        FragmentManager fragmentManager =  ((HomeActivity)mContext).getFragmentManager();
-                        CarPickerFragment fragment = new CarPickerFragment();
-                        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"CAR_PICKER_FRAGMENT").addToBackStack("J").commit();
-
-
                     }
-                }
 
-            }
         } catch (JSONException je) {
             je.printStackTrace();
         }
