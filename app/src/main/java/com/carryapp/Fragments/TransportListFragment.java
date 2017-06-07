@@ -16,6 +16,7 @@ import com.carryapp.Classes.PostDelivery;
 import com.carryapp.Classes.Transport;
 import com.carryapp.R;
 import com.carryapp.Adapters.TransportListAdapter;
+import com.carryapp.helper.CommonUtils;
 import com.carryapp.helper.SessionData;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -93,10 +94,11 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
 
         }
 
+        String date = CommonUtils.formateDateFromstring("yyyy-MM-dd", "dd MMM, yyyy", mDate);
 
         textViewFrom.setText(mFrom);
         textViewTo.setText(mTo);
-        textViewDate.setText(mDate);
+        textViewDate.setText(date);
 
     }
 

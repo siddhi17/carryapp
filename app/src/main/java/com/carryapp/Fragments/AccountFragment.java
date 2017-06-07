@@ -349,7 +349,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
 
         mDate = dayOfMonth+"/"+(++monthOfYear)+"/"+year;
-        mDate = CommonUtils.formateDateFromstring("mm/dd/yyyy", "dd MMM,yyyy", mDate);
+       // mDate = CommonUtils.formateDateFromstring("mm/dd/yyyy", "dd MMM,yyyy", mDate);
         calculateAge(mDate);
     }
 

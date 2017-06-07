@@ -100,14 +100,7 @@ public class FacebookLoginAsyncTask  extends AsyncTask<String, Void, JSONObject>
             if (response.has("message")) {
                 String message = response.getString("message");
 
-                if (message.equals("Sorry, this email already existed")) {
-                    if (loadingDialog.isShowing())
-                        loadingDialog.dismiss();
-                    snackbar = Snackbar.make(parentLayout, R.string.mailExists, Snackbar.LENGTH_LONG);
-
-                    snackbar.show();
-                }
-                    else if (message.equals("Success")) {
+               if (message.equals("Success")) {
 
                     //on successful registration go to sign in
                     JSONObject jsonObject = response.getJSONObject("user");

@@ -231,11 +231,13 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
             @Override
             public void onClick(View v) {
 
-                String date = mDate + " " +mTime;
-                mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm:ss", date);
+                String date = mEditTxt_Date.getText().toString() + " " +mEditTxt_Time.getText().toString();
+                mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm", date);
                 Log.e("date",mDate);
 
+
                 if(validation()) {
+
                     FragmentManager fragmentManager = getActivity().getFragmentManager();
                     TransportListFragment fragment1 = new TransportListFragment();
                     Bundle bundle = new Bundle();

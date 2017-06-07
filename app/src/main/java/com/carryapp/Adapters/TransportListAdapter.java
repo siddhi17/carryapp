@@ -107,11 +107,11 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             //show product pic
 
-            String url = "http://104.131.162.126/testslim/v1/src/carryimages/" + data.getmPtPhoto();
+            String url = context.getString(R.string.photo_url) + data.getmPtPhoto();
 
             Picasso.with(context)
                     .load(url)
-                    .resize(400, 400)
+                    .resize(250,250)
                     .placeholder(R.drawable.product)
                     .error(R.drawable.product)
                     .into(holder.img_product);

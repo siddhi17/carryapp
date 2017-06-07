@@ -101,15 +101,7 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                     int result = response.getInt("result");
                     String message = response.getString("message");
 
-            if(message.equals("Sorry, try again later."))
-            {
-                if (loadingDialog.isShowing()) {
-                    loadingDialog.dismiss();
-                }
 
-                snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
 
                     if (result == 1) {
 
@@ -129,6 +121,7 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                     postDelivery.setmPtEndLoc(jsonObject.getString("pt_end_loc"));
                     postDelivery.setmPtDate(jsonObject.getString("pt_date"));
                             postDelivery.setmUserName(jsonObject.getString("ur_name"));
+                            postDelivery.setmPtPhoto(jsonObject.getString("pt_photo"));
 
 
                     list.add(postDelivery);
@@ -141,7 +134,15 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         }
             }
 
+            else if(message.equals("Sorry, try again later."))
+            {
+                if (loadingDialog.isShowing()) {
+                    loadingDialog.dismiss();
+                }
 
+                snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
     }catch (JSONException je) {
             je.printStackTrace();
             //  Toast.makeText(getApplicationContext(), je.getMessage(), Toast.LENGTH_LONG).show();
