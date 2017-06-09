@@ -8,14 +8,17 @@ import com.carryapp.AsyncTasks.SearchPostsAsyncTask;
 
 public class PostDelivery {
 
-    public String mPt_id,mPt_name,mPtDetail,mPtStartLoc,mPtEndLoc,mPtDate,mPtPhoto,mPtSize,mPtWeight,mPtCharges,mPt_Track,mUserName;
+    public String mPt_id,mPt_name,mPtDetail,mPtStartLoc,mPtEndLoc,mPtDate,mPtPhoto,mPtSize,mPtWeight,mPtCharges,mPt_Track,mUserName,mRating,mUserId;
+
+    public boolean isChecked;
+    public int mPosition;
 
     public void postDelivery()
     {
 
     }
 
-    public void PostDelivery(String pt_id, String pt_name, String pt_detail, String pt_start_loc, String pt_end_loc, String pt_date, String pt_photo, String pt_size, String pt_weight, String pt_charges, String pt_track, String username)
+    public void PostDelivery(String pt_id, String pt_name, String pt_detail, String pt_start_loc, String pt_end_loc, String pt_date, String pt_photo, String pt_size, String pt_weight, String pt_charges, String pt_track, String username,String rating,String userid)
     {
 
         this.mPt_id = pt_id;
@@ -30,8 +33,42 @@ public class PostDelivery {
         this.mPtCharges = pt_charges;
         this.mPt_Track = pt_track;
         this.mUserName = username;
+        this.mRating = rating;
+        this.mUserId = userid;
     }
 
+    public String getmUserId() {
+        return mUserId;
+    }
+
+    public void setmUserId(String mUserId) {
+        this.mUserId = mUserId;
+    }
+
+    public int getmPosition() {
+        return mPosition;
+    }
+
+    public void setmPosition(int mPosition) {
+        this.mPosition = mPosition;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+
+    public String getmRating() {
+        return mRating;
+    }
+
+    public void setmRating(String mRating) {
+        this.mRating = mRating;
+    }
 
     public void setmPt_id(String mPt_id) {
         this.mPt_id = mPt_id;

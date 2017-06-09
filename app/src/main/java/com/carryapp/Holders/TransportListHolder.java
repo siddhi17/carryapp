@@ -21,6 +21,8 @@ public class TransportListHolder extends RecyclerView.ViewHolder {
     public TextView tv_dateTime, tv_product, tv_username;
     public LinearLayout lay_row;
     public Button btnStatus;
+    public ImageView imageViewR1,imageViewR1_empty,imageViewR2,imageViewR2_empty,imageViewR3,imageViewR3_empty,imageViewR4,imageViewR4_empty,
+    imageViewR5,imageViewR5_empty;
 
 
     public TransportListHolder(View itemView) {
@@ -29,7 +31,18 @@ public class TransportListHolder extends RecyclerView.ViewHolder {
         tv_product = (TextView) itemView.findViewById(R.id.tv_product);
         tv_username = (TextView) itemView.findViewById(R.id.tv_username);
         img_product = (CircleImageView) itemView.findViewById(R.id.img_product);
+        imageViewR1 = (ImageView) itemView.findViewById(R.id.imageViewR1);
+        imageViewR2 = (ImageView) itemView.findViewById(R.id.imageViewR2);
+        imageViewR3 = (ImageView) itemView.findViewById(R.id.imageViewR3);
+        imageViewR4 = (ImageView) itemView.findViewById(R.id.imageViewR4);
+        imageViewR5 = (ImageView) itemView.findViewById(R.id.imageViewR5);
+        imageViewR1_empty = (ImageView) itemView.findViewById(R.id.imageViewR1_empty);
+        imageViewR2_empty = (ImageView) itemView.findViewById(R.id.imageViewR2_empty);
+        imageViewR3_empty = (ImageView) itemView.findViewById(R.id.imageViewR3_empty);
+        imageViewR4_empty = (ImageView) itemView.findViewById(R.id.imageViewR4_empty);
+        imageViewR5_empty = (ImageView) itemView.findViewById(R.id.imageViewR5_empty);
 
+        lay_row = (LinearLayout) itemView.findViewById(R.id.list_row);
     }
 
 

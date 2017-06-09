@@ -232,7 +232,7 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
             public void onClick(View v) {
 
                 String date = mEditTxt_Date.getText().toString() + " " +mEditTxt_Time.getText().toString();
-                mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm", date);
+                mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd", date);
                 Log.e("date",mDate);
 
 

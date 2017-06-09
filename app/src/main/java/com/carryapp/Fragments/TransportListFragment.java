@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,11 +31,12 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
     private RecyclerView mRecyclerView_list;
     private ArrayList<PostDelivery> mTransportList;
     private TransportListAdapter mTransportAdapter;
-    private LinearLayout parentLayout;
+    public LinearLayout parentLayout;
     private SessionData sessionData;
     private TextView textViewFrom,textViewTo,textViewDate;
     private String mFrom,mTo,mDate;
     private LatLng mToLatLang,mFromLocation;
+    public static Button mBtnRequest;
 
 
     public TransportListFragment() {
@@ -69,6 +71,7 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
         textViewFrom = (TextView) view.findViewById(R.id.tv_from);
         textViewTo = (TextView) view.findViewById(R.id.tv_to);
         textViewDate = (TextView) view.findViewById(R.id.tv_dateTime);
+        mBtnRequest = (Button) view.findViewById(R.id.btnRequest);
 
         mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_transportList);
         mTransportList = new ArrayList<PostDelivery>();

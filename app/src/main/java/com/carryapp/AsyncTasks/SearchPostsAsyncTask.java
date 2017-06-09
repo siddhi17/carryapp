@@ -98,7 +98,7 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
         try {
             list = new ArrayList<>();
 
-                    int result = response.getInt("result");
+                    int result = response.getInt("status");
                     String message = response.getString("message");
 
 
@@ -122,6 +122,8 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                     postDelivery.setmPtDate(jsonObject.getString("pt_date"));
                             postDelivery.setmUserName(jsonObject.getString("ur_name"));
                             postDelivery.setmPtPhoto(jsonObject.getString("pt_photo"));
+                            postDelivery.setmRating(jsonObject.getString("ur_rating"));
+                            postDelivery.setmUserId(jsonObject.getString("ur_id"));
 
 
                     list.add(postDelivery);

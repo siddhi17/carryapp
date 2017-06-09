@@ -4,7 +4,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@color/colorPrimary"
     android:id="@+id/parentPanel"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:weightSum="1">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -74,5 +75,27 @@
         android:id="@+id/rv_transportList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        android:layout_weight="0.89" />
+
+
+    <Button
+        android:id="@+id/btnRequest"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginTop="05dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="05dp"
+        android:layout_marginStart="05dp"
+        android:layout_marginEnd="05dp"
+        android:layout_marginRight="05dp"
+        android:background="@drawable/rounded_button"
+        android:text="@string/requet"
+        android:textAllCaps="false"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12sp"
+        android:visibility="gone" />
+
 </LinearLayout>
