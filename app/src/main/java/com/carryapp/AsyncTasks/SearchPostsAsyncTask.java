@@ -8,12 +8,14 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Activities.LoginActivity;
 import com.carryapp.Activities.RegisterActivity;
 import com.carryapp.Classes.PostDelivery;
+import com.carryapp.Fragments.TransportListFragment;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
 import com.carryapp.helper.ServerRequest;
@@ -38,14 +40,16 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private Snackbar snackbar;
     private LinearLayout parentLayout;
     private ArrayList<PostDelivery> list;
-    private JSONArray listsArray;
+    private JSONArray listsArray,jsonArray;
     private JSONObject jsonObject;
+    private TransportListFragment transportListFragment;
 
-    public SearchPostsAsyncTask(Context context, LinearLayout linearLayout,SearchPostsCallBack searchPostsCallBack) {
+    public SearchPostsAsyncTask(Context context, LinearLayout linearLayout,SearchPostsCallBack searchPostsCallBack,TransportListFragment transportListFragment) {
 
         this.mContext = context;
         this.searchPostsCallBack = searchPostsCallBack;
         this.parentLayout = linearLayout;
+        this.transportListFragment = transportListFragment;
 
     }
 
@@ -97,15 +101,14 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
 
         try {
             list = new ArrayList<>();
+            jsonArray = new JSONArray();
 
-                    int result = response.getInt("status");
+
                     String message = response.getString("message");
 
+                    if (message.equals("Success")) {
 
-
-                    if (result == 1) {
-
-                        listsArray = response.getJSONArray("cost");
+                        listsArray = response.getJSONArray("postlist");
 
                         for (int j = 0; j < listsArray.length(); j++) {
 
@@ -128,9 +131,12 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
 
                     list.add(postDelivery);
 
-                    searchPostsCallBack.doPostExecute(list);
-
                 }
+                searchPostsCallBack.doPostExecute(list);
+
+                        transportListFragment.textViewData.setVisibility(View.GONE);
+                        transportListFragment.mRecyclerView_list.setVisibility(View.VISIBLE);
+
                         if (loadingDialog.isShowing()) {
                             loadingDialog.dismiss();
                         }
@@ -142,8 +148,11 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                     loadingDialog.dismiss();
                 }
 
-                snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
-                snackbar.show();
+                transportListFragment.textViewData.setVisibility(View.VISIBLE);
+                transportListFragment.mRecyclerView_list.setVisibility(View.GONE);
+
+             /*   snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
+                snackbar.show();*/
             }
     }catch (JSONException je) {
             je.printStackTrace();

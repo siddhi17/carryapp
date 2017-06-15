@@ -186,7 +186,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                     snackbar.show();
 
                 } else {
-                    if (mEdtNumber.length() < 10 || mEdtNumber.length() > 14) {
+                    if (mEdtNumber.length() < 9 || mEdtNumber.length() > 14) {
 
                         // showAlert(getString(R.string.phoneAlert));
 
@@ -450,7 +450,7 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
 //      max Height and width values of the compressed image is taken as 816x612
 
-        float maxHeight = 300.0f;
+        float maxHeight = 450.0f;
         float maxWidth = 400.0f;
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
@@ -670,7 +670,6 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
         if (!CommonUtils.hasText(mEdtNumber)) ret = false;
         if (!CommonUtils.hasText(mEdtPass)) ret = false;
         if (!CommonUtils.hasText(mEdtConfirmPass)) ret = false;
-
 
         return ret;
     }

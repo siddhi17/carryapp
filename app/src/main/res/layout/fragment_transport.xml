@@ -43,18 +43,16 @@
                 <EditText
                     android:id="@+id/editTextFrom"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignTop="@+id/imageView8"
                     android:layout_marginEnd="30dp"
                     android:layout_marginLeft="05dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginStart="05dp"
-                    android:minHeight="25dp"
                     android:layout_toEndOf="@+id/imageView8"
                     android:layout_toRightOf="@+id/imageView8"
                     android:background="@color/colorPrimary"
                     android:cursorVisible="false"
-                    android:ems="10"
                     android:focusable="false"
                     android:hint="@string/start"
                     android:inputType="textMultiLine"
@@ -69,8 +67,8 @@
 
                 <ImageView
                     android:id="@+id/imageView8"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_marginTop="30dp"
                     app:srcCompat="@mipmap/ic_place_black_48dp" />
 
@@ -119,7 +117,7 @@
                 <EditText
                     android:id="@+id/editTextTo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignTop="@+id/imageView12"
                     android:layout_marginEnd="30dp"
                     android:layout_marginLeft="05dp"
@@ -138,15 +136,18 @@
 
                 <ImageView
                     android:id="@+id/imageView12"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_marginTop="30dp"
                     app:srcCompat="@mipmap/ic_place_black_48dp" />
             </RelativeLayout>
 
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="15dp">
 
                 <View
@@ -169,28 +170,34 @@
                     android:text="@string/dateTime"
                     android:textColor="@android:color/black" />
 
+
                 <EditText
                     android:id="@+id/editTextDate"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/imageView15"
-                    android:layout_marginLeft="05dp"
-                    android:layout_marginStart="05dp"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/textView10"
+                    android:layout_marginTop="20dp"
+                    android:layout_toEndOf="@+id/imageView15"
                     android:layout_toRightOf="@+id/imageView15"
+                    android:layout_toLeftOf="@+id/imageView"
+                    android:layout_toStartOf="@+id/imageView"
                     android:background="@color/colorPrimary"
                     android:cursorVisible="false"
-                    android:ems="10"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginStart="05dp"
                     android:focusable="false"
                     android:hint="@string/leavingDate"
-                    android:minHeight="25dp"
                     android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/imageView15"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_above="@+id/view3"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     app:srcCompat="@mipmap/ic_today_black_48dp" />
+
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
@@ -200,32 +207,27 @@
 
                 <EditText
                     android:id="@+id/editTextTime"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    android:cursorVisible="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:hint="@string/leavingTime"
-                    android:minHeight="25dp"
-                    android:textSize="12sp"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_above="@+id/view3"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_marginLeft="05dp"
                     android:layout_marginStart="05dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginEnd="30dp"
-                    android:layout_alignBottom="@+id/imageView15"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:background="@color/colorPrimary"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="@string/leavingTime"
+                    android:textSize="12sp" />
 
                 <ImageView
-                    android:id="@+id/imageView16"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@mipmap/ic_query_builder_black_48dp"
-                    android:layout_alignBottom="@+id/editTextTime"
+                    android:id="@+id/imageView"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_above="@+id/view3"
                     android:layout_toLeftOf="@+id/editTextTime"
-                    android:layout_toStartOf="@+id/editTextTime" />
-
+                    android:layout_toStartOf="@+id/editTextTime"
+                    app:srcCompat="@mipmap/ic_query_builder_black_48dp" />
             </RelativeLayout>
         </LinearLayout>
 
@@ -233,7 +235,7 @@
             android:id="@+id/btnSearch"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="250dp"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/linearLayout6"
             android:layout_marginTop="60dp"

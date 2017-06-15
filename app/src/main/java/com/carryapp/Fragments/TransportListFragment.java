@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.carryapp.AsyncTasks.SearchPostsAsyncTask;
+import com.carryapp.AsyncTasks.SendNotiAsyncTask;
 import com.carryapp.Classes.PostDelivery;
 import com.carryapp.Classes.Transport;
 import com.carryapp.R;
@@ -26,14 +27,14 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TransportListFragment extends Fragment implements SearchPostsAsyncTask.SearchPostsCallBack{
+public class TransportListFragment extends Fragment implements SearchPostsAsyncTask.SearchPostsCallBack,SendNotiAsyncTask.SendNotificationCallBack{
 
-    private RecyclerView mRecyclerView_list;
+    public RecyclerView mRecyclerView_list;
     private ArrayList<PostDelivery> mTransportList;
     private TransportListAdapter mTransportAdapter;
     public LinearLayout parentLayout;
     private SessionData sessionData;
-    private TextView textViewFrom,textViewTo,textViewDate;
+    public TextView textViewFrom,textViewTo,textViewDate,textViewData;
     private String mFrom,mTo,mDate;
     private LatLng mToLatLang,mFromLocation;
     public static Button mBtnRequest;
@@ -56,7 +57,7 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
         setUpUI(view);
 
 
-        SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this);
+        SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this,TransportListFragment.this);
         searchPostsAsyncTask.execute(String.valueOf(mFromLocation.latitude),String.valueOf(mFromLocation.longitude),
                 String.valueOf(mToLatLang.latitude),String.valueOf(mToLatLang.longitude),mDate,sessionData.getString("api_key",""));
 
@@ -72,6 +73,7 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
         textViewTo = (TextView) view.findViewById(R.id.tv_to);
         textViewDate = (TextView) view.findViewById(R.id.tv_dateTime);
         mBtnRequest = (Button) view.findViewById(R.id.btnRequest);
+        textViewData = (TextView) view.findViewById(R.id.textViewData);
 
         mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_transportList);
         mTransportList = new ArrayList<PostDelivery>();
@@ -128,6 +130,18 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
 
         mTransportAdapter.notifyDataChanged();
 
+    }
+
+
+    @Override
+    public void doPostExecute(Boolean notification)
+    {
+        if(notification)
+        {
+            SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this,TransportListFragment.this);
+            searchPostsAsyncTask.execute(String.valueOf(mFromLocation.latitude),String.valueOf(mFromLocation.longitude),
+                    String.valueOf(mToLatLang.latitude),String.valueOf(mToLatLang.longitude),mDate,sessionData.getString("api_key",""));
+        }
     }
 
 }

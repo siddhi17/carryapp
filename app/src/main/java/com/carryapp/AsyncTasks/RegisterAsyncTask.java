@@ -150,16 +150,17 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                             session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
                             session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
                             session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
+                            session.add("ur_rating", jsonObject.getString("ur_rating"));
 
                             if (loadingDialog.isShowing())
                                 loadingDialog.dismiss();
 
-                            snackbar = Snackbar.make(parentLayout,R.string.registered, Snackbar.LENGTH_LONG);
+                       /*     snackbar = Snackbar.make(parentLayout,R.string.registered, Snackbar.LENGTH_LONG);
 
-                            snackbar.show();
+                            snackbar.show();*/
 
                             ((RegisterActivity)mContext).finish();
-                            Intent intent = new Intent(mContext, LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            Intent intent = new Intent(mContext, HomeActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             mContext.startActivity(intent);
 
                         }

@@ -5,11 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
+    android:id="@+id/parentPanel"
     tools:context="com.carryapp.Fragments.Notices">
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="35dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/border"
         android:layout_gravity="center_horizontal">
@@ -18,14 +19,14 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:layout_margin="05dp"
-            android:background="@color/colorPrimary"
-            android:id="@+id/linearLayout8">
+            android:background="@drawable/border"
+            android:id="@+id/linearLayoutMessages">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/messages"
+                android:id="@+id/messages"
                 android:layout_centerInParent="true"
                 android:textColor="@color/colorButton"/>
         </RelativeLayout>
@@ -35,13 +36,15 @@
             android:layout_height="match_parent"
             android:background="@color/colorButton"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/linearLayout8"
-            android:layout_toEndOf="@+id/linearLayout8">
+            android:id="@+id/linearLayoutNotifications"
+            android:layout_toRightOf="@+id/linearLayoutMessages"
+            android:layout_toEndOf="@+id/linearLayoutMessages">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/noti"
+                android:id="@+id/notifications"
                 android:layout_centerInParent="true"
                 android:textColor="@color/colorPrimary"/>
 
@@ -50,7 +53,21 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/messagesLayout"
+        android:orientation="vertical">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_notificationsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:layout_marginTop="40dp"
         android:layout_marginRight="30dp"
         android:layout_marginEnd="30dp">
@@ -124,5 +141,6 @@
                 android:text="@string/comment" />
 
         </LinearLayout>
+    </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -55,7 +55,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent();
 
-
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         long[] pattern = {500, 500, 500, 500, 500};
@@ -68,6 +67,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setVibrate(pattern)
                 .setSound(defaultSoundUri)
+                .addAction(R.string.accept,getString(R.string.accept), pendingIntent)
+                .addAction(R.string.reject,getString(R.string.reject), pendingIntent)
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

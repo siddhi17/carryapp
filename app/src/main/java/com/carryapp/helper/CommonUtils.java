@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -92,7 +94,15 @@ public class CommonUtils {
 
         return true;
     }
+    public static  int getLocationMode(Context context)
+    {
+        try {
+            return Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+        }
+        catch (Settings.SettingNotFoundException e){}
 
+        return 0;
+    }
     //format date
 
     public static String formateDateFromstring(String inputFormat, String outputFormat, String inputDate) {
@@ -175,6 +185,18 @@ public class CommonUtils {
 
     public static boolean checkEmail(String email) {
         return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
+    }
+    public static boolean isGPSEnabled (Context context){
+        LocationManager locationManager = (LocationManager)
+                context.getSystemService(context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public static CharSequence getCurrentDateTime() {

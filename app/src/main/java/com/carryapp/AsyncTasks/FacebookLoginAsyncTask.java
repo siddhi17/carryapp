@@ -118,6 +118,9 @@ public class FacebookLoginAsyncTask  extends AsyncTask<String, Void, JSONObject>
                     session.add("ur_car_photo", jsonObject.getString("ur_car_photo"));
                     session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
                     session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
+                    session.add("ur_rating", jsonObject.getString("ur_rating"));
+                    session.add("latitude", jsonObject.getString("ur_latitude"));
+                    session.add("longitude", jsonObject.getString("ur_longitude"));
 
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();

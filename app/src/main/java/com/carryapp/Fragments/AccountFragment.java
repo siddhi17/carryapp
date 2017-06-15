@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,6 +27,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,14 +62,14 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
     private Button mBtn_Vehicle,mBtn_Edit;
 
-    private ImageView mImgViewProfile,mImgViewCar,mImgViewDNI;
+    private ImageView mImgViewProfile,mImgViewCar,mImgViewDNI,imageViewR1,imageViewR2,imageViewR3,imageViewR4,imageViewR5,imageViewR1_empty,imageViewR2_empty,imageViewR3_empty,imageViewR4_empty,imageViewR5_empty;
     File profileImage = null,carImage = null,dniImage;
     private String userChoosenTask;
     private boolean result;
-    String mCurrentPhotoPath,mCarModel,mCarType,mDate;
+    String mCurrentPhotoPath,mCarModel="",mCarType="",mDate;
     public final static int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private OnFragmentInteractionListener mListener;
-    private String mImage = "", mSavedImage="",mCarImage="",mDNIImage="";
+    private String mImage = "", mSavedImage="",mCarImage="",mDNIImage="",rating;
 
     private TextView mTxtEmail,mTxtCarModel,mTxtCarType;
     private EditText mEdtUserName,mEdtAge,mEdtNumber;
@@ -75,6 +77,8 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
     private FrameLayout parentLayout;
     private SessionData sessionData;
+
+    private Snackbar snackbar;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -131,6 +135,18 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
         parentLayout = (FrameLayout) view.findViewById(R.id.parentPanel);
 
+        imageViewR1 = (ImageView) view.findViewById(R.id.imageViewR1);
+        imageViewR2 = (ImageView)  view.findViewById(R.id.imageViewR2);
+        imageViewR3 = (ImageView)  view.findViewById(R.id.imageViewR3);
+        imageViewR4 = (ImageView)  view.findViewById(R.id.imageViewR4);
+        imageViewR5 = (ImageView)  view.findViewById(R.id.imageViewR5);
+        imageViewR1_empty = (ImageView)  view.findViewById(R.id.imageViewR1_empty);
+        imageViewR2_empty = (ImageView)  view.findViewById(R.id.imageViewR2_empty);
+        imageViewR3_empty = (ImageView)  view.findViewById(R.id.imageViewR3_empty);
+        imageViewR4_empty = (ImageView)  view.findViewById(R.id.imageViewR4_empty);
+        imageViewR5_empty = (ImageView)  view.findViewById(R.id.imageViewR5_empty);
+
+
         Picasso.with(getActivity()).setLoggingEnabled(true);
 
         String ur_fb_url = sessionData.getString("ur_photo", "");
@@ -169,12 +185,15 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                 .error(R.drawable.car_new)
                 .into(mImgViewCar);
 
+        mCarType = sessionData.getString("ur_car_type","");
+        mCarModel = sessionData.getString("ur_car_model","");
+
         mEdtUserName.setText(sessionData.getString("ur_name", "Name"));
 
         if (!sessionData.getString("ur_mob_no", "").equals("null") && !sessionData.getString("ur_mob_no", "").equals("")) {
             mEdtNumber.setText(sessionData.getString("ur_mob_no", "Number"));
         } else {
-            mEdtNumber.setText(getString(R.string.number));
+            mEdtNumber.setHint(getString(R.string.number));
         }
         if (!sessionData.getString("ur_car_type", "").equals("null") && !sessionData.getString("ur_car_type", "").equals("")) {
             mTxtCarType.setText(sessionData.getString("ur_car_type", "Car type"));
@@ -195,6 +214,82 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
          calculateAge(sessionData.getString("ur_birth_date", ""));
 
         }
+
+        rating = sessionData.getString("ur_rating","");
+
+        if(rating.equals("1"))
+        {
+            imageViewR1.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1_empty.setVisibility(View.GONE);
+
+        } else if(rating.equals("2")) {
+
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1_empty.setVisibility(View.GONE);
+            imageViewR2_empty.setVisibility(View.GONE);
+
+            imageViewR1.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR2.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+
+        }
+        else if(rating.equals("3"))
+        {
+
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1_empty.setVisibility(View.GONE);
+            imageViewR2_empty.setVisibility(View.GONE);
+            imageViewR3_empty.setVisibility(View.GONE);
+
+            imageViewR1.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR2.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR3.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+
+        }
+        else if(rating.equals("4"))
+        {
+
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR1_empty.setVisibility(View.GONE);
+            imageViewR2_empty.setVisibility(View.GONE);
+            imageViewR3_empty.setVisibility(View.GONE);
+            imageViewR4_empty.setVisibility(View.GONE);
+
+            imageViewR1.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR2.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR3.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR4.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+
+        }
+        else if(rating.equals("5"))
+        {
+
+            imageViewR1.setVisibility(View.VISIBLE);
+            imageViewR2.setVisibility(View.VISIBLE);
+            imageViewR3.setVisibility(View.VISIBLE);
+            imageViewR4.setVisibility(View.VISIBLE);
+            imageViewR5.setVisibility(View.VISIBLE);
+            imageViewR1_empty.setVisibility(View.GONE);
+            imageViewR2_empty.setVisibility(View.GONE);
+            imageViewR3_empty.setVisibility(View.GONE);
+            imageViewR4_empty.setVisibility(View.GONE);
+            imageViewR5_empty.setVisibility(View.GONE);
+
+            imageViewR1.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR2.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR3.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR4.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+            imageViewR5.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bird));
+
+        }
+
     }
 
 
@@ -273,19 +368,29 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                 final EditText carModel = (EditText) dialog.findViewById(R.id.editTextModel);
                 final EditText carType = (EditText) dialog.findViewById(R.id.editTextType);
 
+                if(!mCarModel.equals("") && !mCarModel.equals("null") && !mCarType.equals("") && !mCarType.equals("null"))
+                {
+                    carModel.setText(mCarModel);
+                    carType.setText(mCarType);
+                }
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         mCarModel = carModel.getText().toString();
                         mCarType = carType.getText().toString();
+
                         mTxtCarModel.setText(mCarModel);
                         mTxtCarType.setText(mCarType);
-                        sessionData.add("ur_car_model",mCarModel);
-                        sessionData.add("ur_car_type",mCarType);
+
+                        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(getActivity().INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(carModel.getWindowToken(), 0);
                         dialog.dismiss();
+
                     }
                 });
+
 
             }
         });
@@ -329,19 +434,58 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
                 }
-
-
-
-                UpdateProfileAsyncTask task = new UpdateProfileAsyncTask(getActivity(),parentLayout);
-                task.execute(mEdtUserName.getText().toString(),mDate,mEdtNumber.getText().toString(),
-                        sessionData.getString("ur_email",""),sessionData.getString("ur_dni_photo", ""),sessionData.getString("ur_car_photo", ""),sessionData.getString("ur_photo", ""),sessionData.getString("ur_car_model",""),
-                        sessionData.getString("ur_car_type", ""),sessionData.getString("api_key",""));
-
+                if (mEdtNumber.getText().toString().length() < 9 || mEdtNumber.getText().toString().length() > 14) {
+                    snackbar = Snackbar.make(parentLayout,R.string.phoneAlert, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                else if(validation())
+                {
+                    UpdateProfileAsyncTask task = new UpdateProfileAsyncTask(getActivity(), parentLayout);
+                    task.execute(mEdtUserName.getText().toString(), mDate, mEdtNumber.getText().toString(),
+                            sessionData.getString("ur_email", ""), sessionData.getString("ur_dni_photo", ""), sessionData.getString("ur_car_photo", ""), sessionData.getString("ur_photo", ""),mCarModel,
+                            mCarType, sessionData.getString("api_key", ""));
+                }
 
             }
         });
 
 
+    }
+
+    public boolean validation()
+    {
+        if(sessionData.getString("ur_photo","").equals("") || sessionData.getString("ur_photo","").equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.photoAlert, Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return false;
+        }
+        else if(sessionData.getString("ur_dni_photo","").equals("") || sessionData.getString("ur_dni_photo","").equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.dniAlert, Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return false;
+        }
+        else if(mCarModel.equals("") || mCarType.equals("") || mCarModel.equals("null") || mCarType.equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.carDetailsAlert, Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return false;
+        }
+        else if(sessionData.getString("ur_car_photo","").equals("") || sessionData.getString("ur_car_photo","").equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.carPhotoAlert, Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return false;
+        }
+        else if(mEdtUserName.getText().toString().equals("") || mEdtUserName.getText().toString().equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.carDetailsAlert, Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return false;
+        }
+
+        return true;
     }
 
 
@@ -551,7 +695,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
 //      max Height and width values of the compressed image is taken as 816x612
 
-        float maxHeight = 300.0f;
+        float maxHeight = 450.0f;
         float maxWidth = 400.0f;
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
@@ -661,7 +805,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 //          write the compressed bitmap at the destination specified by filename.
                 scaledBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 
-                UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(getActivity(),AccountFragment.this);
+                UploadFileAsyncTask uploadFileAsyncTask = new UploadFileAsyncTask(getActivity(),AccountFragment.this,parentLayout);
                 uploadFileAsyncTask.execute(sessionData.getString("api_key",""),filename);
 
             } catch (FileNotFoundException e) {
@@ -831,6 +975,8 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mCarType = "";
+        mCarModel = "";
     }
 
     public interface OnFragmentInteractionListener {

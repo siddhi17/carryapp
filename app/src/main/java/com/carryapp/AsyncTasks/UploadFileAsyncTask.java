@@ -2,9 +2,13 @@ package com.carryapp.AsyncTasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.widget.FrameLayout;
 
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.R;
@@ -26,23 +30,35 @@ public class UploadFileAsyncTask extends AsyncTask<String, String, String> {
     String getfile;
     private Context mContext;
     private UploadFileCallBack uploadFileCallBack;
+    private Snackbar snackbar;
+    private FrameLayout parentLayout;
 
-    public UploadFileAsyncTask(Context context,UploadFileCallBack uploadFileCallBack)
+    public UploadFileAsyncTask(Context context,UploadFileCallBack uploadFileCallBack,FrameLayout parentLayout)
     {
         this.mContext = context;
         this.uploadFileCallBack = uploadFileCallBack;
+        this.parentLayout = parentLayout;
     }
-
 
     public interface UploadFileCallBack {
         void doPostExecute(String file);
     }
 
     protected void onPreExecute() {
-        progressDialog = new ProgressDialog(mContext);
-        progressDialog.setMessage(mContext.getResources().getString(R.string.wait));
-        progressDialog.setCancelable(false);
-        progressDialog.show();
+
+        if (!isOnline()) {
+
+            snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
+            snackbar.show();
+
+        }
+        else {
+            progressDialog = new ProgressDialog(mContext);
+            progressDialog.setMessage(mContext.getResources().getString(R.string.wait));
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+        }
 
     }
 
@@ -88,5 +104,12 @@ public class UploadFileAsyncTask extends AsyncTask<String, String, String> {
 
             Log.e("Exception",String.valueOf(e));
         }
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }

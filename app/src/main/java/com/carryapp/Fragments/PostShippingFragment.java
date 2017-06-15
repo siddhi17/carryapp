@@ -2,9 +2,12 @@ package com.carryapp.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,10 +17,13 @@ import android.graphics.Paint;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
@@ -25,6 +31,9 @@ import android.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,15 +50,21 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.carryapp.Activities.HomeActivity;
+import com.carryapp.Activities.MainActivity;
 import com.carryapp.R;
 import com.carryapp.helper.CommonUtils;
+import com.carryapp.helper.SessionData;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.location.places.ui.*;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -63,7 +78,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 public class PostShippingFragment extends Fragment implements DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener{
 
@@ -74,19 +95,25 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     private LatLng mFromLatLang,mToLatLang;
 
     private static final String TAG = "PlacePickerSample";
-
+    private LatLngBounds BOUNDS_MOUNTAIN_VIEW;
     /**
      * Request code passed to the PlacePicker intent to identify its result when it returns.
      */
     private static final int REQUEST_PLACE_PICKER_FROM = 1;
     private static final int REQUEST_PLACE_PICKER_TO = 2;
-    public final static int REQUEST_CAMERA = 3, SELECT_FILE = 4;
-    private String mDate,mTime,mCurrentPhotoPath,mImage = "",userChoosenTask;
+    public final static int REQUEST_CAMERA = 3, SELECT_FILE = 4, CAMERA_PERMISSION = 11,GALLERY_PERMISSION = 22;
+    private final static int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 10;
+    public static final int REQUEST_ID_MULTIPLE_PERMISSIONS = 111,REQUEST_CODE_AUTOCOMPLETE_FROM = 222,REQUEST_CODE_AUTOCOMPLETE_TO = 333;
+    private String mDate="",mTime,mCurrentPhotoPath,mImage = "",userChoosenTask,todayDate,todayTime;
     private ImageView mImgViewProduct;
     File productImage = null;
-    private Boolean gpsEnabled;
+    private Boolean gpsEnabled,networkEnabled;
     private Snackbar snackbar;
     private FrameLayout parentLayout;
+    private Date date = null,date1 = null;
+    private ProgressDialog loadingDialog;
+    private SessionData sessionData;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,7 +126,6 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         setUpUI(view);
 
         listeners();
-
 
 
         return view;
@@ -145,99 +171,110 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
             @Override
             public void onClick(View v) {
 
-                Calendar now = Calendar.getInstance();
+                if (!todayDate.equals("")) {
 
-                TimePickerDialog tpd = TimePickerDialog.newInstance(
-                        PostShippingFragment.this,
-                        now.get(Calendar.HOUR_OF_DAY),
-                        now.get(Calendar.MINUTE),
-                        true
-                );
 
-                tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY),now.get(Calendar.MINUTE),now.get(Calendar.SECOND));
+                    try {
 
-                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+                        if (mDate != null) {
+                            if (!mDate.equals("") && mDate != null) {
+                                DateFormat format = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
+                                date = format.parse(mDate);
+                            }
+                        }
 
-                tpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
 
-                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        Log.d("TimePicker", "Dialog was cancelled");
+                        if (!todayDate.equals("") && todayDate != null) {
+                            DateFormat format = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
+                            date1 = format.parse(todayDate);
+                        }
+
+
+                        Calendar now = Calendar.getInstance();
+
+                        TimePickerDialog tpd = TimePickerDialog.newInstance(
+                                PostShippingFragment.this,
+                                now.get(Calendar.HOUR_OF_DAY),
+                                now.get(Calendar.MINUTE),
+                                true
+                        );
+
+                            if (date.compareTo(date1) == 0) {
+                                tpd.setMinTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE), now.get(Calendar.SECOND));
+
+                                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+
+                                tpd.setAccentColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+
+                                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialogInterface) {
+                                        Log.d("TimePicker", "Dialog was cancelled");
+                                    }
+                                });
+
+
+                                tpd.show(getFragmentManager(), "Timepickerdialog");
+                            } else {
+
+                                tpd.setVersion(TimePickerDialog.Version.VERSION_2);
+
+                                tpd.setAccentColor(ContextCompat.getColor(getActivity(), R.color.colorAccent));
+
+                                tpd.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                    @Override
+                                    public void onCancel(DialogInterface dialogInterface) {
+                                        Log.d("TimePicker", "Dialog was cancelled");
+                                    }
+                                });
+
+
+                                tpd.show(getFragmentManager(), "Timepickerdialog");
+                            }
+
+
+                    } catch (ParseException e) {
+                        Log.e("exception", e.toString());
+
                     }
-                });
+                }
+                else{
+                    snackbar = Snackbar.make(parentLayout,R.string.requestDate ,Snackbar.LENGTH_LONG);
+                    snackbar.show();
 
+                }
 
-                tpd.show(getFragmentManager(), "Timepickerdialog");
             }
-        });
 
+        });
 
 
         mEditTxt_From.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                gpsEnabled = isGPSEnabled();
 
-                if(gpsEnabled) {
+                openAutocompleteActivityFrom();
 
 
-                    try {
-                        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                        Intent intent = intentBuilder.build(getActivity());
-                        // Start the Intent by requesting a result, identified by a request code.
-                        startActivityForResult(intent, REQUEST_PLACE_PICKER_FROM);
-
-                    } catch (GooglePlayServicesRepairableException e) {
-                        GooglePlayServicesUtil
-                                .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getActivity(), "Google Play Services is not available.",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                }
-                else {
-                    snackbar = Snackbar.make(parentLayout,R.string.locationAlert, Snackbar.LENGTH_LONG);
-                    snackbar.show();
-
-                }
             }
         });
+
 
         mEditTxt_To.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                gpsEnabled = isGPSEnabled();
-
-                if(gpsEnabled) {
-
-
-                    try {
-                        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                        Intent intent = intentBuilder.build(getActivity());
-                        // Start the Intent by requesting a result, identified by a request code.
-                        startActivityForResult(intent, REQUEST_PLACE_PICKER_TO);
-
-                    } catch (GooglePlayServicesRepairableException e) {
-                        GooglePlayServicesUtil
-                                .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        Toast.makeText(getActivity(), "Google Play Services is not available.",
-                                Toast.LENGTH_LONG)
-                                .show();
-                    }
-                }
+                openAutocompleteActivityTo();
             }
         });
+
 
         mBtnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String date = mDate + " " +mTime;
+                String date = mEditTxt_Date.getText().toString() + " " + mEditTxt_Time.getText().toString();
                 mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm:ss", date);
                 Log.e("date",mDate);
 
@@ -264,6 +301,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     bundle.putString("pt_to_address", mEditTxt_To.getText().toString());
                     bundle.putString("pt_date", mDate);
                     fragment.setArguments(bundle);
+
                     fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "CAR_PICKER_FRAGMENT").addToBackStack("E").commit();
                 }
 
@@ -271,36 +309,95 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         });
 
     }
+    private void openAutocompleteActivityFrom() {
+        try {
+            // The autocomplete activity requires Google Play Services to be available. The intent
+            // builder checks this and throws an exception if it is not the case.
+
+            AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                    .build();
+
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                    .build(getActivity());
+
+            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE_FROM);
+        } catch (GooglePlayServicesRepairableException e) {
+            // Indicates that Google Play Services is either not installed or not up to date. Prompt
+            // the user to correct the issue.
+            GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), e.getConnectionStatusCode(),
+                    0 /* requestCode */).show();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // Indicates that Google Play Services is not available and the problem is not easily
+            // resolvable.
+            String message = "Google Play Services is not available: " +
+                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
+
+            Log.e(TAG, message);
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void openAutocompleteActivityTo() {
+        try {
+            // The autocomplete activity requires Google Play Services to be available. The intent
+            // builder checks this and throws an exception if it is not the case.
+            Intent intent = new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                    .build(getActivity());
+            startActivityForResult(intent, REQUEST_CODE_AUTOCOMPLETE_TO);
+        } catch (GooglePlayServicesRepairableException e) {
+            // Indicates that Google Play Services is either not installed or not up to date. Prompt
+            // the user to correct the issue.
+            GoogleApiAvailability.getInstance().getErrorDialog(getActivity(), e.getConnectionStatusCode(),
+                    0 /* requestCode */).show();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            // Indicates that Google Play Services is not available and the problem is not easily
+            // resolvable.
+            String message = "Google Play Services is not available: " +
+                    GoogleApiAvailability.getInstance().getErrorString(e.errorCode);
+
+            Log.e(TAG, message);
+            Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        }
+    }
 
     public boolean validation()
     {
-        if(mEditTxtProductName.getText().toString().equals(""))
+        if(mEditTxtProductName.getText().toString().equals("") || mEditTxtProductName.getText().toString().equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.emptyName, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-        else if(mEditTxt_From.getText().toString().equals(""))
+        else if(mEditTxt_From.getText().toString().equals("") || mEditTxt_From.getText().toString().equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.emptyFrom, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-        else if(mEditTxt_To.getText().toString().equals(""))
+        else if(mEditTxt_To.getText().toString().equals("") || mEditTxt_To.getText().toString().equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.emptyTo, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-        else if(mEditTxt_Date.getText().toString().equals(""))
+        else if(mEditTxt_Date.getText().toString().equals("") || mEditTxt_Date.getText().toString().equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.emptyDate, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-        else if(mEditTxt_Time.getText().toString().equals("")){
-            snackbar = Snackbar.make(parentLayout,R.string.emptyTo, Snackbar.LENGTH_LONG);
+        else if(mEditTxt_Time.getText().toString().equals("") || mEditTxt_Time.getText().toString().equals("null")){
+            snackbar = Snackbar.make(parentLayout,R.string.emptyTime, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
-        else if(mDate.equals(""))
+        else if(mDate.equals("") || mDate.equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.dateTimeSelect, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mTime.equals("") || mTime.equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.dateTimeSelect, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mImage.equals("") || mImage.equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.imageAlert, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
         else {
@@ -310,14 +407,23 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         return false;
     }
 
-    public boolean isGPSEnabled (){
-        LocationManager locationManager = (LocationManager)
-                getActivity().getSystemService(getActivity().LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-    }
-
     public void setUpUI(View view)
     {
+
+
+        sessionData = new SessionData(getActivity());
+
+        //get lat and long from session data
+        Double lati=Double.parseDouble(sessionData.getString("latitude","-1"));
+        Double longi=Double.parseDouble(sessionData.getString("longitude","-1"));
+
+        double radiusDegrees = 0.01;
+        LatLng northEast = new LatLng(lati + radiusDegrees, longi + radiusDegrees);
+        LatLng southWest = new LatLng(lati - radiusDegrees, longi - radiusDegrees);
+        BOUNDS_MOUNTAIN_VIEW= LatLngBounds.builder()
+                .include(northEast)
+                .include(southWest)
+                .build();
 
         final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
         ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
@@ -343,6 +449,24 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
         parentLayout = (FrameLayout) view.findViewById(R.id.parentPanel);
 
+        Calendar compareDate = Calendar.getInstance();
+
+        String Date = compareDate.get(Calendar.DAY_OF_MONTH) + "/" + (compareDate.get(Calendar.MONTH) + 1) + "/" + compareDate.get(Calendar.YEAR);
+        todayDate = CommonUtils.formateDateFromstring("dd/MM/yyyy", "dd MMM, yyyy", Date);
+
+        mEditTxt_Date.setText(todayDate);
+
+        String hourString =  compareDate.get(Calendar.HOUR_OF_DAY)< 10 ? "0"+ compareDate.get(Calendar.HOUR_OF_DAY) : ""+ compareDate.get(Calendar.HOUR_OF_DAY);
+        String minuteString =compareDate.get(Calendar.MINUTE) < 10 ? "0"+compareDate.get(Calendar.MINUTE): ""+compareDate.get(Calendar.MINUTE);
+
+        todayTime = hourString + ":" +minuteString;
+
+        mEditTxt_Time.setText(todayTime);
+
+        mTime = todayTime;
+
+        mDate = todayDate + " " + todayTime;
+
 
     }
 
@@ -362,12 +486,11 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     userChoosenTask = "Take Photo";
 
                     //check permissions
-
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                             ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                REQUEST_CAMERA);
+                                CAMERA_PERMISSION);
 
                     } else {
                         cameraIntent();
@@ -384,7 +507,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
                         ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                SELECT_FILE);
+                                GALLERY_PERMISSION);
 
                     } else {
 
@@ -468,26 +591,28 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
-        Uri uri = (Uri) data.getData();
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        if(data != null) {
+            Uri uri = (Uri) data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        Cursor cursor = getActivity().getContentResolver().query(uri, filePathColumn, null, null, null);
-        if (cursor != null) {
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
+            Cursor cursor = getActivity().getContentResolver().query(uri, filePathColumn, null, null, null);
+            if (cursor != null) {
+                cursor.moveToFirst();
+                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                String picturePath = cursor.getString(columnIndex);
+                cursor.close();
 
-            if (picturePath != null) {
-                File file = new File(picturePath);
+                if (picturePath != null) {
+                    File file = new File(picturePath);
 
-                if (file != null) {
-                    compressImage(file.getPath());
+                    if (file != null) {
+                        compressImage(file.getPath());
+                    }
+                } else {
+                    mImgViewProduct.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.product));
                 }
-            } else {
-                mImgViewProduct.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.product));
-            }
 
+            }
         }
     }
 
@@ -510,8 +635,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
 //      max Height and width values of the compressed image is taken as 816x612
 
-        float maxHeight = 300.0f;
-        float maxWidth = 400.0f;
+        float maxHeight = 400.0f;
+        float maxWidth = 450.0f;
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
 
@@ -659,10 +784,12 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case REQUEST_CAMERA: {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
-                    cameraIntent();
+            case CAMERA_PERMISSION: {
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)  {
+                 cameraIntent();
                     // permission was granted, yay! do the
                     // calendar task you need to do.
 
@@ -672,7 +799,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 return;
             }
 
-            case SELECT_FILE: {
+            case GALLERY_PERMISSION: {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     galleryIntent();
@@ -682,9 +809,44 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 } else {
 
                 }
+
                 return;
             }
-        }
+
+           /* case REQUEST_ID_MULTIPLE_PERMISSIONS: {
+                Map<String, Integer> perms = new HashMap<String, Integer>();
+                // Initial
+
+                perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                // Fill with results
+                for (int i = 0; i < permissions.length; i++)
+                    perms.put(permissions[i], grantResults[i]);
+
+                if (perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                        && perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    // All Permissions Granted
+                    if(!CommonUtils.isGPSEnabled(getActivity()))
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+
+                }
+                else if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    // All Permissions Granted
+                        cameraIntent();
+
+                }
+
+                else {
+                    // Permission Denied
+
+                    if(!CommonUtils.isGPSEnabled(getActivity()))
+                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                }*/
+
+//                Toast.makeText(RegisterActivity.this, "Some Permission are Denied", Toast.LENGTH_SHORT).show();
+
+            }
+
     }
     public String getFilename() {
         File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
@@ -724,79 +886,66 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // BEGIN_INCLUDE(activity_result)
-        if (requestCode == REQUEST_PLACE_PICKER_FROM) {
-            // This result is from the PlacePicker dialog.
-
-            if (resultCode == Activity.RESULT_OK) {
-                /* User has picked a place, extract data.
-                   Data is extracted from the returned intent by retrieving a Place object from
-                   the PlacePicker.
-                 */
-                final Place place = PlacePicker.getPlace(data, getActivity());
-
-                /* A Place object contains details about that place, such as its name, address
-                and phone number. Extract the name, address, phone number, place ID and place types.
-                 */
-
-                mFromLatLang = place.getLatLng();
-
-                final CharSequence name = place.getName();
-                final CharSequence address = place.getAddress();
-                final CharSequence phone = place.getPhoneNumber();
-                final String placeId = place.getId();
-                String attribution = PlacePicker.getAttributions(data);
-                if(attribution == null){
-                    attribution = "";
-                }
-
-                mEditTxt_From.setText(name.toString());
-
-                // Print data to debug log
-                Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");
-
-            }
-
-        }
-        else if(requestCode == REQUEST_PLACE_PICKER_TO)
-        {
-            if (resultCode == Activity.RESULT_OK) {
-                /* User has picked a place, extract data.
-                   Data is extracted from the returned intent by retrieving a Place object from
-                   the PlacePicker.
-                 */
-                final Place place = PlacePicker.getPlace(data, getActivity());
-
-                /* A Place object contains details about that place, such as its name, address
-                and phone number. Extract the name, address, phone number, place ID and place types.
-                 */
-
-                mToLatLang = place.getLatLng();
-
-                final CharSequence name = place.getName();
-                final CharSequence address = place.getAddress();
-                final CharSequence phone = place.getPhoneNumber();
-                final String placeId = place.getId();
-                String attribution = PlacePicker.getAttributions(data);
-                if(attribution == null){
-                    attribution = "";
-                }
-
-                mEditTxt_To.setText(name.toString());
-
-                // Print data to debug log
-                Log.d(TAG, "Place selected: " + placeId + " (" + name.toString() + ")");
-
-            }
-        }
-
-        else if (requestCode == SELECT_FILE) {
+        if (requestCode == SELECT_FILE) {
             onSelectFromGalleryResult(data);
         }
 
         else if (requestCode == REQUEST_CAMERA) {
             onCaptureImageResult();
         }
+        // Check that the result was from the autocomplete widget.
+        else if (requestCode == REQUEST_CODE_AUTOCOMPLETE_FROM) {
+            if (resultCode == RESULT_OK) {
+                // Get the user's selected place from the Intent.
+                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+                Log.i(TAG, "Place Selected: " + place.getName());
 
+                // Format the place's details and display them in the TextView.
+                mEditTxt_From.setText(place.getName());
+
+                mFromLatLang = place.getLatLng();
+
+                // Display attributions if required.
+              /*  CharSequence attributions = place.getAttributions();
+                if (!TextUtils.isEmpty(attributions)) {
+                    mEditTxt_From.setText(Html.fromHtml(attributions.toString()));
+                } else {
+                    mEditTxt_From.setText("");
+                }*/
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
+                Log.e(TAG, "Error: Status = " + status.toString());
+            } else if (resultCode == RESULT_CANCELED) {
+                // Indicates that the activity closed before a selection was made. For example if
+                // the user pressed the back button.
+            }
+        }
+        else if (requestCode == REQUEST_CODE_AUTOCOMPLETE_TO) {
+            if (resultCode == RESULT_OK) {
+                // Get the user's selected place from the Intent.
+                Place place = PlaceAutocomplete.getPlace(getActivity(), data);
+                Log.i(TAG, "Place Selected: " + place.getName());
+
+                // Format the place's details and display them in the TextView.
+                mEditTxt_To.setText(place.getName());
+
+                mToLatLang = place.getLatLng();
+
+                // Display attributions if required.
+              /*  CharSequence attributions = place.getAttributions();
+                if (!TextUtils.isEmpty(attributions)) {
+                    mEditTxt_From.setText(Html.fromHtml(attributions.toString()));
+                } else {
+                    mEditTxt_From.setText("");
+                }*/
+            } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
+                Status status = PlaceAutocomplete.getStatus(getActivity(), data);
+                Log.e(TAG, "Error: Status = " + status.toString());
+            } else if (resultCode == RESULT_CANCELED) {
+                // Indicates that the activity closed before a selection was made. For example if
+                // the user pressed the back button.
+            }
+        }
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
@@ -811,6 +960,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         mDate = CommonUtils.formateDateFromstring("dd/MM/yyyy", "dd MMM, yyyy",dayOfMonth+"/"+month +"/"+year);
         mEditTxt_Date.setText(mDate);
 
+        mDate = mDate + mTime;
 
     }
 
@@ -833,5 +983,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 */
         mTime = hourString + ":"+minuteString;
         mEditTxt_Time.setText(mTime);
+
+        mDate = mDate + mTime;
     }
 }

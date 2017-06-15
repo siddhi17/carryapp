@@ -36,19 +36,20 @@
                 <EditText
                     android:id="@+id/editTextProduct"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView11"
-                    android:layout_marginLeft="05dp"
-                    android:layout_marginStart="05dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_toEndOf="@+id/imageView16"
-                    android:layout_toRightOf="@+id/imageView16"
+                    android:layout_height="30dp"
                     android:background="@color/colorPrimary"
                     android:ems="10"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginStart="05dp"
                     android:hint="@string/productName"
-                    android:inputType="textPersonName"
+                    android:inputType="textPersonName|textCapSentences"
                     android:minHeight="25dp"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:layout_alignTop="@+id/imageView16"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toRightOf="@+id/imageView16"
+                    android:layout_toEndOf="@+id/imageView16" />
 
                 <View
                     android:id="@+id/view5"
@@ -65,12 +66,12 @@
 
                 <ImageView
                     android:id="@+id/imageView16"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/textView11"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="15dp"
                     app:srcCompat="@mipmap/ic_mail_black_48dp" />
             </RelativeLayout>
 
@@ -94,7 +95,7 @@
                 <EditText
                     android:id="@+id/editTextProductDetails"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_below="@+id/textView12"
                     android:layout_marginLeft="05dp"
                     android:layout_marginStart="05dp"
@@ -104,17 +105,17 @@
                     android:background="@color/colorPrimary"
                     android:ems="10"
                     android:hint="@string/detailsHint"
-                    android:inputType="textMultiLine"
-                    android:minHeight="25dp"
+                    android:inputType="textMultiLine|textCapSentences"
                     android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/imageView17"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_above="@+id/view2"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
                     app:srcCompat="@mipmap/ic_description_black_48dp" />
 
                 <View
@@ -163,7 +164,7 @@
                 <EditText
                     android:id="@+id/editTextFrom"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/textView7"
@@ -177,18 +178,18 @@
                     android:ems="10"
                     android:focusable="false"
                     android:hint="@string/start"
-                    android:inputType="textMultiLine"
-                    android:minHeight="25dp"
+                    android:inputType="textMultiLine|textCapSentences"
                     android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/imageView18"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@mipmap/ic_place_black_48dp"
-                    android:layout_alignTop="@+id/editTextFrom"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+
+                    android:layout_alignTop="@+id/editTextFrom"
+                    app:srcCompat="@mipmap/ic_place_black_48dp" />
             </RelativeLayout>
 
 
@@ -224,7 +225,7 @@
                 <EditText
                     android:id="@+id/editTextTo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/textView9"
@@ -238,14 +239,13 @@
                     android:ems="10"
                     android:focusable="false"
                     android:hint="@string/arrival"
-                    android:inputType="textMultiLine"
-                    android:minHeight="25dp"
+                    android:inputType="textMultiLine|textCapSentences"
                     android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/imageView19"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     app:srcCompat="@mipmap/ic_place_black_48dp"
                     android:layout_above="@+id/view1"
                     android:layout_alignParentLeft="true"
@@ -281,28 +281,34 @@
                     android:text="@string/dateTime"
                     android:textColor="@android:color/black" />
 
+
                 <EditText
                     android:id="@+id/editTextDate"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/imageView15"
-                    android:layout_marginLeft="05dp"
-                    android:layout_marginStart="05dp"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/textView10"
+                    android:layout_marginTop="20dp"
+                    android:layout_toEndOf="@+id/imageView15"
                     android:layout_toRightOf="@+id/imageView15"
+                    android:layout_toLeftOf="@+id/imageView"
+                    android:layout_toStartOf="@+id/imageView"
                     android:background="@color/colorPrimary"
                     android:cursorVisible="false"
-                    android:ems="10"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginStart="05dp"
                     android:focusable="false"
                     android:hint="@string/leavingDate"
-                    android:minHeight="25dp"
                     android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/imageView15"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_above="@+id/view3"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     app:srcCompat="@mipmap/ic_today_black_48dp" />
+
                 <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
@@ -312,31 +318,29 @@
 
                 <EditText
                     android:id="@+id/editTextTime"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
-                    android:cursorVisible="false"
-                    android:ems="10"
-                    android:focusable="false"
-                    android:hint="@string/leavingTime"
-                    android:minHeight="25dp"
-                    android:textSize="12sp"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_above="@+id/view3"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     android:layout_marginLeft="05dp"
                     android:layout_marginStart="05dp"
-                    android:layout_alignBottom="@+id/imageView15"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentEnd="true" />
+                    android:background="@color/colorPrimary"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="@string/leavingTime"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    app:srcCompat="@mipmap/ic_query_builder_black_48dp"
-                    android:layout_alignBottom="@+id/editTextTime"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_above="@+id/view3"
                     android:layout_toLeftOf="@+id/editTextTime"
-                    android:layout_toStartOf="@+id/editTextTime" />
+                    android:layout_toStartOf="@+id/editTextTime"
+                    app:srcCompat="@mipmap/ic_query_builder_black_48dp" />
             </RelativeLayout>
-<!--
+            <!--
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -398,15 +402,14 @@
 -->
 
 
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
-                android:layout_marginStart="30dp">
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="20dp">
 
 
                 <TextView
@@ -417,12 +420,13 @@
                     android:textColor="@android:color/black" />
 
                 <ImageView
+                    android:id="@+id/imageViewProduct"
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:layout_alignParentLeft="true"
-                    android:id="@+id/imageViewProduct"
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/textView13"
+                    android:scaleType="fitXY"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/product" />
 
@@ -432,15 +436,15 @@
                 android:id="@+id/post"
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="250dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="30dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/rounded_button"
                 android:text="@string/post"
                 android:textAllCaps="false"
-                android:layout_gravity="center_horizontal"
                 android:textColor="@color/colorPrimary"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
 
         </LinearLayout>

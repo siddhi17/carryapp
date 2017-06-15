@@ -10,10 +10,14 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Adapters.TabsPagerAdapter;
 import com.carryapp.R;
 import com.carryapp.helper.SlidingTabLayout;
@@ -74,6 +78,15 @@ public class MyTrips extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_trips, container, false);
 
+        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
+        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ImageView mLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
+        mLogo.setVisibility(View.GONE);
+
+        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
+        title.setVisibility(View.VISIBLE);
+        title.setText(R.string.myTrips);
 
         mAdapter =  new TabsPagerAdapter(getActivity().getFragmentManager(),Titles,Numboftabs);
         viewPager = (ViewPager)view.findViewById(R.id.pager);
