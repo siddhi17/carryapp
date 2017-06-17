@@ -489,7 +489,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                             ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 CAMERA_PERMISSION);
 
                     } else {
@@ -506,7 +506,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
                     if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-                        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                       requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                                 GALLERY_PERMISSION);
 
                     } else {
@@ -783,23 +783,28 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
-        switch (requestCode) {
+        /*switch (requestCode) {
 
-            case CAMERA_PERMISSION: {
+            case*/
 
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED)  {
-                 cameraIntent();
-                    // permission was granted, yay! do the
-                    // calendar task you need to do.
+        if(requestCode == CAMERA_PERMISSION) {
 
-                } else {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                cameraIntent();
+                // permission was granted, yay! do the
 
-                }
-                return;
+            } else {
+
             }
+        }
 
-            case GALLERY_PERMISSION: {
+       /*         return;
+            }
+*/
+          /*  case GALLERY_PERMISSION: {*/
+
+          else if(requestCode == GALLERY_PERMISSION) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     galleryIntent();
@@ -808,44 +813,12 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
 
                 } else {
 
-                }
-
-                return;
-            }
-
-           /* case REQUEST_ID_MULTIPLE_PERMISSIONS: {
-                Map<String, Integer> perms = new HashMap<String, Integer>();
-                // Initial
-
-                perms.put(Manifest.permission.ACCESS_COARSE_LOCATION, PackageManager.PERMISSION_GRANTED);
-                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
-                // Fill with results
-                for (int i = 0; i < permissions.length; i++)
-                    perms.put(permissions[i], grantResults[i]);
-
-                if (perms.get(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                        && perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    // All Permissions Granted
-                    if(!CommonUtils.isGPSEnabled(getActivity()))
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-
-                }
-                else if (perms.get(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    // All Permissions Granted
-                        cameraIntent();
 
                 }
 
-                else {
-                    // Permission Denied
-
-                    if(!CommonUtils.isGPSEnabled(getActivity()))
-                        startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                }*/
-
-//                Toast.makeText(RegisterActivity.this, "Some Permission are Denied", Toast.LENGTH_SHORT).show();
-
-            }
+             /*   return;
+            }*/
+        }
 
     }
     public String getFilename() {
@@ -970,17 +943,6 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         String minuteString = minute < 10 ? "0"+minute : ""+minute;
         String secondString = second < 10 ? "0"+second : ""+second;
 
-        String time;
-
-    /*    if(hourOfDay > 12)
-        {
-            time = (hourOfDay - 12)  + ":" + minuteString + " PM";
-        }
-        else {
-
-            time = hourOfDay + ":" + minuteString + " AM";
-        }
-*/
         mTime = hourString + ":"+minuteString;
         mEditTxt_Time.setText(mTime);
 

@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.carryapp.Classes.Notifications;
-import com.carryapp.Fragments.Notices;
+import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.Holders.NotificationsHolder;
 import com.carryapp.R;
 
@@ -22,13 +22,13 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
     //static var
     private Context context;
     private ArrayList<Notifications> list;
-    private Notices notices;
+    private NoticesFragment notices;
     //static var
     static final int TYPE_LOAD_NOTI = 0, TYPE_LOAD_PROGRESS = 1;
     boolean isLoading = false, isMoreDataAvailable = true;
-    TransportListAdapter.OnLoadMoreListener loadMoreListener;
 
-    public NotificationsAdapter(Context context, ArrayList<Notifications> list,Notices notices) {
+
+    public NotificationsAdapter(Context context, ArrayList<Notifications> list,NoticesFragment notices) {
         this.context = context;
         this.list = list;
         this.notices = notices;
@@ -54,16 +54,14 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (position >= getItemCount() - 1 && isMoreDataAvailable && !isLoading && loadMoreListener != null) {
-            isLoading = true;
-            loadMoreListener.onLoadMore();
-        }
 
         if (getItemViewType(position) == TYPE_LOAD_NOTI) {
 
             NotificationsHolder notificationsHolder = (NotificationsHolder) holder;
             retriveAllNotifications(notificationsHolder, position);
-        } else {
+        }
+
+        else {
         }
 
     }

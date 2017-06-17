@@ -36,7 +36,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.carryapp.AsyncTasks.RegisterAsyncTask;
-import com.carryapp.Fragments.Payments;
 import com.carryapp.R;
 import com.carryapp.helper.CommonUtils;
 import com.google.android.gms.common.ConnectionResult;
@@ -50,7 +49,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class RegisterActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener{
@@ -232,15 +230,16 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
                         if(!gps_enabled && !network_enabled)
                         {
                             RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
-
                             task.execute(mName, mEmail, mNumber, mPass,"0.0", "0.0", refreshedToken, mImage);
                         }
                         else {
                             if (mLatLang != null) {
-
                                 RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
-
                                 task.execute(mName, mEmail, mNumber, mPass, String.valueOf(mLatLang.latitude), String.valueOf(mLatLang.longitude), refreshedToken, mImage);
+                            }
+                            else {
+                                RegisterAsyncTask task = new RegisterAsyncTask(RegisterActivity.this,parentLayout);
+                                task.execute(mName, mEmail, mNumber, mPass,"0.0", "0.0", refreshedToken, mImage);
                             }
                         }
                         if(mLocationManager != null) {

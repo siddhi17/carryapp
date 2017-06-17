@@ -16,8 +16,8 @@ import android.widget.TextView;
 
 import com.carryapp.Fragments.AccountFragment;
 import com.carryapp.Fragments.MainFragment;
-import com.carryapp.Fragments.MyTrips;
-import com.carryapp.Fragments.Notices;
+import com.carryapp.Fragments.MyTripsFragment;
+import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.Fragments.TransfersFragment;
 import com.carryapp.R;
 import com.carryapp.Fragments.TransportFragment;
@@ -91,7 +91,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
             case R.id.menu_notifications:
 
                 fragmentManager = getFragmentManager();
-                Notices fragment3 = new Notices();
+                NoticesFragment fragment3 = new NoticesFragment();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment3,"NOTICES_FRAGMENT").addToBackStack("H").commit();
 
@@ -100,7 +100,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
             case R.id.menu_myTrips:
 
                 fragmentManager = getFragmentManager();
-                MyTrips fragment4 = new MyTrips();
+                MyTripsFragment fragment4 = new MyTripsFragment();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment4,"MY_TRIPS_FRAGMENT").addToBackStack("H").commit();
 

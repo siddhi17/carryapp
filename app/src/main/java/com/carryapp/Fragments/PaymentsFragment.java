@@ -40,7 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Payments extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class PaymentsFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     Location mLastLocation;
     LocationManager mLocationManager = null;
@@ -60,7 +60,7 @@ public class Payments extends Fragment implements OnMapReadyCallback, GoogleApiC
 
     };
 
-    public Payments() {
+    public PaymentsFragment() {
         // Required empty public constructor
     }
 

@@ -19,6 +19,7 @@ import com.carryapp.Classes.PostDelivery;
 import com.carryapp.Fragments.BlankFragment;
 import com.carryapp.Fragments.CarPickerFragment;
 import com.carryapp.Fragments.MainFragment;
+import com.carryapp.Fragments.PostDetailsFragment;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
 import com.carryapp.helper.ServerRequest;
@@ -88,9 +89,10 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
             jsonParams.put("st_longi", params[11]);
             jsonParams.put("ed_lati", params[12]);
             jsonParams.put("ed_longi", params[13]);
+            jsonParams.put("device_id", params[14]);
 
             ServerRequest request = new ServerRequest(api, jsonParams);
-            return request.sendPostRequest(params[14]);
+            return request.sendPostRequest(params[15]);
 
         } catch (JSONException je) {
             return Excpetion2JSON.getJSON(je);
@@ -129,9 +131,9 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
                                 loadingDialog.dismiss();
 
                             FragmentManager fragmentManager = ((HomeActivity) mContext).getFragmentManager();
-                            BlankFragment fragment = new BlankFragment();
+                            PostDetailsFragment fragment = new PostDetailsFragment();
                             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "BLANK_FRAGMENT").addToBackStack("k").commit();
+                            fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "POST_DETAILS_FRAGMENT").addToBackStack("M").commit();
                         }
                     }
 

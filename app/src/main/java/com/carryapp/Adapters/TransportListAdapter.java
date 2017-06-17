@@ -119,8 +119,6 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             final String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM, yyyy", data.getmPtDate());
 
-        //  final String time = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "hh:mm a", data.getCreated_at());
-
 
             holder.tv_product.setText(data.getmPt_name());
             holder.tv_dateTime.setText(newDate);
@@ -207,7 +205,7 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
 
             Picasso.with(context)
                     .load(url)
-                    .resize(250,250)
+                    .resize(400,400)
                     .placeholder(R.drawable.product)
                     .error(R.drawable.product)
                     .into(holder.img_product);
@@ -252,8 +250,21 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
                       transportListFragment.mBtnRequest.startAnimation(bottomUp);
                       transportListFragment.mBtnRequest.setVisibility(View.VISIBLE);
 
+                    transportListFragment.mBtnRequest.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SendNotiAsyncTask sendNotiAsyncTask = new SendNotiAsyncTask(context,transportListFragment.parentLayout);
+                            sendNotiAsyncTask.execute(data.getmPt_id(),data.getmUserId(),sessionData.getString("api_key",""));
+                            final Animation bottomDown = AnimationUtils.loadAnimation(context,
+                                    R.anim.bottom_down);
+                            transportListFragment.mBtnRequest.startAnimation(bottomDown);
+                            transportListFragment.mBtnRequest.setVisibility(View.GONE);
+                        }
+                    });
+
                 }
             });
+
 
             for (int i=0;i< list.size();i++)
             {
@@ -265,17 +276,6 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
                 }
             }
 
-            transportListFragment.mBtnRequest.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SendNotiAsyncTask sendNotiAsyncTask = new SendNotiAsyncTask(context,transportListFragment.parentLayout);
-                    sendNotiAsyncTask.execute(data.getmPt_id(),data.getmUserId(),sessionData.getString("api_key",""));
-                    final Animation bottomDown = AnimationUtils.loadAnimation(context,
-                            R.anim.bottom_down);
-                    transportListFragment.mBtnRequest.startAnimation(bottomDown);
-                    transportListFragment.mBtnRequest.setVisibility(View.GONE);
-                }
-            });
 
         }
     private void makeAllWhite() {

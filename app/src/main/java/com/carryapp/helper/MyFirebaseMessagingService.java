@@ -67,8 +67,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)
                 .setVibrate(pattern)
                 .setSound(defaultSoundUri)
-                .addAction(R.string.accept,getString(R.string.accept), pendingIntent)
-                .addAction(R.string.reject,getString(R.string.reject), pendingIntent)
+           /*     .addAction(R.string.accept,getString(R.string.accept), pendingIntent)
+                .addAction(R.string.reject,getString(R.string.reject), pendingIntent)*/
                 .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =

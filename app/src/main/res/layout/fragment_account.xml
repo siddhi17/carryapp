@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:weightSum="1">
 
@@ -137,9 +137,9 @@
                         android:layout_height="30dp"
                         android:layout_marginTop="10dp"
                         android:background="@color/colorPrimary"
-                        android:maxLength="50"
                         android:cursorVisible="false"
                         android:inputType="text|textCapSentences"
+                        android:maxLength="50"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
 
@@ -149,11 +149,11 @@
                         android:layout_height="30dp"
                         android:layout_gravity="bottom"
                         android:background="@color/colorPrimary"
-                        android:maxLength="10"
-                        android:text="@string/year"
                         android:cursorVisible="false"
                         android:focusable="false"
                         android:inputType="number"
+                        android:maxLength="10"
+                        android:text="@string/year"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -162,9 +162,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
                 android:orientation="vertical">
 
@@ -185,12 +186,13 @@
                         android:id="@+id/textViewMobile"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_marginLeft="05dp"
                         android:layout_marginStart="05dp"
                         android:background="@color/colorPrimary"
-                        android:inputType="number"
                         android:cursorVisible="false"
                         android:hint="@string/mobile"
+                        android:inputType="number"
                         android:maxLength="14"
                         android:textColor="@android:color/black"
                         android:textSize="14sp" />
@@ -206,23 +208,30 @@
                         android:id="@+id/imageView1"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:layout_marginTop="10dp"
                         app:srcCompat="@mipmap/ic_mail_black_48dp" />
 
 
                     <TextView
                         android:id="@+id/textViewEmail"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="05dp"
                         android:layout_marginStart="05dp"
+                        android:layout_marginTop="03dp"
                         android:gravity="center_vertical"
-                        android:textColor="@android:color/black"
-                        android:layout_marginTop="05dp"
-                        android:text="abcded@hotmail.com" />
+                        android:text="5596294+114481vbunimo,.fghjk"
+                        android:textColor="@android:color/black" />
 
+                    <ImageView
+                        android:id="@+id/imageViewVerify"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        app:srcCompat="@mipmap/ic_check_circle_black_48dp" />
                 </LinearLayout>
             </LinearLayout>
+
 
             <TextView
                 android:id="@+id/textView17"
@@ -239,6 +248,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:layout_marginTop="10dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/card" />
@@ -257,11 +267,11 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
                 android:layout_marginStart="30dp"
                 android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -297,10 +307,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
-                            android:textSize="14sp"
                             android:background="@color/colorPrimary"
+                            android:text="Honda City"
                             android:textColor="@android:color/black"
-                            android:text="Honda City" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -322,10 +332,10 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
-                            android:textSize="14sp"
                             android:background="@color/colorPrimary"
+                            android:text="Medium"
                             android:textColor="@android:color/black"
-                            android:text="Medium" />
+                            android:textSize="14sp" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -337,11 +347,11 @@
                 android:layout_width="250dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="30dp"
                 android:layout_marginTop="40dp"
                 android:background="@drawable/rounded_button"
                 android:text="@string/edit"
                 android:textAllCaps="false"
-                android:layout_marginBottom="30dp"
                 android:textColor="@color/colorPrimary"
                 android:textSize="12sp" />
 

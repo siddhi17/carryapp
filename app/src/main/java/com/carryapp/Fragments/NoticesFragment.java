@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Notices extends Fragment implements GetNotificationsAsyncTask.GetNotificationsCallBack{
+public class NoticesFragment extends Fragment implements GetNotificationsAsyncTask.GetNotificationsCallBack{
 
 
     private RelativeLayout mLayoutMessages,mLayoutNotifications;
@@ -38,7 +38,7 @@ public class Notices extends Fragment implements GetNotificationsAsyncTask.GetNo
     private NotificationsAdapter mNotificationsAdapter;
     private SessionData sessionData;
 
-    public Notices() {
+    public NoticesFragment() {
         // Required empty public constructor
     }
 
@@ -82,9 +82,18 @@ public class Notices extends Fragment implements GetNotificationsAsyncTask.GetNo
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_notificationsList);
         mTextViewNotifications = (TextView) view.findViewById(R.id.notifications);
         mTextViewMessages = (TextView) view.findViewById(R.id.messages);
-
+/*
+        mRecyclerView.setVisibility(View.GONE);
+        mMessagesLayout.setVisibility(View.VISIBLE);*/
         notificationsArrayList = new ArrayList<Notifications>();
 
+        mNotificationsAdapter = new NotificationsAdapter(getActivity(),notificationsArrayList, NoticesFragment.this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mNotificationsAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setItemViewCacheSize(50);
+        mRecyclerView.setDrawingCacheEnabled(true);
+        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
     }
 
@@ -108,11 +117,14 @@ public class Notices extends Fragment implements GetNotificationsAsyncTask.GetNo
             @Override
             public void onClick(View v) {
 
-                GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(),Notices.this,parentPanel);
+
+
+                GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(),NoticesFragment.this,parentPanel);
                 getNotificationsAsyncTask.execute(sessionData.getString("api_key",""));
 
+
                 mRecyclerView.setVisibility(View.VISIBLE);
-                mMessagesLayout.setVisibility(View.GONE);
+
                 mLayoutNotifications.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
                 mLayoutMessages.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
                 mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
@@ -123,6 +135,25 @@ public class Notices extends Fragment implements GetNotificationsAsyncTask.GetNo
 
     }
 
+    public void demoData()
+    {
+        Notifications notifications = new Notifications("1","post","");
+
+        notificationsArrayList.add(notifications);
+
+        notifications = new Notifications("2","post1","");
+
+        notificationsArrayList.add(notifications);
+
+        notifications = new Notifications("3","post2","");
+
+        notificationsArrayList.add(notifications);
+
+        mNotificationsAdapter.notifyDataSetChanged();
+
+    }
+
+
     @Override
     public void doPostExecute(ArrayList<Notifications> list)
     {
@@ -131,14 +162,7 @@ public class Notices extends Fragment implements GetNotificationsAsyncTask.GetNo
 
         notificationsArrayList.addAll(list);
 
-        mNotificationsAdapter = new NotificationsAdapter(getActivity(),notificationsArrayList, Notices.this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mNotificationsAdapter);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemViewCacheSize(50);
-        mRecyclerView.setDrawingCacheEnabled(true);
-        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        //   mNotificationsAdapter.notifyDataSetChanged();
+        mNotificationsAdapter.notifyDataSetChanged();
 
     }
 }

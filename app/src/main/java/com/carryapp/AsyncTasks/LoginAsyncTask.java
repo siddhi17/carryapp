@@ -87,9 +87,7 @@ public class LoginAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPostExecute(JSONObject response) {
         super.onPostExecute(response);
 
-
         try {
-
 
             if (response.has("message")) {
                 String message = response.getString("message");

@@ -6,7 +6,7 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:id="@+id/parentPanel"
-    tools:context="com.carryapp.Fragments.Notices">
+    tools:context="com.carryapp.Fragments.NoticesFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -62,6 +62,7 @@
             android:id="@+id/rv_notificationsList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             android:layout_marginTop="20dp"/>
 
     <LinearLayout

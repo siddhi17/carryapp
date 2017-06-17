@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import com.carryapp.AsyncTasks.LoginAsyncTask;
 import com.carryapp.R;
 import com.carryapp.helper.SessionData;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -60,6 +62,8 @@ public class LoginActivity extends AppCompatActivity {
         mLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                Log.d("token", "Refreshed token: " + refreshedToken);
 
                 if(mEdtEmail.getText().toString().equals(""))
                 {
@@ -78,8 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
                     }
+
                     LoginAsyncTask task = new LoginAsyncTask(LoginActivity.this, parentLayout);
-                    task.execute(mEdtEmail.getText().toString(), mEdtPass.getText().toString(), sessionData.getString("ur_device_id", ""));
+                    task.execute(mEdtEmail.getText().toString(), mEdtPass.getText().toString(), refreshedToken);
                 }
 
             }

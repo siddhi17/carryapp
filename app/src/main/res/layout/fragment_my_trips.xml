@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    tools:context="com.carryapp.Fragments.MyTrips">
+    tools:context="com.carryapp.Fragments.MyTripsFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"

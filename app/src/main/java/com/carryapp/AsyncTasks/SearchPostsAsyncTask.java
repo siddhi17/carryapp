@@ -43,6 +43,7 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private JSONArray listsArray,jsonArray;
     private JSONObject jsonObject;
     private TransportListFragment transportListFragment;
+    private SessionData sessionData;
 
     public SearchPostsAsyncTask(Context context, LinearLayout linearLayout,SearchPostsCallBack searchPostsCallBack,TransportListFragment transportListFragment) {
 
@@ -103,6 +104,7 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
             list = new ArrayList<>();
             jsonArray = new JSONArray();
 
+            sessionData = new SessionData(mContext);
 
                     String message = response.getString("message");
 
@@ -128,14 +130,17 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                             postDelivery.setmRating(jsonObject.getString("ur_rating"));
                             postDelivery.setmUserId(jsonObject.getString("ur_id"));
 
-
-                    list.add(postDelivery);
+                            if(!sessionData.getString("ur_id","").equals(jsonObject.getString("ur_id")))
+                            {
+                                list.add(postDelivery);
+                            }
 
                 }
-                searchPostsCallBack.doPostExecute(list);
-
                         transportListFragment.textViewData.setVisibility(View.GONE);
                         transportListFragment.mRecyclerView_list.setVisibility(View.VISIBLE);
+                searchPostsCallBack.doPostExecute(list);
+
+
 
                         if (loadingDialog.isShowing()) {
                             loadingDialog.dismiss();

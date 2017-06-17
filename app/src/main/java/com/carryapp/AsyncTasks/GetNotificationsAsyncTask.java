@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -94,7 +95,7 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
                 if (message.equals("Success")) {
 
                     //on successful registration go to sign in
-                    list = response.getJSONArray("notificationlist");
+                    list = response.getJSONArray("notifications");
 
                     notificationsArrayList = new ArrayList<>();
 
@@ -115,6 +116,17 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
                         loadingDialog.dismiss();
                     getNotificationsCallBack.doPostExecute(notificationsArrayList);
                 }
+                else if(message.equals("Sorry, try again later."))
+                {
+                    if (loadingDialog.isShowing()) {
+                        loadingDialog.dismiss();
+                    }
+
+
+             /*   snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
+                snackbar.show();*/
+                }
+
             }
         }catch (JSONException je) {
             je.printStackTrace();
