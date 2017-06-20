@@ -13,13 +13,14 @@ import com.carryapp.R;
 
 public class NotificationsHolder extends RecyclerView.ViewHolder  {
 
-    public TextView textViewMessage;
+    public TextView textViewMessage,textViewStatus;
     public Button btnAccept,btnReject;
 
     public NotificationsHolder(View itemView) {
         super(itemView);
 
         textViewMessage = (TextView) itemView.findViewById(R.id.textViewMessage);
+        textViewStatus = (TextView) itemView.findViewById(R.id.textViewStatus);
         btnAccept = (Button) itemView.findViewById(R.id.buttonAccept);
         btnReject = (Button) itemView.findViewById(R.id.buttonReject);
 

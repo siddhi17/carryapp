@@ -23,7 +23,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
     private String mOrderId, mBillId;
-    private Boolean mUpdateNotification;
+    private Boolean mNotification;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -53,7 +53,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String messageBody, String title) {
 
-        Intent intent = new Intent();
+        mNotification = true;
+
+        Intent intent = new Intent(this,HomeActivity.class);
+        if (!messageBody.equals("")) {
+            intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("notification", mNotification);
+            intent.putExtra("title", title);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

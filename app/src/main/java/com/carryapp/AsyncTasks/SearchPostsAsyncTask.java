@@ -62,7 +62,6 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
     protected void onPreExecute() {
         super.onPreExecute();
 
-
         if (!isOnline()) {
 
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
@@ -139,6 +138,12 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         transportListFragment.textViewData.setVisibility(View.GONE);
                         transportListFragment.mRecyclerView_list.setVisibility(View.VISIBLE);
                 searchPostsCallBack.doPostExecute(list);
+
+                        if(list.size() == 0)
+                        {
+                            transportListFragment.textViewData.setVisibility(View.VISIBLE);
+                            transportListFragment.mRecyclerView_list.setVisibility(View.GONE);
+                        }
 
 
 

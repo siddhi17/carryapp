@@ -6,15 +6,33 @@ package com.carryapp.Classes;
 
 public class Notifications {
 
-    String nt_id,nt_message,nt_status;
+    String nt_id,nt_message,nt_status,pt_id,sender_id;
 
     public Notifications(){}
 
-    public Notifications(String id,String message,String status)
+    public Notifications(String id,String message,String status,String pt_id,String sender_id)
     {
         this.nt_id = id;
         this.nt_message = message;
         this.nt_status = status;
+        this.pt_id = pt_id;
+        this.sender_id = sender_id;
+    }
+
+    public String getPt_id() {
+        return pt_id;
+    }
+
+    public String getSender_id() {
+        return sender_id;
+    }
+
+    public void setPt_id(String pt_id) {
+        this.pt_id = pt_id;
+    }
+
+    public void setSender_id(String sender_id) {
+        this.sender_id = sender_id;
     }
 
     public String getNt_id() {

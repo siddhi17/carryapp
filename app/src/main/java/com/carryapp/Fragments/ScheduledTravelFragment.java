@@ -8,23 +8,31 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.carryapp.Adapters.ScheduledTravelAdapter;
 import com.carryapp.Adapters.TransportListAdapter;
+import com.carryapp.AsyncTasks.GetScheduledTripsAsyncTask;
+import com.carryapp.Classes.PostDelivery;
 import com.carryapp.Classes.Transport;
 import com.carryapp.Classes.Trips;
 import com.carryapp.R;
+import com.carryapp.helper.CommonUtils;
+import com.carryapp.helper.SessionData;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ScheduledTravelFragment extends Fragment {
+public class ScheduledTravelFragment extends Fragment implements GetScheduledTripsAsyncTask.GetScheduleTripsCallBack{
 
-    private RecyclerView mRecyclerView_list;
+    public RecyclerView mRecyclerView_list;
     private ArrayList<Trips> mTripsList;
     private ScheduledTravelAdapter mTripsAdapter;
+    public TextView mTextViewData;
+    private String mDateTime;
+    private SessionData sessionData;
 
 
     public ScheduledTravelFragment() {
@@ -38,7 +46,23 @@ public class ScheduledTravelFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scheduled_travel, container, false);
 
+
+        setUpUI(view);
+
+
+
+        GetScheduledTripsAsyncTask getScheduledTripsAsyncTask = new GetScheduledTripsAsyncTask(getActivity(),ScheduledTravelFragment.this,ScheduledTravelFragment.this);
+        getScheduledTripsAsyncTask.execute(mDateTime,sessionData.getString("api_key",""));
+
+
+        return view;
+    }
+
+    public void setUpUI(View view)
+    {
+
         mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_tripList);
+        mTextViewData = (TextView) view.findViewById(R.id.textViewData);
         mTripsList = new ArrayList<Trips>();
         mTripsAdapter = new ScheduledTravelAdapter(getActivity(),mTripsList, ScheduledTravelFragment.this);
         mRecyclerView_list.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -48,25 +72,19 @@ public class ScheduledTravelFragment extends Fragment {
         mRecyclerView_list.setDrawingCacheEnabled(true);
         mRecyclerView_list.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
-        demoData();
+        sessionData = new SessionData(getActivity());
+        mDateTime = String.valueOf(CommonUtils.getCurrentDateTime());
 
-        return view;
     }
 
-
-    public void demoData()
+    @Override
+    public void doPostExecute(ArrayList<Trips> list)
     {
-        Trips trips = new Trips("Mumbai","Pune","12 March,2017","");
+        mTripsList.addAll(list);
 
-        mTripsList.add(trips);
-
-        trips = new Trips("Pune","Mumbai","15 March,2017","");
-
-        mTripsList.add(trips);
-
-        trips = new Trips("Nasik","pune","17 March,2017","");
-
-        mTripsList.add(trips);
+        mTripsAdapter.notifyDataChanged();
 
     }
+
+
 }

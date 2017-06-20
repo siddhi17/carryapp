@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.FragmentManager;;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.carryapp.AsyncTasks.LogOutAsyncTask;
 import com.carryapp.Fragments.AccountFragment;
 import com.carryapp.Fragments.MainFragment;
 import com.carryapp.Fragments.MyTripsFragment;
@@ -21,6 +23,7 @@ import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.Fragments.TransfersFragment;
 import com.carryapp.R;
 import com.carryapp.Fragments.TransportFragment;
+import com.carryapp.helper.SessionData;
 import com.facebook.login.LoginManager;
 
 
@@ -34,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
     private static final long BACK_PRESS_DELAY = 10000;
     private long mBackPressTimestamp;
     private Intent mIntent;
+    private CoordinatorLayout parentLayout;
+    private SessionData sessionData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +47,43 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mLogo = (ImageView)findViewById(R.id.imgLogo);
-        mTxtTitle = (TextView)findViewById(R.id.textTitle);
 
+        sessionData = new SessionData(HomeActivity.this);
 
-        FragmentManager fragmentManager = getFragmentManager();
-        MainFragment fragment = new MainFragment();
-        fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment,"MAIN_FRAGMENT").commitAllowingStateLoss();
+        mLogo = (ImageView) findViewById(R.id.imgLogo);
+        mTxtTitle = (TextView) findViewById(R.id.textTitle);
+        parentLayout = (CoordinatorLayout) findViewById(R.id.parentPanel);
 
+        mIntent = getIntent();
+        Bundle bundle = getIntent().getExtras();
 
+        if (bundle != null) {
+
+            // if order's notification, show orders fragment
+
+            if (bundle.getString("title") != null) {
+
+                FragmentManager fragmentManager = getFragmentManager();
+                MainFragment fragment = new MainFragment();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "MAIN_FRAGMENT").commitAllowingStateLoss();
+
+                fragmentManager = getFragmentManager();
+                NoticesFragment fragment3 = new NoticesFragment();
+                Bundle bundle1 = new Bundle();
+                bundle1.putBoolean("notification",true);
+                fragment3.setArguments(bundle1);
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment3, "NOTICES_FRAGMENT").addToBackStack("H").commit();
+            }
+
+        } else {
+
+            FragmentManager fragmentManager = getFragmentManager();
+            MainFragment fragment = new MainFragment();
+            fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+            fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "MAIN_FRAGMENT").commitAllowingStateLoss();
+        }
     }
 
     @Override
@@ -107,17 +139,12 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 break;
             case R.id.menu_sign_off:
 
-                LoginManager.getInstance().logOut();
 
-                SharedPreferences pref = getSharedPreferences("appdata", MODE_PRIVATE);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.commit();
-                finish();
-                mIntent = new Intent(HomeActivity.this, MainActivity.class);
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(mIntent);
+
+                LogOutAsyncTask logOutAsyncTask = new LogOutAsyncTask(HomeActivity.this,parentLayout);
+                logOutAsyncTask.execute(sessionData.getString("api_key",""));
+
+
                 break;
         }
 

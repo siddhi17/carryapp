@@ -259,6 +259,8 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
                                     R.anim.bottom_down);
                             transportListFragment.mBtnRequest.startAnimation(bottomDown);
                             transportListFragment.mBtnRequest.setVisibility(View.GONE);
+
+                            removeAt(holder.getAdapterPosition());
                         }
                     });
 
@@ -305,4 +307,9 @@ public class TransportListAdapter extends RecyclerView.Adapter<RecyclerView.View
             isLoading = false;
         }
 
+    public void removeAt(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, list.size());
+    }
 }

@@ -67,6 +67,7 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
     private Snackbar snackbar;
     private FrameLayout parentLayout;
 
+    private Double startlatitude,startlongitude,endlatitude,endlongitude;
     private LatLng mFromLatLang,mToLatLang;
     private static final String TAG = "PlacePickerSample";
 
@@ -584,6 +585,10 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
 
                 mFromLatLang = place.getLatLng();
 
+                startlatitude = mFromLatLang.latitude;
+                startlongitude = mFromLatLang.longitude;
+
+
                 // Display attributions if required.
               /*  CharSequence attributions = place.getAttributions();
                 if (!TextUtils.isEmpty(attributions)) {
@@ -609,6 +614,9 @@ public class TransportFragment extends Fragment implements DatePickerDialog.OnDa
                 mEditTxt_To.setText(place.getName());
 
                 mToLatLang = place.getLatLng();
+
+                endlatitude = mToLatLang.latitude;
+                endlongitude = mToLatLang.longitude;
 
                 // Display attributions if required.
               /*  CharSequence attributions = place.getAttributions();

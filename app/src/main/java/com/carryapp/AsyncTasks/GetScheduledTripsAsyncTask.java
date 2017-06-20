@@ -2,25 +2,21 @@ package com.carryapp.AsyncTasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
-import android.app.Fragment;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import com.carryapp.Activities.HomeActivity;
-import com.carryapp.Activities.MainActivity;
 import com.carryapp.Classes.Notifications;
+import com.carryapp.Classes.Trips;
+import com.carryapp.Fragments.MyTripsFragment;
 import com.carryapp.Fragments.NoticesFragment;
+import com.carryapp.Fragments.ScheduledTravelFragment;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
 import com.carryapp.helper.ServerRequest;
-import com.carryapp.helper.SessionData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +25,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by siddhi jambhale on 6/11/2017.
+ * Created by siddhi jambhale on 6/20/2017.
  */
 
-public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObject> {
+public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObject> {
     String api;
     JSONObject jsonParams;
     Context mContext;
@@ -40,21 +36,21 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
     private Snackbar snackbar;
     private LinearLayout parentLayout;
     private JSONArray list;
-    private ArrayList<Notifications> notificationsArrayList;
-    private GetNotificationsCallBack getNotificationsCallBack;
-    private NoticesFragment noticesFragment;
+    private ArrayList<Trips> tripsArrayList;
+    private GetScheduleTripsCallBack getScheduleTripsCallBack;
+    private ScheduledTravelFragment tripsFragment;
 
-    public GetNotificationsAsyncTask(Context context, NoticesFragment noticesFragment, GetNotificationsCallBack getNotificationsCallBack, LinearLayout parentLayout) {
+    public GetScheduledTripsAsyncTask(Context context, ScheduledTravelFragment tripsFragment, GetScheduleTripsCallBack getScheduleTripsCallBack) {
 
         this.mContext = context;
         this.parentLayout = parentLayout;
-        this.noticesFragment = noticesFragment;
-        this.getNotificationsCallBack = getNotificationsCallBack;
+        this.tripsFragment = tripsFragment;
+        this.getScheduleTripsCallBack = getScheduleTripsCallBack;
 
     }
 
-    public interface GetNotificationsCallBack {
-        void doPostExecute(ArrayList<Notifications> notifications);
+    public interface GetScheduleTripsCallBack {
+        void doPostExecute(ArrayList<Trips> trips);
     }
 
     @Override
@@ -75,13 +71,14 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
     @Override
     protected JSONObject doInBackground(String... params) {
         try {
-            api = mContext.getResources().getString(R.string.url) + "getnotification";
+            api = mContext.getResources().getString(R.string.url) + "tripschedule";
 
             jsonParams = new JSONObject();
 
+            jsonParams.put("datetime",params[0]);
 
             ServerRequest request = new ServerRequest(api, jsonParams);
-            return request.sendPostRequest(params[0]);
+            return request.sendPostRequest(params[1]);
 
         } catch (Exception ue) {
             ue.printStackTrace();
@@ -100,48 +97,50 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
                 if (message.equals("Success")) {
 
                     //on successful registration go to sign in
-                    list = response.getJSONArray("notifications");
+                    list = response.getJSONArray("schedule");
 
-                    notificationsArrayList = new ArrayList<>();
+                    tripsArrayList = new ArrayList<>();
 
                     for (int j = 0; j < list.length(); j++) {
 
                         JSONObject jsonObject = list.getJSONObject(j);
 
-                        Notifications notifications = new Notifications();
+                        Trips trips = new Trips();
 
-                        notifications.setNt_id(jsonObject.getString("nt_id"));
-                        notifications.setNt_message(jsonObject.getString("nt_message"));
-                        notifications.setNt_status(jsonObject.getString("pt_status"));
-                        notifications.setPt_id(jsonObject.getString("pt_id"));
-                        notifications.setSender_id(jsonObject.getString("nt_sender_id"));
+                        trips.setmPostId(jsonObject.getString("pt_id"));
+                        trips.setmPostName(jsonObject.getString("pt_name"));
+                        trips.setmPostDetails(jsonObject.getString("pt_detail"));
+                        trips.setmPostCharges(jsonObject.getString("pt_charges"));
+                        trips.setmPostStatus(jsonObject.getString("pt_status"));
+                        trips.setmDate(jsonObject.getString("pt_date"));
+                        trips.setmFrom(jsonObject.getString("pt_start_loc"));
+                        trips.setmTo(jsonObject.getString("pt_end_loc"));
+                        trips.setmImage(jsonObject.getString("pt_photo"));
 
-                        notificationsArrayList.add(notifications);
+                        tripsArrayList.add(trips);
 
                     }
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
 
-                    noticesFragment.mRecyclerView.setVisibility(View.VISIBLE);
-                    noticesFragment.mTextViewData.setVisibility(View.GONE);
+                    tripsFragment.mRecyclerView_list.setVisibility(View.VISIBLE);
+                    tripsFragment.mTextViewData.setVisibility(View.GONE);
 
-                    getNotificationsCallBack.doPostExecute(notificationsArrayList);
-                }
-                else if(message.equals("Sorry, try again later"))
-                {
+                    getScheduleTripsCallBack.doPostExecute(tripsArrayList);
+                } else if (message.equals("Sorry, no delivery scheduled for you.")) {
                     if (loadingDialog.isShowing()) {
                         loadingDialog.dismiss();
                     }
 
-                    noticesFragment.mRecyclerView.setVisibility(View.GONE);
-                    noticesFragment.mTextViewData.setVisibility(View.VISIBLE);
+                    tripsFragment.mRecyclerView_list.setVisibility(View.GONE);
+                    tripsFragment.mTextViewData.setVisibility(View.VISIBLE);
 
-             /*   snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
-                snackbar.show();*/
+                    tripsFragment.mTextViewData.setText(message);
+                    
                 }
 
             }
-        }catch (JSONException je) {
+        } catch (JSONException je) {
             je.printStackTrace();
             //  Toast.makeText(getApplicationContext(), je.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -153,5 +152,4 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
-
 }

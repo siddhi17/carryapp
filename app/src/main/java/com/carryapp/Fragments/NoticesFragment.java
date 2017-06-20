@@ -30,10 +30,10 @@ import java.util.ArrayList;
 public class NoticesFragment extends Fragment implements GetNotificationsAsyncTask.GetNotificationsCallBack{
 
 
-    private RelativeLayout mLayoutMessages,mLayoutNotifications;
+    private RelativeLayout mLayoutMessages,mLayoutNotifications,mRecyclerViewLayout;
     private LinearLayout mMessagesLayout,parentPanel;
-    private RecyclerView mRecyclerView;
-    private TextView mTextViewNotifications,mTextViewMessages;
+    public RecyclerView mRecyclerView;
+    public TextView mTextViewNotifications,mTextViewMessages,mTextViewData;
     private ArrayList<Notifications> notificationsArrayList;
     private NotificationsAdapter mNotificationsAdapter;
     private SessionData sessionData;
@@ -77,11 +77,13 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         mLayoutNotifications = (RelativeLayout) view.findViewById(R.id.linearLayoutNotifications);
 
         mMessagesLayout = (LinearLayout) view.findViewById(R.id.messagesLayout);
+        mRecyclerViewLayout = (RelativeLayout) view.findViewById(R.id.recyclerViewLayout);
         parentPanel = (LinearLayout) view.findViewById(R.id.parentPanel);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_notificationsList);
         mTextViewNotifications = (TextView) view.findViewById(R.id.notifications);
         mTextViewMessages = (TextView) view.findViewById(R.id.messages);
+        mTextViewData = (TextView) view.findViewById(R.id.textViewData);
 /*
         mRecyclerView.setVisibility(View.GONE);
         mMessagesLayout.setVisibility(View.VISIBLE);*/
@@ -95,6 +97,17 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
 
+
+        Bundle bundle = this.getArguments();
+
+        if(bundle != null) {
+
+            if (bundle.getBoolean("notification", false)) {
+
+                setNotifications();
+            }
+        }
+
     }
 
     public void listeners()
@@ -106,6 +119,7 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
 
                 mRecyclerView.setVisibility(View.GONE);
                 mMessagesLayout.setVisibility(View.VISIBLE);
+                mRecyclerViewLayout.setVisibility(View.GONE);
                 mLayoutNotifications.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
                 mLayoutMessages.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
                 mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
@@ -118,41 +132,31 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
             public void onClick(View v) {
 
 
-
-                GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(),NoticesFragment.this,parentPanel);
-                getNotificationsAsyncTask.execute(sessionData.getString("api_key",""));
-
-
-                mRecyclerView.setVisibility(View.VISIBLE);
-
-                mLayoutNotifications.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
-                mLayoutMessages.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
-                mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
-                mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+                setNotifications();
 
             }
         });
 
     }
 
-    public void demoData()
+    public void setNotifications()
     {
-        Notifications notifications = new Notifications("1","post","");
 
-        notificationsArrayList.add(notifications);
 
-        notifications = new Notifications("2","post1","");
+        GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(),NoticesFragment.this,NoticesFragment.this,parentPanel);
+        getNotificationsAsyncTask.execute(sessionData.getString("api_key",""));
 
-        notificationsArrayList.add(notifications);
 
-        notifications = new Notifications("3","post2","");
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mRecyclerViewLayout.setVisibility(View.VISIBLE);
 
-        notificationsArrayList.add(notifications);
+        mLayoutNotifications.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
+        mLayoutMessages.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
+        mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
+        mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
 
-        mNotificationsAdapter.notifyDataSetChanged();
 
     }
-
 
     @Override
     public void doPostExecute(ArrayList<Notifications> list)

@@ -37,8 +37,9 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
     public TextView textViewFrom,textViewTo,textViewDate,textViewData;
     private String mFrom,mTo,mDate;
     private LatLng mToLatLang,mFromLocation;
+    private double startLatitude,startLongitude,endLatitude,endLongitude;
     public static Button mBtnRequest;
-
+    double precision;
 
     public TransportListFragment() {
         // Required empty public constructor
@@ -56,10 +57,20 @@ public class TransportListFragment extends Fragment implements SearchPostsAsyncT
 
         setUpUI(view);
 
+        precision =  Math.pow(10,6);
+
+        startLatitude =  (int)(precision * mFromLocation.latitude)/precision;
+        startLongitude =  (int)(precision * mFromLocation.longitude)/precision;
+        endLatitude =  (int)(precision * mToLatLang.latitude)/precision;
+        endLongitude =  (int)(precision * mToLatLang.longitude)/precision;
 
         SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this,TransportListFragment.this);
+        searchPostsAsyncTask.execute(String.valueOf(startLatitude),String.valueOf(startLongitude),
+                String.valueOf(endLatitude),String.valueOf(endLongitude),mDate,sessionData.getString("api_key",""));
+
+     /*   SearchPostsAsyncTask searchPostsAsyncTask = new SearchPostsAsyncTask(getActivity(),parentLayout,TransportListFragment.this,TransportListFragment.this);
         searchPostsAsyncTask.execute(String.valueOf(mFromLocation.latitude),String.valueOf(mFromLocation.longitude),
-                String.valueOf(mToLatLang.latitude),String.valueOf(mToLatLang.longitude),mDate,sessionData.getString("api_key",""));
+                String.valueOf(mToLatLang.latitude),String.valueOf(mToLatLang.longitude),mDate,sessionData.getString("api_key",""));*/
 
       //  demoData();
 
