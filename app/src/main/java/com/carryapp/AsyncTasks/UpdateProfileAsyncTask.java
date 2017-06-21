@@ -125,6 +125,13 @@ public class UpdateProfileAsyncTask extends AsyncTask<String, Void, JSONObject> 
                                 session.add("ur_birth_date", mAge);
 
                             }
+                    else if (message.equals("Access Denied. Invalid Api key")) {
+                        if (loadingDialog.isShowing())
+                            loadingDialog.dismiss();
+                        snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
+                        snackbar.show();
+
+                    }
 
                         } else {
 

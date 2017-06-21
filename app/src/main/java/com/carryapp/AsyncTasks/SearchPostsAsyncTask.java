@@ -164,6 +164,13 @@ public class SearchPostsAsyncTask extends AsyncTask<String, Void, JSONObject> {
              /*   snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
                 snackbar.show();*/
             }
+            else if (message.equals("Access Denied. Invalid Api key")) {
+                        if (loadingDialog.isShowing())
+                            loadingDialog.dismiss();
+                snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
+                snackbar.show();
+
+            }
     }catch (JSONException je) {
             je.printStackTrace();
             //  Toast.makeText(getApplicationContext(), je.getMessage(), Toast.LENGTH_LONG).show();

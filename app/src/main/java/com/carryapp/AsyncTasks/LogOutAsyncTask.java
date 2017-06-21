@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 
 import com.carryapp.Activities.HomeActivity;
+import com.carryapp.Activities.LoginActivity;
 import com.carryapp.Activities.MainActivity;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
@@ -98,6 +99,34 @@ public class LogOutAsyncTask extends AsyncTask<String, Void, JSONObject> {
 
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
+
+                }
+                else if (message.equals("Access Denied. Invalid Api key")) {
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+
+                    LoginManager.getInstance().logOut();
+                    SharedPreferences pref = mContext.getSharedPreferences("appdata", mContext.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.clear();
+                    editor.commit();
+
+                    snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                    ((HomeActivity) mContext).finish();
+
+                    snackbar.addCallback(new Snackbar.Callback() {
+
+                        @Override
+                        public void onDismissed(Snackbar snackbar, int event) {
+                            //see Snackbar.Callback docs for event details
+                            Intent mIntent = new Intent(mContext, MainActivity.class);
+                            mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            mIntent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                            mContext.startActivity(mIntent);
+                        }
+                    });
+
 
                 }
             }

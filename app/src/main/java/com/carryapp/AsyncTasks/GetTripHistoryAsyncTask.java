@@ -10,11 +10,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.carryapp.Classes.Notifications;
+import com.carryapp.Classes.TravelHistory;
 import com.carryapp.Classes.Trips;
-import com.carryapp.Fragments.MyTripsFragment;
-import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.Fragments.ScheduledTravelFragment;
+import com.carryapp.Fragments.TravelHistoryFragment;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
 import com.carryapp.helper.ServerRequest;
@@ -26,10 +25,10 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by siddhi jambhale on 6/20/2017.
+ * Created by siddhi jambhale on 6/21/2017.
  */
 
-public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObject> {
+public class GetTripHistoryAsyncTask  extends AsyncTask<String, Void, JSONObject> {
     String api;
     JSONObject jsonParams;
     Context mContext;
@@ -37,22 +36,21 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
     private Snackbar snackbar;
     private RelativeLayout parentLayout;
     private JSONArray list;
-    private ArrayList<Trips> tripsArrayList;
-    private GetScheduleTripsCallBack getScheduleTripsCallBack;
-    private ScheduledTravelFragment tripsFragment;
+    private ArrayList<TravelHistory> tripsArrayList;
+    private GetTripsHistoryCallBack getTripsHistoryCallBack;
+    private TravelHistoryFragment travelHistoryFragment;
 
-
-    public GetScheduledTripsAsyncTask(Context context, RelativeLayout parentLayout, ScheduledTravelFragment tripsFragment, GetScheduleTripsCallBack getScheduleTripsCallBack) {
+    public GetTripHistoryAsyncTask(Context context,RelativeLayout parentLayout, TravelHistoryFragment travelHistoryFragment, GetTripsHistoryCallBack getTripsHistoryCallBack) {
 
         this.mContext = context;
         this.parentLayout = parentLayout;
-        this.tripsFragment = tripsFragment;
-        this.getScheduleTripsCallBack = getScheduleTripsCallBack;
+        this.travelHistoryFragment = travelHistoryFragment;
+        this.getTripsHistoryCallBack = getTripsHistoryCallBack;
 
     }
 
-    public interface GetScheduleTripsCallBack {
-        void doPostExecute(ArrayList<Trips> trips);
+    public interface GetTripsHistoryCallBack {
+        void doPostExecute(ArrayList<TravelHistory> trips);
     }
 
     @Override
@@ -60,8 +58,7 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
         super.onPreExecute();
 
         if (!isOnline()) {
-            //   showAlert(getString(R.string.check_network));
-         /*   CommonUtils.showAlert(RegisterCustomerActivity.this, getResources().getString(R.string.check_network), "Check Network");*/
+
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
@@ -73,14 +70,12 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
     @Override
     protected JSONObject doInBackground(String... params) {
         try {
-            api = mContext.getResources().getString(R.string.url) + "tripschedule";
+            api = mContext.getResources().getString(R.string.url) + "triphistory";
 
             jsonParams = new JSONObject();
 
-            jsonParams.put("datetime",params[0]);
-
             ServerRequest request = new ServerRequest(api, jsonParams);
-            return request.sendPostRequest(params[1]);
+            return request.sendPostRequest(params[0]);
 
         } catch (Exception ue) {
             ue.printStackTrace();
@@ -99,7 +94,7 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
                 if (message.equals("Success")) {
 
                     //on successful registration go to sign in
-                    list = response.getJSONArray("schedule");
+                    list = response.getJSONArray("posts");
 
                     tripsArrayList = new ArrayList<>();
 
@@ -107,45 +102,42 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
 
                         JSONObject jsonObject = list.getJSONObject(j);
 
-                        Trips trips = new Trips();
+                        TravelHistory travelHistory = new TravelHistory();
 
-                        trips.setmPostId(jsonObject.getString("pt_id"));
-                        trips.setmPostName(jsonObject.getString("pt_name"));
-                        trips.setmPostDetails(jsonObject.getString("pt_detail"));
-                        trips.setmPostCharges(jsonObject.getString("pt_charges"));
-                        trips.setmPostStatus(jsonObject.getString("pt_status"));
-                        trips.setmDate(jsonObject.getString("pt_date"));
-                        trips.setmFrom(jsonObject.getString("pt_start_loc"));
-                        trips.setmTo(jsonObject.getString("pt_end_loc"));
-                        trips.setmImage(jsonObject.getString("pt_photo"));
+                      /*  travelHistory.setmPostId(jsonObject.getString("pt_id"));
+                        travelHistory.setmPostName(jsonObject.getString("pt_name"));
+                        travelHistory.setmPostDetails(jsonObject.getString("pt_detail"));
+                        travelHistory.setmPostCharges(jsonObject.getString("pt_charges"));
+                        travelHistory.setmPostStatus(jsonObject.getString("pt_status"));*/
+                        travelHistory.setmDate(jsonObject.getString("pt_date"));
+                        travelHistory.setmFrom(jsonObject.getString("pt_start_loc"));
+                        travelHistory.setmTo(jsonObject.getString("pt_end_loc"));
+                        travelHistory.setmImage(jsonObject.getString("pt_photo"));
 
-                        tripsArrayList.add(trips);
+                        tripsArrayList.add(travelHistory);
 
                     }
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
 
-                    tripsFragment.mRecyclerView_list.setVisibility(View.VISIBLE);
-                    tripsFragment.mTextViewData.setVisibility(View.GONE);
+                    travelHistoryFragment.mRecyclerView_list.setVisibility(View.VISIBLE);
+                    travelHistoryFragment.mTextViewData.setVisibility(View.GONE);
 
-                    getScheduleTripsCallBack.doPostExecute(tripsArrayList);
-                }
-                else if (message.equals("Sorry, no delivery scheduled for you.")) {
+                    getTripsHistoryCallBack.doPostExecute(tripsArrayList);
+
+                } else if (message.equals("Sorry, try again later")) {
                     if (loadingDialog.isShowing()) {
                         loadingDialog.dismiss();
                     }
 
-                    tripsFragment.mRecyclerView_list.setVisibility(View.GONE);
-                    tripsFragment.mTextViewData.setVisibility(View.VISIBLE);
+                    travelHistoryFragment.mRecyclerView_list.setVisibility(View.GONE);
+                    travelHistoryFragment.mTextViewData.setVisibility(View.VISIBLE);
 
-                    tripsFragment.mTextViewData.setText(message);
-                    
-                }
-                else if (message.equals("Access Denied. Invalid Api key")) {
+                } else if (message.equals("Access Denied. Invalid Api key")) {
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
 
-                    snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
+                    snackbar = Snackbar.make(parentLayout, R.string.warning, Snackbar.LENGTH_LONG);
                     snackbar.show();
 
                 }

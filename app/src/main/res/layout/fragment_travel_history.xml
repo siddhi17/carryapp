@@ -1,13 +1,23 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:id="@+id/parentPanel"
     tools:context="com.carryapp.Fragments.TravelHistoryFragment">
-
+    <TextView
+        android:id="@+id/textViewData"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/noData"
+        android:textColor="@color/colorButton"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:layout_centerInParent="true" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_tripHistory"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"/>
-</FrameLayout>
+</RelativeLayout>

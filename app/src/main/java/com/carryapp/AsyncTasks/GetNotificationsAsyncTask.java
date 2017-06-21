@@ -139,6 +139,14 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
              /*   snackbar = Snackbar.make(parentLayout, R.string.noDelivery, Snackbar.LENGTH_LONG);
                 snackbar.show();*/
                 }
+                else if (message.equals("Access Denied. Invalid Api key")) {
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+
+                    snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+                }
 
             }
         }catch (JSONException je) {

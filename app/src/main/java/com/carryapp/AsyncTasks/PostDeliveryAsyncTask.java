@@ -111,7 +111,9 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         String message = response.getString("message");
 
                         if (message.equals("Access Denied. Invalid Api key")) {
-                            snackbar = Snackbar.make(parentLayout, message, Snackbar.LENGTH_LONG);
+                            if (loadingDialog.isShowing())
+                                loadingDialog.dismiss();
+                            snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
                             snackbar.show();
 
                         } else if (message.equals("Success")) {
@@ -131,9 +133,9 @@ public class PostDeliveryAsyncTask extends AsyncTask<String, Void, JSONObject> {
                                 loadingDialog.dismiss();
 
                             FragmentManager fragmentManager = ((HomeActivity) mContext).getFragmentManager();
-                            PostDetailsFragment fragment = new PostDetailsFragment();
+                            BlankFragment fragment = new BlankFragment();
                             fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                            fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "POST_DETAILS_FRAGMENT").addToBackStack("M").commit();
+                            fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "BLANK_FRAGMENT").addToBackStack("M").commit();
                         }
                     }
 

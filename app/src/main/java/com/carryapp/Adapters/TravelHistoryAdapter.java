@@ -2,6 +2,7 @@ package com.carryapp.Adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import com.carryapp.Fragments.ScheduledTravelFragment;
 import com.carryapp.Fragments.TravelHistoryFragment;
 import com.carryapp.Holders.TripsHolder;
 import com.carryapp.R;
+import com.carryapp.helper.CommonUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -93,16 +96,28 @@ public class TravelHistoryAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public void retriveAllTrips(final TripsHolder holder, int position) {
 
-            //show orders data
+            //show trips data
 
             final TravelHistory data = (TravelHistory) list.get(position);
 
-          /*  final String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM,yyyy", data.getCreated_at());*/
+            final String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM, yyyy", data.getmDate());
 
 
-            holder.tv_date.setText(data.getmDate());
+            holder.tv_date.setText(newDate);
             holder.tv_from.setText(data.getmFrom());
             holder.tv_to.setText(data.getmTo());
+
+/*
+            String url = context.getString(R.string.photo_url) + data.getmImage();
+            Log.e("url",url);
+
+            Picasso.with(context)
+                    .load(url)
+                    .resize(400,400)
+                    .placeholder(R.drawable.car_shipping)
+                    .error(R.drawable.car_shipping)
+                    .into(holder.carImageView);
+*/
 
 
             //go to order detail fragment

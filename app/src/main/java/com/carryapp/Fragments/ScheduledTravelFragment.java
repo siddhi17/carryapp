@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.carryapp.Adapters.ScheduledTravelAdapter;
@@ -34,6 +35,7 @@ public class ScheduledTravelFragment extends Fragment implements GetScheduledTri
     private String mDateTime;
     private SessionData sessionData;
 
+    private RelativeLayout parentLayout;
 
     public ScheduledTravelFragment() {
         // Required empty public constructor
@@ -51,11 +53,17 @@ public class ScheduledTravelFragment extends Fragment implements GetScheduledTri
 
 
 
-        GetScheduledTripsAsyncTask getScheduledTripsAsyncTask = new GetScheduledTripsAsyncTask(getActivity(),ScheduledTravelFragment.this,ScheduledTravelFragment.this);
-        getScheduledTripsAsyncTask.execute(mDateTime,sessionData.getString("api_key",""));
 
 
         return view;
+    }
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+
+        GetScheduledTripsAsyncTask getScheduledTripsAsyncTask = new GetScheduledTripsAsyncTask(getActivity(),parentLayout,ScheduledTravelFragment.this,ScheduledTravelFragment.this);
+        getScheduledTripsAsyncTask.execute(mDateTime,sessionData.getString("api_key",""));
     }
 
     public void setUpUI(View view)
@@ -63,6 +71,8 @@ public class ScheduledTravelFragment extends Fragment implements GetScheduledTri
 
         mRecyclerView_list = (RecyclerView) view.findViewById(R.id.rv_tripList);
         mTextViewData = (TextView) view.findViewById(R.id.textViewData);
+        parentLayout = (RelativeLayout) view.findViewById(R.id.parentPanel);
+
         mTripsList = new ArrayList<Trips>();
         mTripsAdapter = new ScheduledTravelAdapter(getActivity(),mTripsList, ScheduledTravelFragment.this);
         mRecyclerView_list.setLayoutManager(new LinearLayoutManager(getActivity()));

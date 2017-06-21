@@ -1,6 +1,8 @@
 package com.carryapp.Adapters;
 
+import android.app.FragmentManager;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.carryapp.Classes.Transport;
 import com.carryapp.Classes.Trips;
+import com.carryapp.Fragments.PostDetailsFragment;
 import com.carryapp.Fragments.ScheduledTravelFragment;
 import com.carryapp.Fragments.TransportListFragment;
 import com.carryapp.Holders.TransportListHolder;
@@ -107,7 +110,7 @@ public class ScheduledTravelAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         holder.tv_from.setText(data.getmFrom());
         holder.tv_to.setText(data.getmTo());
 
-        String url = context.getString(R.string.photo_url) + data.getmImage();
+   /*     String url = context.getString(R.string.photo_url) + data.getmImage();
         Log.e("url",url);
 
         Picasso.with(context)
@@ -116,33 +119,30 @@ public class ScheduledTravelAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 .placeholder(R.drawable.car_shipping)
                 .error(R.drawable.car_shipping)
                 .into(holder.carImageView);
-
+*/
         //go to order detail fragment
 
-          /*  holder.lay_row.setOnClickListener(new View.OnClickListener() {
+            holder.lay_row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     Bundle bundle = new Bundle();
-                    bundle.putString("name", data.getMerchant_name());
-                    bundle.putString("date", newDate);
-                    bundle.putString("time", time);
-                    bundle.putLong("quantity", data.getItem_quantity());
-                    bundle.putInt("status", data.getStatus());
-                    bundle.putLong("orderID", data.getId());
-                    bundle.putLong("amount", data.getTotalAmount());
-                    bundle.putString("avatar", data.getAvatar());
-                    bundle.putString("receipt", data.getReceipt());
-                    //go to home screen
-                    FragmentManager fragmentManager = ordersFragment.getFragmentManager();
-                    OrderDetailFragment fragment = new OrderDetailFragment();
-                    fragment.setArguments(bundle);
+                    bundle.putString("pt_id", data.getmPostId());
+                    bundle.putString("pt_name", data.getmPostName());
+                    bundle.putString("pt_details", data.getmPostDetails());
+                    bundle.putString("pt_photo", data.getmImage());
+                    bundle.putString("pt_date", data.getmDate());
+                    bundle.putString("from", data.getmFrom());
+                    bundle.putString("to", data.getmTo());
 
-                    fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "RETRIEVE_ORDERS_ITEMS_FRAGMENT").addToBackStack("A").commit();
+                    //go to post details screen
+                    FragmentManager fragmentManager = tripListFragment.getFragmentManager();
+                    PostDetailsFragment fragment = new PostDetailsFragment();
+                    fragment.setArguments(bundle);
+                    fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "POST_DETAILS_FRAGMENT").addToBackStack("O").commit();
 
                 }
-            });*/
+            });
 
     }
 

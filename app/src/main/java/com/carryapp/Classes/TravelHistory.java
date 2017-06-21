@@ -5,7 +5,10 @@ package com.carryapp.Classes;
  */
 
 public class TravelHistory {
+
     String mFrom,mTo,mDate,mImage;
+
+    public TravelHistory(){}
 
     public TravelHistory(String from, String to,String date,String image)
     {
@@ -13,7 +16,6 @@ public class TravelHistory {
         this.mTo = to;
         this.mImage = image;
         this.mDate = date;
-
     }
 
     public String getmDate() {

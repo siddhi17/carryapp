@@ -130,6 +130,7 @@ public class FacebookLoginAsyncTask  extends AsyncTask<String, Void, JSONObject>
                     mContext.startActivity(intent);
 
                 }
+
             }
         }catch (JSONException je) {
             je.printStackTrace();

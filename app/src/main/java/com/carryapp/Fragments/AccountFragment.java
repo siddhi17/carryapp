@@ -454,7 +454,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
     public boolean validation()
     {
-        if(sessionData.getString("ur_photo","").equals("") || sessionData.getString("ur_photo","").equals("null"))
+        if(sessionData.getString("ur_photo","").equals("") || sessionData.getString("ur_photo","").equals("null") ||  sessionData.getString("ur_photo","").equals("no_image"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.photoAlert, Snackbar.LENGTH_LONG);
             snackbar.show();
