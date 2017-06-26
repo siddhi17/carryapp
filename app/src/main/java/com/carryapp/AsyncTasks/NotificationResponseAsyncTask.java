@@ -62,6 +62,7 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
             jsonParams.put("pt_id", params[0]);
             jsonParams.put("nt_receiver_id", params[1]);
             jsonParams.put("accept_status", params[2]);
+            jsonParams.put("nt_id", params[4]);
 
             ServerRequest request = new ServerRequest(api, jsonParams);
             return request.sendPostRequest(params[3]);
@@ -98,6 +99,18 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
 
                     snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
                     snackbar.show();
+
+                }
+                else if (message.equals("Sorry, No device id available.")) {
+
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+
+                }
+                else if (message.equals("Already accepted.")) {
+
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
 
                 }
             }

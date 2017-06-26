@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Adapters.ScheduledTravelAdapter;
 import com.carryapp.Adapters.TransportListAdapter;
 import com.carryapp.AsyncTasks.GetScheduledTripsAsyncTask;
@@ -52,9 +56,6 @@ public class ScheduledTravelFragment extends Fragment implements GetScheduledTri
         setUpUI(view);
 
 
-
-
-
         return view;
     }
     @Override
@@ -62,9 +63,19 @@ public class ScheduledTravelFragment extends Fragment implements GetScheduledTri
     {
         super.onStart();
 
+        Log.e("onStart","onstart");
+
         GetScheduledTripsAsyncTask getScheduledTripsAsyncTask = new GetScheduledTripsAsyncTask(getActivity(),parentLayout,ScheduledTravelFragment.this,ScheduledTravelFragment.this);
         getScheduledTripsAsyncTask.execute(mDateTime,sessionData.getString("api_key",""));
     }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+    }
+
 
     public void setUpUI(View view)
     {
@@ -90,6 +101,8 @@ public class ScheduledTravelFragment extends Fragment implements GetScheduledTri
     @Override
     public void doPostExecute(ArrayList<Trips> list)
     {
+        mTripsList.clear();
+
         mTripsList.addAll(list);
 
         mTripsAdapter.notifyDataChanged();

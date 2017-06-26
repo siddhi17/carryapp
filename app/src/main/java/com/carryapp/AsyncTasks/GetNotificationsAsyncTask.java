@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Activities.MainActivity;
 import com.carryapp.Classes.Notifications;
+import com.carryapp.Database.NotiTableHelper;
 import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
@@ -43,6 +44,8 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
     private ArrayList<Notifications> notificationsArrayList;
     private GetNotificationsCallBack getNotificationsCallBack;
     private NoticesFragment noticesFragment;
+    private SessionData sessionData;
+    private boolean home;
 
     public GetNotificationsAsyncTask(Context context, NoticesFragment noticesFragment, GetNotificationsCallBack getNotificationsCallBack, LinearLayout parentLayout) {
 
@@ -50,7 +53,16 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
         this.parentLayout = parentLayout;
         this.noticesFragment = noticesFragment;
         this.getNotificationsCallBack = getNotificationsCallBack;
+        loadingDialog = new ProgressDialog(mContext);
+    }
 
+
+    public GetNotificationsAsyncTask(Context context,GetNotificationsCallBack getNotificationsCallBack) {
+
+        this.mContext = context;
+        this.getNotificationsCallBack = getNotificationsCallBack;
+        loadingDialog = new ProgressDialog(mContext);
+        home = true;
     }
 
     public interface GetNotificationsCallBack {
@@ -67,6 +79,7 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
             snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
         } else {
+            if(!home)
             loadingDialog = ProgressDialog.show(mContext, null, mContext.getString(R.string.wait));
         }
 
@@ -99,6 +112,11 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
 
                 if (message.equals("Success")) {
 
+                    sessionData = new SessionData(mContext);
+                    NotiTableHelper notiTableHelper = new NotiTableHelper(mContext);
+
+                    notiTableHelper.deleteAllNoti();
+
                     //on successful registration go to sign in
                     list = response.getJSONArray("notifications");
 
@@ -112,12 +130,14 @@ public class GetNotificationsAsyncTask  extends AsyncTask<String, Void, JSONObje
 
                         notifications.setNt_id(jsonObject.getString("nt_id"));
                         notifications.setNt_message(jsonObject.getString("nt_message"));
-                        notifications.setNt_status(jsonObject.getString("pt_status"));
+                        notifications.setNt_status(jsonObject.getString("nt_status"));
                         notifications.setPt_id(jsonObject.getString("pt_id"));
                         notifications.setSender_id(jsonObject.getString("nt_sender_id"));
 
                         notificationsArrayList.add(notifications);
 
+                        new AddNotiAsyncTask(mContext).execute(notifications.getNt_id(), notifications.getNt_message(), notifications.getPt_id(),
+                                notifications.getSender_id(),notifications.getNt_status());
                     }
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();

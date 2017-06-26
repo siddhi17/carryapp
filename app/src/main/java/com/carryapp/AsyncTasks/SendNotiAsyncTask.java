@@ -104,9 +104,6 @@ public class SendNotiAsyncTask  extends AsyncTask<String, Void, JSONObject> {
 
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
-                    snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
-                    snackbar.show();
-
                 }
                 else if (message.equals("Access Denied. Invalid Api key")) {
                     if (loadingDialog.isShowing())
@@ -115,6 +112,30 @@ public class SendNotiAsyncTask  extends AsyncTask<String, Void, JSONObject> {
                     snackbar.show();
 
                 }
+                else if(message.equals("Request is already accepted for this delivery."))
+                {
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+                    snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+                }  else if(message.equals("Request is already rejected for this delivery."))
+                {
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+                    snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+
+                else if(message.equals("Request is already sent."))
+                {
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+                    snackbar = Snackbar.make(parentLayout,message, Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+                }
+
             }
 
         } catch (JSONException je) {

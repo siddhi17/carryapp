@@ -22,22 +22,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                    <TextView
+                        android:id="@+id/textNotification"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10"
+                        android:visibility="gone"
+                        android:textColor="#FFF"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/badge_circle"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/noti"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:src="@mipmap/ic_mail"/>
 
-            <ImageView
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:paddingLeft="30dp"
-                android:paddingStart="30dp"
-                android:layout_centerInParent="true"
-                android:id="@+id/imgLogo"
-                android:src="@drawable/carry_app_logo_1"/>
+                <ImageView
+                    android:id="@+id/imgLogo"
+                    android:layout_width="150dp"
+                    android:layout_height="100dp"
+                    android:layout_centerInParent="true"
+                    android:paddingLeft="30dp"
+                    android:paddingStart="30dp"
+                    android:src="@drawable/carry_app_logo_1" />
 
                 <TextView
                     android:layout_width="wrap_content"

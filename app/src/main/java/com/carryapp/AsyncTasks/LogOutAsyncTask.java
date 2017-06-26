@@ -16,6 +16,7 @@ import com.carryapp.Activities.MainActivity;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
 import com.carryapp.helper.ServerRequest;
+import com.carryapp.helper.SessionData;
 import com.facebook.login.LoginManager;
 
 import org.json.JSONException;
@@ -32,6 +33,7 @@ public class LogOutAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private ProgressDialog loadingDialog;
     private Snackbar snackbar;
     private CoordinatorLayout parentLayout;
+    private SessionData sessionData;
 
 
     public LogOutAsyncTask(Context context, CoordinatorLayout parentLayout) {
@@ -106,10 +108,11 @@ public class LogOutAsyncTask extends AsyncTask<String, Void, JSONObject> {
                         loadingDialog.dismiss();
 
                     LoginManager.getInstance().logOut();
-                    SharedPreferences pref = mContext.getSharedPreferences("appdata", mContext.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.clear();
-                    editor.commit();
+
+
+                    sessionData = new SessionData(mContext);
+                    sessionData.clearSession();
+
 
                     snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
                     snackbar.show();

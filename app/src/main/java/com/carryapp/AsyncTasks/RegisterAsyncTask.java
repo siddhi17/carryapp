@@ -151,6 +151,8 @@ public class RegisterAsyncTask extends AsyncTask<String, Void, JSONObject> {
                             session.add("ur_dni_photo", jsonObject.getString("ur_dni_photo"));
                             session.add("ur_birth_date", jsonObject.getString("ur_birth_date"));
                             session.add("ur_rating", jsonObject.getString("ur_rating"));
+                            session.add("notificationCount", 0);
+
 
                             if (loadingDialog.isShowing())
                                 loadingDialog.dismiss();

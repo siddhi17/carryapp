@@ -19,7 +19,8 @@
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:background="@drawable/border"
+            android:background="@color/colorButton"
+
             android:id="@+id/linearLayoutMessages">
 
             <TextView
@@ -27,14 +28,15 @@
                 android:layout_height="wrap_content"
                 android:text="@string/messages"
                 android:id="@+id/messages"
+                android:textColor="@color/colorPrimary"
                 android:layout_centerInParent="true"
-                android:textColor="@color/colorButton"/>
+            />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="150dp"
             android:layout_height="match_parent"
-            android:background="@color/colorButton"
+            android:background="@drawable/border"
             android:layout_alignParentTop="true"
             android:id="@+id/linearLayoutNotifications"
             android:layout_toRightOf="@+id/linearLayoutMessages"
@@ -46,7 +48,7 @@
                 android:text="@string/noti"
                 android:id="@+id/notifications"
                 android:layout_centerInParent="true"
-                android:textColor="@color/colorPrimary"/>
+                android:textColor="@color/colorButton" />
 
         </RelativeLayout>
     </RelativeLayout>

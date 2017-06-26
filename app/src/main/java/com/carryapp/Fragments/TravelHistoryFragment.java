@@ -92,6 +92,9 @@ public class TravelHistoryFragment extends Fragment implements GetTripHistoryAsy
     @Override
     public void doPostExecute(ArrayList<TravelHistory> list)
     {
+
+        mTripsList.clear();
+
         mTripsList.addAll(list);
 
         mTravelHistoryAdapter.notifyDataChanged();

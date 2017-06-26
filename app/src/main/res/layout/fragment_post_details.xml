@@ -5,112 +5,115 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:clickable="true"
     android:background="@color/colorPrimary"
     tools:context="com.carryapp.Fragments.PostDetailsFragment">
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
         card_view:cardCornerRadius="2dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp">
-
-        <ImageView
-            android:id="@+id/imageView5"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            app:srcCompat="@drawable/car_shipping" />
-
-        <TextView
-            android:id="@+id/textViewDate"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/colorButton"
-            android:layout_alignTop="@+id/imageView5"
-            android:layout_toRightOf="@+id/imageView5"
-            android:text="TextView"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linearLayout9"
-            android:layout_alignBottom="@+id/imageView5"
-            android:layout_alignLeft="@+id/textViewDate"
-            android:layout_alignStart="@+id/textViewDate"
-            android:layout_marginBottom="10dp">
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                app:srcCompat="@drawable/car_shipping" />
 
             <TextView
-                android:id="@+id/textViewFrom"
+                android:id="@+id/textViewDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="From"
-                android:textSize="16sp"
-                android:textColor="@android:color/black" />
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@+id/imageView5"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/imageView5"
+                android:text="TextView"
+                android:textColor="@color/colorButton"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewTime"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_alignLeft="@+id/textViewTime"
+                android:layout_alignStart="@+id/textViewTime">
+
+                <TextView
+                    android:id="@+id/textViewFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="From"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="05dp"
+                    android:layout_marginLeft="05dp"
+                    android:layout_marginRight="05dp"
+                    android:layout_marginStart="05dp"
+                    android:text="-"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/textViewTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="To"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/textViewTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="05dp"
-                android:layout_marginLeft="05dp"
-                android:layout_marginRight="05dp"
-                android:layout_marginStart="05dp"
-                android:text="-"
-                android:textColor="@android:color/black" />
-
-            <TextView
-                android:id="@+id/textViewTo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="To"
-                android:textSize="16sp"
-                android:textColor="@android:color/black" />
+                android:layout_alignLeft="@+id/textViewDate"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignStart="@+id/textViewDate"
+                android:layout_below="@+id/textViewDate"
+                android:text="TextView"
+                android:textColor="@color/colorButton"
+                android:textSize="16sp" />
 
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textViewTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="16sp"
-            android:textColor="@color/colorButton"
-            android:layout_marginTop="05dp"
-            android:layout_below="@+id/textViewDate"
-            android:layout_alignLeft="@+id/textViewDate"
-            android:layout_alignStart="@+id/textViewDate"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-
-    </RelativeLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -164,10 +167,10 @@
             android:id="@+id/imageViewProduct"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/product"
+            android:layout_below="@+id/text"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewProductName"
-            app:srcCompat="@drawable/product" />
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 
@@ -180,36 +183,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textViewEditPost"
-            android:textSize="18sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+        <Button
+            android:id="@+id/btn_editPost"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="150dp"
+            android:layout_height="25dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            android:textColor="@color/colorButton"
-            android:text="@string/editPost"
-            android:gravity="center"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:id="@+id/textViewDeletePost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/deletePost"
-            android:textColor="@android:color/holo_red_dark"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:layout_below="@+id/textViewEditPost"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:background="@drawable/rounded_button"
+            android:text="@string/editPost"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/btn_deletePost"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="150dp"
+            android:layout_height="25dp"
+            android:layout_alignLeft="@+id/btn_editPost"
+            android:layout_alignParentBottom="false"
+            android:layout_alignStart="@+id/btn_editPost"
+            android:layout_below="@+id/btn_editPost"
+            android:background="@drawable/red_button"
+            android:text="@string/deletePost"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </LinearLayout>

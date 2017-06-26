@@ -16,6 +16,7 @@ import com.carryapp.R;
 import com.carryapp.helper.SessionData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by siddhi jambhale on 6/12/2017.
@@ -132,7 +133,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void onClick(View v) {
 
                 NotificationResponseAsyncTask notificationResponseAsyncTask = new NotificationResponseAsyncTask(context,notices);
-                notificationResponseAsyncTask.execute(data.getPt_id(),data.getSender_id(),"1",sessionData.getString("api_key",""));
+                notificationResponseAsyncTask.execute(data.getPt_id(),data.getSender_id(),"1",sessionData.getString("api_key",""),data.getNt_id());
 
             }
         });
@@ -143,7 +144,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<RecyclerView.View
             public void onClick(View v) {
 
                 NotificationResponseAsyncTask notificationResponseAsyncTask = new NotificationResponseAsyncTask(context,notices);
-                notificationResponseAsyncTask.execute(data.getPt_id(),data.getSender_id(),"2",sessionData.getString("api_key",""));
+                notificationResponseAsyncTask.execute(data.getPt_id(),data.getSender_id(),"2",sessionData.getString("api_key",""),data.getNt_id());
 
             }
         });

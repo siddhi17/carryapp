@@ -139,6 +139,7 @@ public class ScheduledTravelAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     FragmentManager fragmentManager = tripListFragment.getFragmentManager();
                     PostDetailsFragment fragment = new PostDetailsFragment();
                     fragment.setArguments(bundle);
+                   // fragmentManager.beginTransaction().add(R.id.mycontainer, fragment, "POST_DETAILS_FRAGMENT").addToBackStack("O").commit();
                     fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "POST_DETAILS_FRAGMENT").addToBackStack("O").commit();
 
                 }

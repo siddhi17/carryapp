@@ -17,17 +17,19 @@ import android.widget.TextView;
 
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.Adapters.NotificationsAdapter;
+import com.carryapp.AsyncTasks.GetLocalNotificationsAsyncTask;
 import com.carryapp.AsyncTasks.GetNotificationsAsyncTask;
 import com.carryapp.Classes.Notifications;
 import com.carryapp.R;
 import com.carryapp.helper.SessionData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NoticesFragment extends Fragment implements GetNotificationsAsyncTask.GetNotificationsCallBack{
+public class NoticesFragment extends Fragment implements GetNotificationsAsyncTask.GetNotificationsCallBack,GetLocalNotificationsAsyncTask.GetLocalNotificationsCallBack{
 
 
     private RelativeLayout mLayoutMessages,mLayoutNotifications,mRecyclerViewLayout;
@@ -37,7 +39,7 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
     private ArrayList<Notifications> notificationsArrayList;
     private NotificationsAdapter mNotificationsAdapter;
     private SessionData sessionData;
-
+    private Bundle bundle;
     public NoticesFragment() {
         // Required empty public constructor
     }
@@ -96,14 +98,25 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         mRecyclerView.setItemViewCacheSize(50);
         mRecyclerView.setDrawingCacheEnabled(true);
         mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mRecyclerViewLayout.setVisibility(View.VISIBLE);
 
 
-        Bundle bundle = this.getArguments();
+
+
+
+        ((HomeActivity) getActivity()).mNotificationCount.setVisibility(View.GONE);
+
+         bundle = this.getArguments();
 
         if(bundle != null) {
 
-            if (bundle.getBoolean("notification", false)) {
+            if (bundle.getString("title") != null && !bundle.getString("title").equals("")) {
 
+                setNotifications();
+            }
+            else if(bundle.getString("icon") != null && !bundle.getString("icon").equals(""))
+            {
                 setNotifications();
             }
         }
@@ -120,10 +133,12 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
                 mRecyclerView.setVisibility(View.GONE);
                 mMessagesLayout.setVisibility(View.VISIBLE);
                 mRecyclerViewLayout.setVisibility(View.GONE);
-                mLayoutNotifications.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
-                mLayoutMessages.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
-                mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
-                mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+
+                mLayoutNotifications.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
+                mLayoutMessages.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
+                mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
+                mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+
             }
         });
 
@@ -139,34 +154,72 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
 
     }
 
-    public void setNotifications()
-    {
+    public void setNotifications() {
+
+        if (bundle != null) {
+
+            if (bundle.getString("title") != null && !bundle.getString("title").equals("")) {
+
+                GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
+                getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
+            }
+            else if(bundle.getString("icon") != null && !bundle.getString("icon").equals(""))
+            {
+
+                if(sessionData.getInt("notificationCount",0) > 0)
+                {
+                    GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
+                    getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
+                }
+                else {
+
+                    GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this);
+                    getLocalNotificationsAsyncTask.execute();
+                }
 
 
-        GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(),NoticesFragment.this,NoticesFragment.this,parentPanel);
-        getNotificationsAsyncTask.execute(sessionData.getString("api_key",""));
+            }
+        }
 
+        else {
 
-        mRecyclerView.setVisibility(View.VISIBLE);
+            GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this);
+            getLocalNotificationsAsyncTask.execute();
+            }
+        mLayoutNotifications.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorButton));
+        mLayoutMessages.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.border));
+        mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorButton));
+        mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         mRecyclerViewLayout.setVisibility(View.VISIBLE);
-
-        mLayoutNotifications.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
-        mLayoutMessages.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
-        mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
-        mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
-
-
     }
 
-    @Override
-    public void doPostExecute(ArrayList<Notifications> list)
-    {
+        @Override
+        public void doPostExecute (ArrayList <Notifications> list)
+        {
 
-        notificationsArrayList.clear();
+            notificationsArrayList.clear();
+            Collections.reverse(list);
+            notificationsArrayList.addAll(list);
 
-        notificationsArrayList.addAll(list);
+            mNotificationsAdapter.notifyDataSetChanged();
+            sessionData.delete("notificationCount");
+        }
 
-        mNotificationsAdapter.notifyDataSetChanged();
+        @Override
+        public void doPostExecute (ArrayList <Notifications> list, Boolean b)
+        {
 
-    }
+            notificationsArrayList.clear();
+            Collections.reverse(list);
+            notificationsArrayList.addAll(list);
+
+            if(notificationsArrayList.size() == 0)
+            {
+                mRecyclerView.setVisibility(View.GONE);
+                mTextViewData.setVisibility(View.VISIBLE);
+            }
+            sessionData.delete("notificationCount");
+            mNotificationsAdapter.notifyDataSetChanged();
+
+        }
 }

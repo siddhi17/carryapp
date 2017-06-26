@@ -54,6 +54,17 @@ public class PostDetailsFragment extends Fragment {
     public void setUpUI(View view)
     {
 
+        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
+        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ImageView mLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
+        mLogo.setVisibility(View.GONE);
+
+        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
+        title.setVisibility(View.VISIBLE);
+        title.setText(R.string.tripDetails);
+
+
         mTextViewDate = (TextView) view.findViewById(R.id.textViewDate);
         mTextViewTime = (TextView) view.findViewById(R.id.textViewTime);
         mTextViewFrom = (TextView) view.findViewById(R.id.textViewFrom);
@@ -89,5 +100,21 @@ public class PostDetailsFragment extends Fragment {
                 .placeholder(R.drawable.product)
                 .error(R.drawable.product)
                 .into(imageViewProduct);
+    }
+
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+
+        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
+        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ImageView mLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
+        mLogo.setVisibility(View.VISIBLE);
+
+        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
+        title.setVisibility(View.GONE);
+
     }
 }

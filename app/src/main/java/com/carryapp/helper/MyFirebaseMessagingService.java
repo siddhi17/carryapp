@@ -8,12 +8,15 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.View;
 
 import com.carryapp.Activities.HomeActivity;
+import com.carryapp.AsyncTasks.AddNotiAsyncTask;
 import com.carryapp.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
 
 
 /**
@@ -23,11 +26,29 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
     private String mOrderId, mBillId;
-    private Boolean mNotification;
+    public static Boolean mNotification;
+    public int notificationCount;
+    private SessionData sessionData;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        sessionData = new SessionData(getApplicationContext());
+
+        Map<String, String> data = remoteMessage.getData();
+
+        mNotification = true;
+
+        notificationCount = sessionData.getInt("notificationCount",0);
+
+        String title = data.get("title");
+        String message = data.get("text");
+
+            notificationCount ++;
+
+            sessionData.add("notificationCount", notificationCount);
+
+        Log.e("notificationCount",String.valueOf(notificationCount));
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
@@ -45,23 +66,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //get data from server notification.
 
-
-        sendNotification(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle());
+        sendNotification(message, title,remoteMessage.getData());
     }
 
     //send notification
 
-    private void sendNotification(String messageBody, String title) {
+    private void sendNotification(String messageBody, String title,Map data) {
+
 
         mNotification = true;
 
         Intent intent = new Intent(this,HomeActivity.class);
         if (!messageBody.equals("")) {
             intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("notification", mNotification);
             intent.putExtra("title", title);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         }
+
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

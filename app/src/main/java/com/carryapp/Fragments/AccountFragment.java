@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -334,14 +335,18 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
                 now.setTime(now.getTime());
 
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
+      /*          DatePickerDialog dpd = DatePickerDialog.newInstance(
                         AccountFragment.this,
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
-                );
+                );*/
 
-                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+                now.add(Calendar.YEAR, - 20);
+
+
+
+           /*     dpd.setVersion(DatePickerDialog.Version.VERSION_2);
 
                 dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
 
@@ -350,7 +355,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                 dpd.showYearPickerFirst(true);
 
                 dpd.setMaxDate(now);
-
+*/
             }
         });
 

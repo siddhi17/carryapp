@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.carryapp.Database.DatabaseHelper;
 import com.carryapp.R;
 import com.carryapp.helper.SessionData;
 
@@ -28,13 +29,11 @@ public class StartupActivity extends AppCompatActivity {
 
         sessionData = new SessionData(StartupActivity.this);
         sessionUserId = sessionData.getString("ur_id", "-1");
+        //create local database
 
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        DatabaseHelper db = new DatabaseHelper(StartupActivity.this);
+        db.createDatabase();
 
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
         //if user is not logged in go to welcome screen
 
         if (sessionUserId.equals("-1")) {
