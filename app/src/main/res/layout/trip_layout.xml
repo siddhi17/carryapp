@@ -29,7 +29,7 @@
             android:id="@+id/imageViewCar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:srcCompat="@drawable/car_shipping"/>
+            app:srcCompat="@mipmap/car_shipping"/>
 
         <TextView
             android:id="@+id/textViewFrom"

@@ -39,6 +39,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -277,13 +278,10 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
                 String date = mEditTxt_Date.getText().toString() + " " + mEditTxt_Time.getText().toString();
                 mDate = CommonUtils.formateDateFromstring("dd MMM, yyyy HH:mm", "yyyy-MM-dd HH:mm:ss", date);
                 Log.e("date",mDate);
-
-                if (productImage != null) {
-                    Bitmap myBitmap = BitmapFactory.decodeFile(productImage.getAbsolutePath());
-                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
-                    myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bao);
-                    byte[] ba = bao.toByteArray();
-                    mImage = Base64.encodeToString(ba, Base64.DEFAULT);
+                View view1 = getActivity().getCurrentFocus();
+                if (view1 != null) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
                 }
 
                 if(validation()) {
@@ -309,6 +307,8 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         });
 
     }
+
+
     private void openAutocompleteActivityFrom() {
         try {
             // The autocomplete activity requires Google Play Services to be available. The intent
@@ -398,6 +398,11 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         else if(mImage.equals("") || mImage.equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.imageAlert, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        else if(mEditTxtProductDetails.getText().toString().equals("") || mEditTxtProductDetails.getText().toString().equals("null"))
+        {
+            snackbar = Snackbar.make(parentLayout,R.string.productDetailsWarning, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
         else {

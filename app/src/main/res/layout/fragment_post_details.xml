@@ -36,7 +36,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                app:srcCompat="@drawable/car_shipping" />
+                app:srcCompat="@mipmap/car_shipping" />
 
             <TextView
                 android:id="@+id/textViewDate"
@@ -168,7 +168,9 @@
             android:layout_width="96dp"
             android:layout_height="96dp"
             app:srcCompat="@drawable/product"
-            android:layout_below="@+id/text"
+            android:padding="20dp"
+            android:background="@drawable/circle"
+            android:layout_alignTop="@+id/text"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 

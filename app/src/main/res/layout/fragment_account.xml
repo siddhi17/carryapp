@@ -61,41 +61,41 @@
                             android:id="@+id/imageViewR1_empty"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
-                            android:src="@drawable/empty_bird" />
+                            android:src="@mipmap/empty_bird" />
 
                         <ImageView
                             android:id="@+id/imageViewR2_empty"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/empty_bird" />
+                            android:src="@mipmap/empty_bird" />
 
                         <ImageView
                             android:id="@+id/imageViewR3_empty"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/empty_bird" />
+                            android:src="@mipmap/empty_bird" />
 
                         <ImageView
                             android:id="@+id/imageViewR4_empty"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/empty_bird" />
+                            android:src="@mipmap/empty_bird" />
 
                         <ImageView
                             android:id="@+id/imageViewR5_empty"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/empty_bird" />
+                            android:src="@mipmap/empty_bird" />
 
                         <ImageView
                             android:id="@+id/imageViewR1"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
-                            android:src="@drawable/bird"
+                            android:src="@mipmap/bird"
                             android:visibility="gone" />
 
                         <ImageView
@@ -103,7 +103,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird"
+                            android:src="@mipmap/bird"
                             android:visibility="gone" />
 
                         <ImageView
@@ -111,7 +111,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird"
+                            android:src="@mipmap/bird"
                             android:visibility="gone" />
 
                         <ImageView
@@ -119,7 +119,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird"
+                            android:src="@mipmap/bird"
                             android:visibility="gone" />
 
                         <ImageView
@@ -127,7 +127,7 @@
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:layout_marginLeft="02dp"
-                            android:src="@drawable/bird"
+                            android:src="@mipmap/bird"
                             android:visibility="gone" />
                     </LinearLayout>
 

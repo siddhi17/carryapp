@@ -335,18 +335,16 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
                 now.setTime(now.getTime());
 
-      /*          DatePickerDialog dpd = DatePickerDialog.newInstance(
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
                         AccountFragment.this,
                         now.get(Calendar.YEAR),
                         now.get(Calendar.MONTH),
                         now.get(Calendar.DAY_OF_MONTH)
-                );*/
+                );
 
-                now.add(Calendar.YEAR, - 20);
+                now.add(Calendar.YEAR, - 16);
 
-
-
-           /*     dpd.setVersion(DatePickerDialog.Version.VERSION_2);
+                dpd.setVersion(DatePickerDialog.Version.VERSION_2);
 
                 dpd.setAccentColor(ContextCompat.getColor(getActivity(),R.color.colorAccent));
 
@@ -355,7 +353,7 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
                 dpd.showYearPickerFirst(true);
 
                 dpd.setMaxDate(now);
-*/
+
             }
         });
 

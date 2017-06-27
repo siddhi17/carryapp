@@ -59,9 +59,9 @@
 
         <ImageView
             android:id="@+id/imageViewCar"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            app:srcCompat="@drawable/car_shipping"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/car_shipping"
             android:layout_alignParentTop="true"
             android:layout_alignRight="@+id/tv_dateTime"
             android:layout_alignEnd="@+id/tv_dateTime"

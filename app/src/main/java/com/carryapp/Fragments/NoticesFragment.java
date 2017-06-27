@@ -102,9 +102,6 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         mRecyclerViewLayout.setVisibility(View.VISIBLE);
 
 
-
-
-
         ((HomeActivity) getActivity()).mNotificationCount.setVisibility(View.GONE);
 
          bundle = this.getArguments();
