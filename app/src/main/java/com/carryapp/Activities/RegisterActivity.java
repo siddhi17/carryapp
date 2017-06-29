@@ -38,6 +38,7 @@ import android.widget.TextView;
 import com.carryapp.AsyncTasks.RegisterAsyncTask;
 import com.carryapp.R;
 import com.carryapp.helper.CommonUtils;
+import com.carryapp.helper.SessionData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -65,10 +66,11 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
     public final static int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     private Snackbar snackbar;
     private final static int MY_PERMISSIONS_REQUEST_ACCESS_LOCATION = 10;
-    public static String TAG = "Location";
+    public static String TAG = "Location",refreshedToken;
     private GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     private LatLng mLatLang;
+    private SessionData sessionData;
     LocationManager mLocationManager = null;
 
     boolean gps_enabled = false;
@@ -97,6 +99,8 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
 
     public void setUpUI()
     {
+        sessionData = new SessionData(RegisterActivity.this);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.register);
         toolbar.setTitleTextColor(Color.BLACK);
@@ -156,8 +160,17 @@ public class RegisterActivity extends AppCompatActivity implements GoogleApiClie
             @Override
             public void onClick(View v) {
 
-                String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                Log.d(TAG, "Refreshed token: " + refreshedToken);
+
+                if(sessionData.getString("ur_device_id","").equals(""))
+                {
+                    refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("Token", "Refreshed token: " + refreshedToken);
+                }
+                else {
+
+                    refreshedToken = sessionData.getString("ur_device_id","");
+
+                }
 
                 View view1 = getCurrentFocus();
                 if (view1 != null) {

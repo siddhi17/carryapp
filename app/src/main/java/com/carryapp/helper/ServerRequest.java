@@ -214,6 +214,46 @@ public class ServerRequest {
         }
     }
 
+
+    public JSONObject sendDeleteRequest(String access_token) {
+        try {
+
+            URL url = new URL(api);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("DELETE");
+            con.setRequestProperty("content-type", "application/json");
+            con.setRequestProperty("Authorization", access_token);
+            con.setDoInput(true);
+
+            int responseCode = con.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                StringBuilder sb = new StringBuilder();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line);
+                }
+                reader.close();
+                Log.d("ServerResponse", new String(sb));
+                return new JSONObject(new String(sb));
+            } else {
+                throw new UnexpectedServerException("Unexpected server exception with status code : " + responseCode);
+            }
+        } catch (MalformedURLException me) {
+            me.printStackTrace();
+            return Excpetion2JSON.getJSON(me);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return Excpetion2JSON.getJSON(ioe);
+        } catch (UnexpectedServerException ue) {
+            ue.printStackTrace();
+            return Excpetion2JSON.getJSON(ue);
+        } catch (JSONException je) {
+            je.printStackTrace();
+            return Excpetion2JSON.getJSON(je);
+        }
+    }
+
     public String sendFileRequest1(String access_token, MultipartEntityBuilder multipartEntityBuilder){
 
         try{

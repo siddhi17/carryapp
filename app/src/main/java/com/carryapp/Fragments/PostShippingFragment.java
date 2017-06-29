@@ -66,6 +66,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -114,6 +115,7 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
     private Date date = null,date1 = null;
     private ProgressDialog loadingDialog;
     private SessionData sessionData;
+    private Bundle bundle;
 
 
     @Override
@@ -471,6 +473,39 @@ public class PostShippingFragment extends Fragment implements DatePickerDialog.O
         mTime = todayTime;
 
         mDate = todayDate + " " + todayTime;
+
+
+    }
+
+    public void setPostDetails()
+    {
+
+        bundle = this.getArguments();
+
+        if(bundle.getBoolean("editPost")) {
+
+            mEditTxtProductName.setText(bundle.getString("pt_name"));
+            mEditTxtProductDetails.setText(bundle.getString("pt_details"));
+            mEditTxt_From.setText(bundle.getString("from"));
+            mEditTxt_To.setText(bundle.getString("to"));
+
+            String newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM, yyyy", bundle.getString("pt_date"));
+
+            String newTime = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "hh:mm", bundle.getString("pt_date"));
+
+            mEditTxt_Date.setText(newDate);
+            mEditTxt_Time.setText(newTime);
+
+            String url = getString(R.string.photo_url) + bundle.getString("pt_photo");
+            Log.e("url",url);
+
+            Picasso.with(getActivity())
+                    .load(url)
+                    .resize(400,400)
+                    .placeholder(R.drawable.product)
+                    .error(R.drawable.product)
+                    .into(mImgViewProduct);
+        }
 
 
     }

@@ -13,6 +13,7 @@ import android.view.View;
 import com.carryapp.Activities.HomeActivity;
 import com.carryapp.AsyncTasks.AddNotiAsyncTask;
 import com.carryapp.R;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -25,7 +26,7 @@ import java.util.Map;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
-    private String mOrderId, mBillId;
+    private String noti;
     public static Boolean mNotification;
     public int notificationCount;
     private SessionData sessionData;
@@ -35,18 +36,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
         sessionData = new SessionData(getApplicationContext());
 
+
+
+
         Map<String, String> data = remoteMessage.getData();
 
         mNotification = true;
 
-        notificationCount = sessionData.getInt("notificationCount",0);
+        noti = sessionData.getString("notificationCount","0");
+
+        notificationCount = Integer.parseInt(noti);
 
         String title = data.get("title");
         String message = data.get("text");
 
             notificationCount ++;
 
-            sessionData.add("notificationCount", notificationCount);
+            sessionData.add("notificationCount", String.valueOf(notificationCount));
 
         Log.e("notificationCount",String.valueOf(notificationCount));
 
@@ -66,12 +72,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         //get data from server notification.
 
-        sendNotification(message, title,remoteMessage.getData());
+        sendNotification(message, title);
     }
 
     //send notification
 
-    private void sendNotification(String messageBody, String title,Map data) {
+    private void sendNotification(String messageBody, String title) {
 
 
         mNotification = true;
@@ -81,9 +87,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             intent = new Intent(this, HomeActivity.class);
             intent.putExtra("title", title);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
-
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

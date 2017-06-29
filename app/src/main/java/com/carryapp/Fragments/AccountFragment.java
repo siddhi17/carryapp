@@ -352,8 +352,6 @@ public class AccountFragment extends Fragment implements UploadFileAsyncTask.Upl
 
                 dpd.showYearPickerFirst(true);
 
-                dpd.setMaxDate(now);
-
             }
         });
 

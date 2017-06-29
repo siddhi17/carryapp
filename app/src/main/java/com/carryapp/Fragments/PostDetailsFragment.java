@@ -2,6 +2,7 @@ package com.carryapp.Fragments;
 
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.provider.ContactsContract;
@@ -12,11 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.carryapp.Activities.EditPostActivity;
 import com.carryapp.Activities.HomeActivity;
+import com.carryapp.AsyncTasks.DeletePostAsyncTask;
 import com.carryapp.R;
 import com.carryapp.helper.CommonUtils;
+import com.carryapp.helper.SessionData;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -32,6 +37,11 @@ public class PostDetailsFragment extends Fragment {
     private ImageView imageViewProduct;
     private String newDate,newTime;
     private Date date;
+    private Button mBtnDeletePost,mBtnEditPost;
+    private LinearLayout parentLayout;
+    private Bundle bundle;
+
+    private SessionData sessionData;
 
     public PostDetailsFragment() {
         // Required empty public constructor
@@ -47,12 +57,16 @@ public class PostDetailsFragment extends Fragment {
 
         setUpUI(view);
 
+        listeners();
+
         return view;
     }
 
 
     public void setUpUI(View view)
     {
+
+        sessionData = new SessionData(getActivity());
 
         final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
         ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
@@ -71,10 +85,14 @@ public class PostDetailsFragment extends Fragment {
         mTextViewTo = (TextView) view.findViewById(R.id.textViewTo);
         mTextViewProductName = (TextView) view.findViewById(R.id.textViewProductName);
         mTextViewProductDetails =  (TextView) view.findViewById(R.id.textViewProductDetails);
+        parentLayout = (LinearLayout) view.findViewById(R.id.parentPanel);
+
+        mBtnDeletePost = (Button) view.findViewById(R.id.btn_deletePost);
+        mBtnEditPost = (Button) view.findViewById(R.id.btn_editPost);
 
         imageViewProduct = (ImageView) view.findViewById(R.id.imageViewProduct);
 
-        Bundle bundle = this.getArguments();
+        bundle = this.getArguments();
 
         newDate = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "dd MMM, yyyy", bundle.getString("pt_date"));
 
@@ -102,19 +120,43 @@ public class PostDetailsFragment extends Fragment {
                 .into(imageViewProduct);
     }
 
-    @Override
-    public void onStop()
+    public void listeners()
     {
-        super.onStop();
 
-        final Toolbar toolbar = (Toolbar) ((HomeActivity) getActivity()).findViewById(R.id.toolbar);
-        ((HomeActivity) getActivity()).setSupportActionBar(toolbar);
+        mBtnDeletePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        ImageView mLogo = (ImageView) getActivity().findViewById(R.id.imgLogo);
-        mLogo.setVisibility(View.VISIBLE);
+                DeletePostAsyncTask deletePostAsyncTask = new DeletePostAsyncTask(getActivity(),parentLayout);
+                deletePostAsyncTask.execute(bundle.getString("pt_id"),sessionData.getString("api_key",""));
 
-        TextView title = (TextView) getActivity().findViewById(R.id.textTitle);
-        title.setVisibility(View.GONE);
+            }
+        });
 
+
+        mBtnEditPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent intent = new Intent(getActivity(), EditPostActivity.class);
+                intent.putExtra("editPost",true);
+                intent.putExtra("pt_id", bundle.getString("pt_id"));
+                intent.putExtra("pt_name", bundle.getString("pt_name"));
+                intent.putExtra("pt_details", bundle.getString("pt_details"));
+                intent.putExtra("pt_photo", bundle.getString("pt_photo"));
+                intent.putExtra("pt_date", bundle.getString("pt_date"));
+                intent.putExtra("from", bundle.getString("from"));
+                intent.putExtra("to", bundle.getString("to"));
+                intent.putExtra("pt_charges", bundle.getString("pt_charges"));
+                intent.putExtra("pt_size", bundle.getString("pt_size"));
+                intent.putExtra("st_lati", bundle.getDouble("st_lati"));
+                intent.putExtra("st_longi", bundle.getDouble("st_longi"));
+                intent.putExtra("ed_lati", bundle.getDouble("ed_lati"));
+                intent.putExtra("ed_longi", bundle.getDouble("ed_longi"));
+
+                startActivity(intent);
+            }
+        });
     }
 }

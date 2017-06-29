@@ -62,9 +62,7 @@
                     android:id="@+id/textTitle"
                     android:visibility="gone"
                     android:textColor="@android:color/black"
-                    android:text="@string/menu_account"
-
-                    />
+                    android:text="@string/menu_account" />
             </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 

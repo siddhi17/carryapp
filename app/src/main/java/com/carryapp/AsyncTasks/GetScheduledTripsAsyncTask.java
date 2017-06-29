@@ -118,6 +118,11 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
                         trips.setmFrom(jsonObject.getString("pt_start_loc"));
                         trips.setmTo(jsonObject.getString("pt_end_loc"));
                         trips.setmImage(jsonObject.getString("pt_photo"));
+                        trips.setmSize(jsonObject.getString("pt_size"));
+                        trips.setStartLati(jsonObject.getDouble("st_lati"));
+                        trips.setStartLongi(jsonObject.getDouble("st_longi"));
+                        trips.setEndLati(jsonObject.getDouble("ed_lati"));
+                        trips.setEndLongi(jsonObject.getDouble("ed_longi"));
 
                         tripsArrayList.add(trips);
 

@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 
+import com.carryapp.Classes.Notifications;
+import com.carryapp.Database.NotiTableHelper;
 import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.R;
 import com.carryapp.helper.Excpetion2JSON;
@@ -15,6 +17,8 @@ import com.carryapp.helper.ServerRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by siddhi jambhale on 6/12/2017.
@@ -28,12 +32,22 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
     private Snackbar snackbar;
     private CoordinatorLayout parentLayout;
     private NoticesFragment noticesFragment;
+    private NotiTableHelper db;
+    private NotiResponseCalBack notiResponseCalBack;
+    private String ntId;
 
 
     public NotificationResponseAsyncTask(Context context, NoticesFragment noticesFragment) {
 
         this.mContext = context;
         this.noticesFragment = noticesFragment;
+        this.notiResponseCalBack = notiResponseCalBack;
+    }
+
+
+
+    public interface NotiResponseCalBack {
+        void doPostExecute(Boolean notifications);
     }
 
     @Override
@@ -64,6 +78,9 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
             jsonParams.put("accept_status", params[2]);
             jsonParams.put("nt_id", params[4]);
 
+
+            ntId = params[4];
+
             ServerRequest request = new ServerRequest(api, jsonParams);
             return request.sendPostRequest(params[3]);
 
@@ -85,11 +102,22 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
 
                 if (message.equals("Success")) {
 
+                    db = new NotiTableHelper(mContext);
 
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
 
                     noticesFragment.setNotifications();
+
+                    Notifications notifications = new Notifications();
+                    notifications.setNt_status(response.getString("acceptance"));
+                    notifications.setNt_id(ntId);
+
+                    db.updateNoti(notifications);
+
+                    noticesFragment.getLocalData();
+                    noticesFragment.setData();
+                   // notiResponseCalBack.doPostExecute(true);
 
                 }
                 else if (message.equals("Access Denied. Invalid Api key")) {
@@ -108,6 +136,12 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
 
                 }
                 else if (message.equals("Already accepted.")) {
+
+                    if (loadingDialog.isShowing())
+                        loadingDialog.dismiss();
+
+                }
+                else if (message.equals("Already rejected.")) {
 
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();

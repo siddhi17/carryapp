@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.FragmentManager;;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.carryapp.AsyncTasks.GetNotificationsAsyncTask;
 import com.carryapp.AsyncTasks.LogOutAsyncTask;
@@ -35,8 +37,12 @@ import com.carryapp.helper.SessionData;
 import com.facebook.login.LoginManager;
 import com.testfairy.TestFairy;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class HomeActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener,AccountFragment.OnFragmentInteractionListener,TransportFragment.OnFragmentInteractionListener{
@@ -51,11 +57,15 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
     private Intent mIntent;
     private CoordinatorLayout parentLayout;
     private SessionData sessionData;
-    private int notificationCount;
+    private String notificationCount;
     private Bundle bundle;
     private ArrayList<Notifications> notificationsArrayList;
     private Intent intent;
     private Boolean mNotification;
+    private Timer timer;
+    private TimerTask timerTask;
+    private Handler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +75,8 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
         setSupportActionBar(toolbar);
         intent = getIntent();
 
+        handler = new Handler();
+        startTimer();
 
         TestFairy.begin(this, "4c99880b3a9b2a94314896853e36f1a62f35c318");
 
@@ -77,11 +89,10 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
         mNotificationCount = (TextView) findViewById(R.id.textNotification);
 
-        notificationCount = sessionData.getInt("notificationCount",0);
+        notificationCount = sessionData.getString("notificationCount","0");
 
-        if(notificationCount > 0)
+        if(!notificationCount.equals("0"))
         {
-
             mNotificationCount.setVisibility(View.VISIBLE);
             mNotificationCount.setText(String.valueOf(notificationCount));
         }
@@ -208,16 +219,13 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 fragmentManager = getFragmentManager();
                 MyTripsFragment fragment4 = new MyTripsFragment();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment4,"MY_TRIPS_FRAGMENT").addToBackStack("H").commit();
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment4,"MY_TRIPS_FRAGMENT").addToBackStack("I").commit();
 
                 break;
             case R.id.menu_sign_off:
 
-
-
                 LogOutAsyncTask logOutAsyncTask = new LogOutAsyncTask(HomeActivity.this,parentLayout);
                 logOutAsyncTask.execute(sessionData.getString("api_key",""));
-
 
                 break;
         }
@@ -264,5 +272,77 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        startTimer();
+
+        notificationCount = sessionData.getString("notificationCount","0");
+
+        if(!notificationCount.equals("0"))
+
+        {
+            mNotificationCount.setVisibility(View.VISIBLE);
+            mNotificationCount.setText(String.valueOf(notificationCount));
+        }
+    }
+
+    public void startTimer() {
+        //set a new Timer
+        timer = new Timer();
+
+        //initialize the TimerTask's job
+        initializeTimerTask();
+
+        //schedule the timer, after the first 5000ms the TimerTask will run every 10000ms
+        timer.schedule(timerTask, 1000, 5000); //
+    }
+
+    public void initializeTimerTask() {
+
+        timerTask = new TimerTask() {
+            public void run() {
+
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+                        //get the current timeStamp
+                  /*      Calendar calendar = Calendar.getInstance();
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:MMMM:yyyy HH:mm:ss a");
+                        final String strDate = simpleDateFormat.format(calendar.getTime());
+
+                        //show the toast
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(getApplicationContext(), strDate, duration);
+                        toast.show();*/
+
+                        notificationCount = sessionData.getString("notificationCount","0");
+
+                        if(!notificationCount.equals("0"))
+                        {
+                            mNotificationCount.setVisibility(View.VISIBLE);
+                            mNotificationCount.setText(String.valueOf(notificationCount));
+                        }
+
+                    }
+                });
+            }
+        };
+    }
+    public void stoptimertask() {
+        //stop the timer, if it's not already null
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    public void onDestroy()
+    {
+        super.onDestroy();
+
+        stoptimertask();
+    }
 
 }

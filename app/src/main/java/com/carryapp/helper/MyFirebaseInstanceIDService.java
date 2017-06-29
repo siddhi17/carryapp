@@ -38,14 +38,18 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
-     //   String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-     //   Log.d(TAG, "Refreshed token: " + refreshedToken);
+
         ///  final Intent intent = new Intent("tokenReceiver");
         // You can also include some extra data.
         //  final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
         //  intent.putExtra("token",refreshedToken);
         //  broadcastManager.sendBroadcast(intent);
-      //  sendRegistrationToServer(refreshedToken);
+
+        final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "Refreshed token: " + refreshedToken);
+        sendRegistrationToServer(refreshedToken);
+
+
     }
 
     private void sendRegistrationToServer(String token) {
@@ -56,13 +60,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         if (!token.equals("")) {
 
             sessionData = new SessionData(MyFirebaseInstanceIDService.this);
-            String sessionUserId = sessionData.getString("user_id", "-1");
-            String access_token = sessionData.getString("api_key", "-1");
-
-            SharedPreferences.Editor editor = getApplicationContext().getSharedPreferences("Token", getApplicationContext().MODE_PRIVATE).edit();
-            editor.putString("token", token);
-
-            editor.commit();
+            sessionData.add("ur_device_id", token);
 
          //   new UpdateTokenAsyncTask(MyFirebaseInstanceIDService.this).execute(access_token, sessionUserId, token);
         }

@@ -81,7 +81,7 @@
                     android:id="@+id/imageViewR1_empty"
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:src="@mipmap/bird_empty" />
+                    android:src="@mipmap/empty_bird" />
 
                 <ImageView
                     android:id="@+id/imageViewR2_empty"
@@ -89,7 +89,7 @@
                     android:layout_height="18dp"
                     android:layout_marginLeft="02dp"
                     android:layout_marginStart="02dp"
-                    android:src="@mipmap/bird_empty" />
+                    android:src="@mipmap/empty_bird" />
 
                 <ImageView
                     android:id="@+id/imageViewR3_empty"
@@ -97,7 +97,7 @@
                     android:layout_width="18dp"
                     android:layout_height="18dp"
                     android:layout_marginLeft="02dp"
-                    android:src="@mipmap/bird_empty" />
+                    android:src="@mipmap/empty_bird" />
 
                 <ImageView
                     android:layout_width="18dp"
@@ -105,7 +105,7 @@
                     android:id="@+id/imageViewR4_empty"
                     android:layout_marginStart="02dp"
                     android:layout_marginLeft="02dp"
-                    android:src="@mipmap/bird_empty" />
+                    android:src="@mipmap/empty_bird" />
 
                 <ImageView
                     android:layout_width="18dp"
@@ -113,7 +113,7 @@
                     android:layout_marginLeft="02dp"
                     android:id="@+id/imageViewR5_empty"
                     android:layout_marginStart="02dp"
-                    android:src="@mipmap/bird_empty" />
+                    android:src="@mipmap/empty_bird" />
 
                 <ImageView
                     android:layout_width="18dp"

@@ -1,6 +1,7 @@
 package com.carryapp.Classes;
 
 import com.carryapp.helper.SessionData;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 /**
  * Created by siddhi jambhale on 5/22/2017.
@@ -8,11 +9,12 @@ import com.carryapp.helper.SessionData;
 
 public class Trips {
 
-    String mFrom,mTo,mDate,mImage,mPostId,mPostDetails,mPostStatus,mPostCharges,mPostName;
+    String mFrom,mTo,mDate,mImage,mPostId,mPostDetails,mPostStatus,mPostCharges,mPostName,mSize;
+    double startLati,startLongi,endLati,endLongi;
 
     public Trips(){}
 
-    public Trips(String from, String to, String date, String image, String postId,String potName,String postDetails,String postCharges,String poststatus)
+    public Trips(String from, String to, String date, String image, String postId, String potName, String postDetails, String postCharges, String poststatus, String size, Double startLati, Double startLongi,Double endLati,Double endLongi)
     {
         this.mFrom = from;
         this.mTo = to;
@@ -23,7 +25,53 @@ public class Trips {
         this.mPostCharges = postCharges;
         this.mPostStatus = poststatus;
         this.mPostDetails = postDetails;
+        this.mSize = size;
+        this.startLati = startLati;
+        this.startLongi = startLongi;
+        this.endLati = endLati;
+        this.endLongi = endLongi;
 
+    }
+
+    public double getEndLati() {
+        return endLati;
+    }
+
+    public double getEndLongi() {
+        return endLongi;
+    }
+
+    public double getStartLati() {
+        return startLati;
+    }
+
+    public double getStartLongi() {
+        return startLongi;
+    }
+
+    public void setEndLati(double endLati) {
+        this.endLati = endLati;
+    }
+
+    public void setEndLongi(double endLongi) {
+        this.endLongi = endLongi;
+    }
+
+    public void setStartLati(double startLati) {
+        this.startLati = startLati;
+    }
+
+    public void setStartLongi(double startLongi) {
+        this.startLongi = startLongi;
+    }
+
+    public String getmSize() {
+        return mSize;
+    }
+
+
+    public void setmSize(String mSize) {
+        this.mSize = mSize;
     }
 
     public String getmPostCharges() {

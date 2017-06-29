@@ -79,9 +79,15 @@
                 android:id="@+id/rv_notificationsList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
-                android:visibility="gone" />
+                android:layout_marginTop="20dp"/>
         </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/msgLayout"
+            android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,6 +131,7 @@
                 android:textColor="@android:color/black"
                 android:text="20€" />
         </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -161,4 +168,5 @@
         </LinearLayout>
     </LinearLayout>
     </LinearLayout>
+        </LinearLayout>
 </LinearLayout>

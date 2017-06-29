@@ -53,7 +53,7 @@ public class NotiTableHelper extends SQLiteOpenHelper {
 
         values.put(KEY_NOTI_ID, noti.getNt_id());
         values.put(KEY_NOTI_MESSAGE, noti.getNt_message());
-        values.put(KEY_NOTI_STATUS, noti.getNt_message());
+        values.put(KEY_NOTI_STATUS, noti.getNt_status());
         values.put(KEY_NOTI_POST_ID, noti.getPt_id());
         values.put(KEY_NOTI_SENDER_ID, noti.getSender_id());
         values.put(KEY_NOTIFICATION, noti.getNotification());
@@ -77,8 +77,8 @@ public class NotiTableHelper extends SQLiteOpenHelper {
             do {
 
                 Notifications noti = new Notifications(cursor.getString(cursor.getColumnIndex("id")),
-                        cursor.getString(cursor.getColumnIndex("message")), cursor.getString(cursor.getColumnIndex("ptId")),
-                        cursor.getString(cursor.getColumnIndex("senderId")),cursor.getString(cursor.getColumnIndex("status")));
+                        cursor.getString(cursor.getColumnIndex("message")),cursor.getString(cursor.getColumnIndex("status")),
+                        cursor.getString(cursor.getColumnIndex("ptId")),cursor.getString(cursor.getColumnIndex("senderId")));
 
                 conList.add(noti);
 
@@ -87,6 +87,18 @@ public class NotiTableHelper extends SQLiteOpenHelper {
 
         return conList;
     }
+    public int updateNoti(Notifications notifications) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_NOTI_STATUS, notifications.getNt_status());
+
+        // updating row
+        return db.update(NOTI_TABLE, values, KEY_NOTI_ID + " = ?",
+                new String[]{String.valueOf(notifications.getNt_id())});
+    }
+
 
 
     public void deleteAllNoti()

@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private CoordinatorLayout parentLayout;
     private SessionData sessionData;
     private Snackbar snackbar;
+    private String refreshedToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +63,18 @@ public class LoginActivity extends AppCompatActivity {
         mLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-                Log.d("token", "Refreshed token: " + refreshedToken);
+
+                if(sessionData.getString("ur_device_id","").equals(""))
+                {
+                    refreshedToken = FirebaseInstanceId.getInstance().getToken();
+                    Log.d("Token", "Refreshed token: " + refreshedToken);
+                }
+                else {
+
+                    refreshedToken = sessionData.getString("ur_device_id","");
+
+                }
+
 
                 if(mEdtEmail.getText().toString().equals(""))
                 {

@@ -33,11 +33,11 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
 
 
     private RelativeLayout mLayoutMessages,mLayoutNotifications,mRecyclerViewLayout;
-    private LinearLayout mMessagesLayout,parentPanel;
+    private LinearLayout mMessagesLayout,parentPanel,mMsgLayout;
     public RecyclerView mRecyclerView;
     public TextView mTextViewNotifications,mTextViewMessages,mTextViewData;
     private ArrayList<Notifications> notificationsArrayList;
-    private NotificationsAdapter mNotificationsAdapter;
+    public NotificationsAdapter mNotificationsAdapter;
     private SessionData sessionData;
     private Bundle bundle;
     public NoticesFragment() {
@@ -52,6 +52,7 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         View view = inflater.inflate(R.layout.fragment_notices, container, false);
 
         setUpUI(view);
+
 
         listeners();
 
@@ -81,25 +82,16 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         mMessagesLayout = (LinearLayout) view.findViewById(R.id.messagesLayout);
         mRecyclerViewLayout = (RelativeLayout) view.findViewById(R.id.recyclerViewLayout);
         parentPanel = (LinearLayout) view.findViewById(R.id.parentPanel);
+        mMsgLayout = (LinearLayout) view.findViewById(R.id.msgLayout);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_notificationsList);
         mTextViewNotifications = (TextView) view.findViewById(R.id.notifications);
         mTextViewMessages = (TextView) view.findViewById(R.id.messages);
         mTextViewData = (TextView) view.findViewById(R.id.textViewData);
-/*
-        mRecyclerView.setVisibility(View.GONE);
-        mMessagesLayout.setVisibility(View.VISIBLE);*/
+
         notificationsArrayList = new ArrayList<Notifications>();
 
-        mNotificationsAdapter = new NotificationsAdapter(getActivity(),notificationsArrayList, NoticesFragment.this);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mNotificationsAdapter);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setItemViewCacheSize(50);
-        mRecyclerView.setDrawingCacheEnabled(true);
-        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mRecyclerViewLayout.setVisibility(View.VISIBLE);
+        setData();
 
 
         ((HomeActivity) getActivity()).mNotificationCount.setVisibility(View.GONE);
@@ -127,14 +119,14 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
             @Override
             public void onClick(View v) {
 
-                mRecyclerView.setVisibility(View.GONE);
-                mMessagesLayout.setVisibility(View.VISIBLE);
+                mMsgLayout.setVisibility(View.VISIBLE);
                 mRecyclerViewLayout.setVisibility(View.GONE);
 
                 mLayoutNotifications.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.border));
                 mLayoutMessages.setBackgroundColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
                 mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorButton));
                 mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorPrimary));
+
 
             }
         });
@@ -150,6 +142,17 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
         });
 
     }
+    public void setData()
+    {
+
+        mNotificationsAdapter = new NotificationsAdapter(getActivity(),notificationsArrayList, NoticesFragment.this);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mNotificationsAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setItemViewCacheSize(50);
+        mRecyclerView.setDrawingCacheEnabled(true);
+        mRecyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+    }
 
     public void setNotifications() {
 
@@ -159,35 +162,44 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
 
                 GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
                 getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
-            }
-            else if(bundle.getString("icon") != null && !bundle.getString("icon").equals(""))
-            {
+            } else {
+                if (Integer.parseInt(sessionData.getString("notificationCount", "")) > 0) {
 
-                if(sessionData.getInt("notificationCount",0) > 0)
-                {
                     GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
                     getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
-                }
-                else {
 
-                    GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this);
+                } else if (sessionData.getString("login", "").equals("true")) {
+
+                    GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
+                    getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
+                    sessionData.delete("login");
+
+                } else {
+
+                    GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this);
                     getLocalNotificationsAsyncTask.execute();
                 }
 
-
             }
         }
-
         else {
 
-            GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this);
+            GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this);
             getLocalNotificationsAsyncTask.execute();
-            }
+        }
+
         mLayoutNotifications.setBackgroundColor(ContextCompat.getColor(getActivity(), R.color.colorButton));
         mLayoutMessages.setBackgroundDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.border));
         mTextViewMessages.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorButton));
         mTextViewNotifications.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
         mRecyclerViewLayout.setVisibility(View.VISIBLE);
+
+    }
+    public void getLocalData()
+    {
+
+        GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this);
+        getLocalNotificationsAsyncTask.execute();
     }
 
         @Override
@@ -199,7 +211,7 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
             notificationsArrayList.addAll(list);
 
             mNotificationsAdapter.notifyDataSetChanged();
-            sessionData.delete("notificationCount");
+            sessionData.add("notificationCount","0");
         }
 
         @Override
@@ -215,7 +227,7 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
                 mRecyclerView.setVisibility(View.GONE);
                 mTextViewData.setVisibility(View.VISIBLE);
             }
-            sessionData.delete("notificationCount");
+            sessionData.add("notificationCount","0");
             mNotificationsAdapter.notifyDataSetChanged();
 
         }

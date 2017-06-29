@@ -3,9 +3,11 @@ package com.carryapp.AsyncTasks;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
 
 import com.carryapp.Classes.Notifications;
 import com.carryapp.Database.NotiTableHelper;
+import com.carryapp.Fragments.NoticesFragment;
 import com.carryapp.R;
 
 import java.util.ArrayList;
@@ -20,12 +22,14 @@ public class GetLocalNotificationsAsyncTask extends AsyncTask<Void, Void, ArrayL
     private NotiTableHelper dbConnector;
     private GetLocalNotificationsCallBack getLocalNotificationsCallBack;
     private ProgressDialog progressDialog;
+    private NoticesFragment noticesFragment;
 
-    public GetLocalNotificationsAsyncTask(Context context, GetLocalNotificationsCallBack getLocalNotificationsCallBack) {
+    public GetLocalNotificationsAsyncTask(Context context,NoticesFragment noticesFragment, GetLocalNotificationsCallBack getLocalNotificationsCallBack) {
 
         this.mContext = context;
         this.getLocalNotificationsCallBack = getLocalNotificationsCallBack;
         dbConnector = new NotiTableHelper(context);
+        this.noticesFragment = noticesFragment;
 
     }
 
