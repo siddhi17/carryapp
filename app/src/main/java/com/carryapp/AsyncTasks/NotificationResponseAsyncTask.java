@@ -37,17 +37,17 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
     private String ntId;
 
 
-    public NotificationResponseAsyncTask(Context context, NoticesFragment noticesFragment) {
+    public NotificationResponseAsyncTask(Context context, NoticesFragment noticesFragment,NotiResponseCalBack notiResponseCalBack1) {
 
         this.mContext = context;
         this.noticesFragment = noticesFragment;
-        this.notiResponseCalBack = notiResponseCalBack;
+        this.notiResponseCalBack = notiResponseCalBack1;
     }
 
 
 
     public interface NotiResponseCalBack {
-        void doPostExecute(Boolean notifications);
+        void doPostExecute(JSONObject jsonObject);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
 
         if (!isOnline()) {
 
-            snackbar = Snackbar.make(parentLayout, R.string.check_network, Snackbar.LENGTH_LONG);
+            snackbar = Snackbar.make(noticesFragment.getView(), R.string.check_network, Snackbar.LENGTH_LONG);
             snackbar.show();
 
         } else {
@@ -117,7 +117,7 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
 
                     noticesFragment.getLocalData();
                     noticesFragment.setData();
-                   // notiResponseCalBack.doPostExecute(true);
+                    // notiResponseCalBack.doPostExecute(true);
 
                 }
                 else if (message.equals("Access Denied. Invalid Api key")) {
@@ -125,7 +125,7 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
                     if (loadingDialog.isShowing())
                         loadingDialog.dismiss();
 
-                    snackbar = Snackbar.make(parentLayout,R.string.warning, Snackbar.LENGTH_LONG);
+                    snackbar = Snackbar.make(noticesFragment.getView(),R.string.warning, Snackbar.LENGTH_LONG);
                     snackbar.show();
 
                 }
@@ -154,6 +154,9 @@ public class NotificationResponseAsyncTask  extends AsyncTask<String, Void, JSON
             je.printStackTrace();
 
         }
+
+        notiResponseCalBack.doPostExecute(response);
+
     } //end of onPostExecute
     //check network
     public boolean isOnline() {

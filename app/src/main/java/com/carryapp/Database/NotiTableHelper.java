@@ -99,8 +99,6 @@ public class NotiTableHelper extends SQLiteOpenHelper {
                 new String[]{String.valueOf(notifications.getNt_id())});
     }
 
-
-
     public void deleteAllNoti()
     {
         SQLiteDatabase database = this.getWritableDatabase();

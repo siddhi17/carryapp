@@ -123,6 +123,7 @@ public class GetScheduledTripsAsyncTask  extends AsyncTask<String, Void, JSONObj
                         trips.setStartLongi(jsonObject.getDouble("st_longi"));
                         trips.setEndLati(jsonObject.getDouble("ed_lati"));
                         trips.setEndLongi(jsonObject.getDouble("ed_longi"));
+                        trips.setmTrack(jsonObject.getString("pt_track"));
 
                         tripsArrayList.add(trips);
 

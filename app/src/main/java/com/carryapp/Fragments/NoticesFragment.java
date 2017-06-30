@@ -168,13 +168,21 @@ public class NoticesFragment extends Fragment implements GetNotificationsAsyncTa
                     GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
                     getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
 
-                } else if (sessionData.getString("login", "").equals("true")) {
+                } else if (sessionData.getString("login", "").equals("true") && bundle.getBoolean("menu")) {
 
                     GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
                     getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
                     sessionData.delete("login");
 
-                } else {
+                }
+                else if (sessionData.getString("login", "").equals("true")) {
+
+                    GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this, parentPanel);
+                    getNotificationsAsyncTask.execute(sessionData.getString("api_key", ""));
+                    sessionData.delete("login");
+
+                }
+                else {
 
                     GetLocalNotificationsAsyncTask getLocalNotificationsAsyncTask = new GetLocalNotificationsAsyncTask(getActivity(), NoticesFragment.this, NoticesFragment.this);
                     getLocalNotificationsAsyncTask.execute();

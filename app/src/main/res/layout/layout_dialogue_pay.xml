@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:textColor="@color/colorPrimary"
+        android:background="@color/colorButton"
+        android:gravity="center"
+        android:text="Pay Charges"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:textSize="20dp"
+        android:textStyle="normal|bold" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_del_man"
+            android:textSize="15sp"
+            android:text="Delivery man : Sandeep kasar"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="fill_vertical" />
+        <TextView
+            android:id="@+id/tv_date"
+            android:textSize="15sp"
+            android:text="Date: 120may 2017"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="fill_vertical" />
+        <TextView
+            android:id="@+id/tv_time"
+            android:textSize="15sp"
+            android:text="Time : 01:30"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="fill_vertical" />
+
+        <TextView
+            android:id="@+id/tv_from"
+            android:textSize="15sp"
+            android:text="From : Nashik"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="fill_vertical" />
+        <TextView
+            android:id="@+id/tv_to"
+            android:textSize="15sp"
+            android:text="To : Pune"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="fill_vertical" />
+
+        <TextView
+            android:id="@+id/tv_charge"
+            android:textSize="15sp"
+            android:text="Amount : 200"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="fill_vertical" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:gravity="right"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:textSize="15sp"
+            android:gravity="center"
+            android:id="@+id/btn_pay"
+            android:textAllCaps="false"
+            android:text="@string/pay"
+            android:background="@drawable/rounded_button"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:textColor="@color/colorPrimary" />
+
+        <Button
+            android:textSize="15sp"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
+            android:id="@+id/btn_cancel"
+            android:textAllCaps="false"
+            android:text="@string/cancel"
+            android:background="@drawable/red_button"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

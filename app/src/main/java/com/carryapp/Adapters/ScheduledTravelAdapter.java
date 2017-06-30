@@ -140,6 +140,7 @@ public class ScheduledTravelAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                     bundle.putDouble("st_longi", data.getStartLongi());
                     bundle.putDouble("ed_lati", data.getEndLati());
                     bundle.putDouble("ed_longi", data.getEndLongi());
+                    bundle.putString("pt_track", data.getmTrack());
 
                     //go to post details screen
                     FragmentManager fragmentManager = tripListFragment.getFragmentManager();

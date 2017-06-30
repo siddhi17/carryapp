@@ -28,6 +28,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -40,8 +41,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.carryapp.AsyncTasks.EditPostAsyncTask;
 import com.carryapp.AsyncTasks.GetCostAsyncTask;
 import com.carryapp.Fragments.CarPickerFragment;
+import com.carryapp.Fragments.MyTripsFragment;
 import com.carryapp.Fragments.PostShippingFragment;
 import com.carryapp.Fragments.TransportFragment;
 import com.carryapp.R;
@@ -67,6 +70,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -102,7 +106,7 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
 
     private String mParsedDistance,mDistance,deviceId,mFrom,mTo;
     private LatLng mFromLatLang,mToLatLang;
-    private ImageView imgSmall,imgMedium,imgLarge,imgExtraLarge,imgDoubleExtraLarge;
+    private ImageView imgSmall,imgMedium,imgLarge,imgExtraLarge,imgDoubleExtraLarge,back;
     private TextView mTextViewCost;
     private FrameLayout parentLayout;
     private SessionData sessionData;
@@ -130,7 +134,19 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
         sessionData = new SessionData(EditPostActivity.this);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
+
+
+        back = (ImageView) findViewById(R.id.back);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                onBackPressed();
+            }
+        });
 
 
         TextView title = (TextView) findViewById(R.id.textTitle);
@@ -160,6 +176,8 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
         mTextViewCost = (TextView) findViewById(R.id.textViewCost);
         cbTrack = (CheckBox) findViewById(R.id.checkBox);
 
+
+        cbTrack.setOnCheckedChangeListener(EditPostActivity.this);
 
         Calendar compareDate = Calendar.getInstance();
 
@@ -219,6 +237,11 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
             startLongitude = mIntent.getDoubleExtra("st_longi",0);
             endLatitude = mIntent.getDoubleExtra("ed_lati",0);
             endLongitude = mIntent.getDoubleExtra("ed_longi",0);
+
+        if(mIntent.getStringExtra("pt_track").equals("1"))
+        {
+            cbTrack.setChecked(true);
+        }
 
             if(mIntent.getStringExtra("pt_size").equals("0"))
             {
@@ -578,14 +601,29 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
                 }
+                precision =  Math.pow(10,6);
+
+                if (mImage != null && !mImage.equals("")) {
+                    Bitmap myBitmap = BitmapFactory.decodeFile(mImage);
+                    ByteArrayOutputStream bao = new ByteArrayOutputStream();
+                    if(myBitmap != null) {
+                        myBitmap.compress(Bitmap.CompressFormat.PNG, 100, bao);
+                        byte[] ba = bao.toByteArray();
+                        mImage = Base64.encodeToString(ba, Base64.DEFAULT);
+                    }
+                }
+
+                startLatitude =  (int)(precision * startLatitude)/precision;
+                startLongitude =  (int)(precision * startLongitude)/precision;
+                endLatitude =  (int)(precision * endLatitude)/precision;
+                endLongitude =  (int)(precision * endLongitude)/precision;
 
                 if(validation()) {
 
-
-
-
-
-
+                    EditPostAsyncTask editPostAsyncTask = new EditPostAsyncTask(EditPostActivity.this,parentLayout);
+                    editPostAsyncTask.execute(mIntent.getStringExtra("pt_id"),mEditTxtProductName.getText().toString(),mEditTxtProductDetails.getText().toString(),
+                            mEditTxt_From.getText().toString(),mEditTxt_To.getText().toString(),mDate,mImage,mSize,mWeight,mCost,String.valueOf(mTrack),String.valueOf(startLatitude),
+                            String.valueOf(startLongitude),String.valueOf(endLatitude),String.valueOf(endLongitude),sessionData.getString("api_key",""));
 
                 }
 
@@ -677,11 +715,6 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
         else if(mTime.equals("") || mTime.equals("null"))
         {
             snackbar = Snackbar.make(parentLayout,R.string.dateTimeSelect, Snackbar.LENGTH_LONG);
-            snackbar.show();
-        }
-        else if(mImage.equals("") || mImage.equals("null"))
-        {
-            snackbar = Snackbar.make(parentLayout,R.string.imageAlert, Snackbar.LENGTH_LONG);
             snackbar.show();
         }
         else if(mEditTxtProductDetails.getText().toString().equals("") || mEditTxtProductDetails.getText().toString().equals("null"))
@@ -1346,4 +1379,15 @@ public class EditPostActivity extends AppCompatActivity implements DatePickerDia
         }
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        // code here to show dialog
+        super.onBackPressed();  // optional depending on your needs
+
+        finish();
+
+        startActivity(new Intent(EditPostActivity.this,HomeActivity.class).putExtra("editPost",true));
+
+    }
 }

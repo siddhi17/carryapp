@@ -33,7 +33,7 @@ import java.util.Date;
  */
 public class PostDetailsFragment extends Fragment {
 
-    private TextView mTextViewDate,mTextViewTime,mTextViewFrom,mTextViewTo,mTextViewProductName,mTextViewProductDetails;
+    private TextView mTextViewDate,mTextViewTime,mTextViewFrom,mTextViewTo,mTextViewProductName,mTextViewProductDetails,mTextViewCharges;
     private ImageView imageViewProduct;
     private String newDate,newTime;
     private Date date;
@@ -86,6 +86,7 @@ public class PostDetailsFragment extends Fragment {
         mTextViewProductName = (TextView) view.findViewById(R.id.textViewProductName);
         mTextViewProductDetails =  (TextView) view.findViewById(R.id.textViewProductDetails);
         parentLayout = (LinearLayout) view.findViewById(R.id.parentPanel);
+        mTextViewCharges = (TextView) view.findViewById(R.id.textViewCharges);
 
         mBtnDeletePost = (Button) view.findViewById(R.id.btn_deletePost);
         mBtnEditPost = (Button) view.findViewById(R.id.btn_editPost);
@@ -98,11 +99,14 @@ public class PostDetailsFragment extends Fragment {
 
         newTime = CommonUtils.formateDateFromstring("yyyy-MM-dd HH:mm:ss", "hh:mm", bundle.getString("pt_date"));
 
+        String amount = bundle.getString("pt_charges") + " " +"€";
+
         mTextViewDate.setText(newDate);
         mTextViewTime.setText(newTime);
         mTextViewFrom.setText(bundle.getString("from"));
         mTextViewTo.setText(bundle.getString("to"));
         mTextViewProductName.setText(bundle.getString("pt_name"));
+        mTextViewCharges.setText(amount);
 
         if(!bundle.getString("pt_details").equals("") || !bundle.getString("pt_details").equals("null"))
         {
@@ -154,7 +158,9 @@ public class PostDetailsFragment extends Fragment {
                 intent.putExtra("st_longi", bundle.getDouble("st_longi"));
                 intent.putExtra("ed_lati", bundle.getDouble("ed_lati"));
                 intent.putExtra("ed_longi", bundle.getDouble("ed_longi"));
+                intent.putExtra("pt_track", bundle.getString("pt_track"));
 
+                getActivity().finish();
                 startActivity(intent);
             }
         });

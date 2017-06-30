@@ -97,6 +97,7 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
             mNotificationCount.setText(String.valueOf(notificationCount));
         }
 
+
 /*
 
         GetNotificationsAsyncTask getNotificationsAsyncTask = new GetNotificationsAsyncTask(HomeActivity.this,HomeActivity.this);
@@ -121,6 +122,20 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 fragment3.setArguments(bundle1);
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment3, "NOTICES_FRAGMENT").addToBackStack("H").commit();
+
+            }
+            else if(intent.getBooleanExtra("editPost",false))
+            {
+
+                FragmentManager fragmentManager = getFragmentManager();
+                MainFragment fragment = new MainFragment();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment, "MAIN_FRAGMENT").commitAllowingStateLoss();
+
+                fragmentManager = getFragmentManager();
+                MyTripsFragment fragment4 = new MyTripsFragment();
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment4,"MY_TRIPS_FRAGMENT").addToBackStack("I").commit();
 
             }
             else {
@@ -210,6 +225,9 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
                 fragmentManager = getFragmentManager();
                 NoticesFragment fragment3 = new NoticesFragment();
                 fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("menu",true);
+                fragment3.setArguments(bundle);
                 fragmentManager.beginTransaction().replace(R.id.mycontainer, fragment3,"NOTICES_FRAGMENT").addToBackStack("H").commit();
 
                 break;
@@ -223,6 +241,8 @@ public class HomeActivity extends AppCompatActivity implements MainFragment.OnFr
 
                 break;
             case R.id.menu_sign_off:
+
+
 
                 LogOutAsyncTask logOutAsyncTask = new LogOutAsyncTask(HomeActivity.this,parentLayout);
                 logOutAsyncTask.execute(sessionData.getString("api_key",""));

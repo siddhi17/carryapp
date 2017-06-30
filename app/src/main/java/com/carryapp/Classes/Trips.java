@@ -9,12 +9,12 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 public class Trips {
 
-    String mFrom,mTo,mDate,mImage,mPostId,mPostDetails,mPostStatus,mPostCharges,mPostName,mSize;
+    String mFrom,mTo,mDate,mImage,mPostId,mPostDetails,mPostStatus,mPostCharges,mPostName,mSize,mTrack;
     double startLati,startLongi,endLati,endLongi;
 
     public Trips(){}
 
-    public Trips(String from, String to, String date, String image, String postId, String potName, String postDetails, String postCharges, String poststatus, String size, Double startLati, Double startLongi,Double endLati,Double endLongi)
+    public Trips(String from, String to, String date, String image, String postId, String potName, String postDetails, String postCharges, String poststatus, String size, Double startLati, Double startLongi,Double endLati,Double endLongi,String track)
     {
         this.mFrom = from;
         this.mTo = to;
@@ -30,7 +30,17 @@ public class Trips {
         this.startLongi = startLongi;
         this.endLati = endLati;
         this.endLongi = endLongi;
+        this.mTrack = track;
 
+
+    }
+
+    public String getmTrack() {
+        return mTrack;
+    }
+
+    public void setmTrack(String mTrack) {
+        this.mTrack = mTrack;
     }
 
     public double getEndLati() {
